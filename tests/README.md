@@ -1,4 +1,4 @@
-### Fixing the ruleset provided on the paper:
+### Fixing the ruleset provided on the paper (see [Project_O.pdf](Project_O.pdf)):
 
 - `//` - for single line comments
 - the constructor body cannot contain return
@@ -13,7 +13,7 @@
       only BooleanLiteral always goes through, but Invocation and Constructor can go through only after type validation.
       The same for method call - arguments - are sequence of expressions, and a expression may be incompatible by type)
 
-### In addition to the classes provided on the paper we need to propose this additional stdlib classes
+### In addition to the classes provided on the paper we need to propose this additional stdlib classes:
 
 ```
 // base class
