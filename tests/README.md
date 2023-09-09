@@ -1,4 +1,4 @@
-### Fixing the ruleset provided on the paper (see [Project_O.pdf](Project_O.pdf)):
+### Fixing the ruleset provided on the paper (see [Project_O.pdf](/Project_O.pdf)):
 
 - `//` - for single line comments
 - the constructor body cannot contain return
