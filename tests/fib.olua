@@ -1,0 +1,21 @@
+// fib - emphasizes method declaration, method call, return statement and recursion
+class Fib extends EntryPoint is
+
+    method fib(n : Integer) : Integer is
+        if n.LessEqual(2) then
+            return 1
+        else
+            var a : this.fib(n.Minus(1))
+            var b : this.fib(n.Minus(2))
+            return a.Plus(b)
+        end
+    end
+
+    this(stdin: CharInput, stdout: CharOutput, stderr: CharOutput, args: Array[Array[Integer]]) is
+        // there is no chain call and we cannot do smth like fib(10).Equal(55).Not() directly between `if` and `then`
+        var ok : this.fib(10).Equal(55)
+        if ok.Not() then
+            this.ExitCode = 1
+        end
+    end
+end

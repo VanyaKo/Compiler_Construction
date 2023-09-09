@@ -1,0 +1,18 @@
+// echo - emphasizes the way to read from/write to std channels, work with arguments and some basic statements syntax
+class Echo extends EntryPoint is
+
+    // print the first argument string
+
+    this(stdin: CharInput, stdout: CharOutput, stderr: CharOutput, args: Array[Array[Integer]]) is
+        if args.Length.Greater(0) then
+            var arg0 : args.get(0)
+            var i : 0
+            while i.Less(arg0.Length) loop
+                stdout := stdout.WriteLine(arg0.get(i)) // there is no void return, as well as call without assignment, so this is how it should be worked around
+                i := i.Plus(1)
+            end
+        else
+            this.ExitCode = 2
+        end
+    end
+end
