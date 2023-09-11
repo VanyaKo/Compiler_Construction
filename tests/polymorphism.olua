@@ -1,0 +1,35 @@
+class A is
+    var value : Integer
+
+    this() is
+        this.value := Integer(42)
+    end
+
+    method returnSomething() is
+        return this.value.toReal()
+    end
+
+end
+
+class B extends A is
+    this() is
+        super.this()
+    end
+
+    method returnSomething() is
+        return 100
+    end
+
+end
+
+class PolymorphismTest extends EntryPoint is
+    this()
+    
+    method test() is
+        var objA : A := A()
+        var objB : A := B()  // Upcasting to A
+
+        assert objA.returnSomething().Equal(42) // expects 42 
+        assert objB.returnSomething().Equal(42) // expects 42, not 100
+    end
+end

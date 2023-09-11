@@ -1,0 +1,37 @@
+class A is
+    var value : Integer
+
+    this() is
+        this.value := Integer(42)
+    end
+
+    method displayValue() is
+        return this.value.toReal()
+    end
+
+end
+
+class B extends A is
+    this() is
+        super.this()
+    end
+
+    // Method in class B
+    method displayValue() is
+        return this.value.toReal()
+    end
+
+end
+
+class InheritanceTest extends EntryPoint is
+    this()
+
+    method test() is
+        var objA : A := A()
+        var objB : B := B()
+
+        assert objA.displayValue().Equal(42) // expects 42
+        assert objB.displayValue().Equal(42) // expects 42
+    end
+end
+

@@ -1,0 +1,16 @@
+class ScopesTestClass extends EntryPoint is
+    this()
+    method ScopesTest1() is
+        var a: Integer := 10
+        is
+            var a: Integer := 20
+            // expected a = 20
+        end
+    end
+    method ScopesTest1() is
+        is
+            var a: Integer := 20
+        end
+        //a is not visible here
+    end
+end

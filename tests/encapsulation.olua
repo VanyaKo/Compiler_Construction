@@ -1,0 +1,31 @@
+class EncapsulatedClass is
+    var privateVar : Integer
+
+    // Constructor
+    this() is
+        this.privateVar := Integer(0)
+    end
+
+    method setPrivateVar(newValue: Integer) is
+        this.privateVar := newValue
+    end
+end
+
+class EncapsulationTest extends EntryPoint is
+    // Class with encapsulated data members
+    this()
+
+    method TestEncapsulation() is
+        var obj : EncapsulatedClass := EncapsulatedClass()
+
+        // Attempting to directly set privateVar should result in a compilation error
+        // obj.privateVar := Integer(42)
+
+        // Using public methods to access and modify privateVar
+        obj.setPrivateVar(Integer(42))
+        var value : Integer := obj.privateVar()
+        
+        assert value.Equal(Integer(42)) // Expecting value to be 42
+    end
+
+end
