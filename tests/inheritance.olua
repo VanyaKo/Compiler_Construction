@@ -24,9 +24,7 @@ class B extends A is
 end
 
 class InheritanceTest extends EntryPoint is
-    this()
-
-    method test() is
+    this() is
         var objA : A := A()
         var objB : B := B()
 

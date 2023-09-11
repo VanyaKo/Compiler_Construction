@@ -1,5 +1,9 @@
 class ScopesTestClass extends EntryPoint is
-    this()
+    this() is
+        ScopesTest1()
+        ScopesTest2()
+    end
+
     method ScopesTest1() is
         var a: Integer := 10
         is

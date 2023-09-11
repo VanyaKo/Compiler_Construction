@@ -12,10 +12,7 @@ class EncapsulatedClass is
 end
 
 class EncapsulationTest extends EntryPoint is
-    // Class with encapsulated data members
-    this()
-
-    method TestEncapsulation() is
+    test() is
         var obj : EncapsulatedClass := EncapsulatedClass()
 
         // Attempting to directly set privateVar should result in a compilation error

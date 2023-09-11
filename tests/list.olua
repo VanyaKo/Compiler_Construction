@@ -1,7 +1,5 @@
 class ListTestClass extends EntryPoint is
-    this()
-
-    method ListUsage() is
+    this() is
         var list: List[Integer] := List()
         list := list.append(1)
         list := list.append(20)
