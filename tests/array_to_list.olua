@@ -1,30 +1,36 @@
-class TestArrayToList is
-    this() is
+class TestArrayToList extends EntryPoint is
+    method assert(cond : Boolean) then
+        if cond.Not() then
+            this.ExitCode = 1
+        end
+    end
+
+    this(stdin: CharInput, stdout: CharOutput, stderr: CharOutput, args: Array[Array[Integer]]) is
         // Initialize an array of Integers
         var intArray : Array[Integer](5)
-        intArray.set(0, Integer(5))
-        intArray.set(1, Integer(10))
-        intArray.set(2, Integer(15))
-        intArray.set(3, Integer(20))
-        intArray.set(4, Integer(25))
+        intArray.set(0, 5)
+        intArray.set(1, 10)
+        intArray.set(2, 15)
+        intArray.set(3, 20)
+        intArray.set(4, 25)
 
         // Convert the array to a list
-        var intList : List = intArray.toList
+        var intList : intArray.toList()
 
         // Test operations on the List
-        var head : Integer = intList.head() // Expected: 5
-        assert head.Equal(Integer(5))
+        var head : intList.head() // Expected: 5
+        this.assert(head.Equal(5))
 
         // Append an element to the list
-        intList.append(Integer(30))
-        assert intList.tail().tail().tail().tail().tail().head().Equal(Integer(30)) // Accessing the last element added
+        intList.append(30)
+        this.assert(intList.tail().tail().tail().tail().tail().head().Equal(30)) // Accessing the last element added
 
         // Test operations on the Array
-        var thirdElement : Integer = intArray.get(Integer(3)) // Expected: 20
-        assert thirdElement.Equal(Integer(20))
+        var thirdElement : intArray.get(3) // Expected: 20
+        this.assert(thirdElement.Equal(20))
         
-        intArray.set(3, Integer(23))
-        thirdElement = intArray.get(Integer(3)) // Updated to 23
-        assert thirdElement.Equal(Integer(23))
+        intArray.set(3, 23)
+        thirdElement = intArray.get(3) // Updated to 23
+        this.assert(thirdElement.Equal(23))
     end
 end
