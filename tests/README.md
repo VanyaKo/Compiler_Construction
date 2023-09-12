@@ -37,13 +37,13 @@ end
 
 ```
 // IO classes
-class CharInput extands Input[Integer] is
+class CharInput extends Input[Integer] is
     // in addition to the Input.Read described functionality this read returns only Integer values that are valid unicode character codes
     method ReadLine() : Array[Integer]
     method Read(n : Integer) : Array[Integer] // read n next characters
 end
 
-class CharOutput extands Output[Integer] is
+class CharOutput extends Output[Integer] is
     // in addition to the Output.Write described functionality this write forwards only Inetgers that are valid unicode character codes, otherwise the consumed element is ignored
     method Write(s: Array[Integer]) : CharOutput
     method WriteLine(s: Array[Integer]) : CharOutput
