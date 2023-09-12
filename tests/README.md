@@ -66,14 +66,14 @@ class Array[T] is
 
     // This creates a shallow copy of the array
     method copy() : Array[T] is
-        var newArray: Array[T] := Array(this.size)
-        var i: Integer := 0
-        while i < this.size do
-            newArray[i] := this[i]
-            i := i + 1
-        end
-        return newArray
-    end
+    	var newArray is Array[T](this.size)
+    	var i is Integer(0)
+    	while i.Less(this.size) loop
+        	newArray.set(i, this.get(i))
+        	i := i.Plus(1)
+    	end
+	return newArray
+end
 end
 ```
 
@@ -86,12 +86,12 @@ class List[T] is
 
     // This creates a shallow copy of the list
     method copy() : List[T] is
-        var newList: List[T] := List()
-	var index: Integer := 0
-        while index < this.items.size do
-            var item := this.items[index]
-            newList := newList.append(item)
-            index := index + 1
+        var newList: List[T]()
+        var index: Integer(0)
+        while index.Less(this.items.Length()) loop
+            var item := this.items.get(index)
+            newList.append(item)
+            index := index.Plus(1)
         end
         return newList
     end
