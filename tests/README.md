@@ -57,6 +57,45 @@ class EntryPoint is
 end
 ```
 
-`TODO: add copy methods for List and Array`
+```
+// Array copy method
+class Array[T] is
+    var size: Integer
+
+    // ... (other methods)
+
+    // This creates a shallow copy of the array
+    method copy() : Array[T] is
+        var newArray: Array[T] := Array(this.size)
+        var i: Integer := 0
+        while i < this.size do
+            newArray[i] := this[i]
+            i := i + 1
+        end
+        return newArray
+    end
+end
+```
+
+```
+// List copy method
+class List[T] is
+    var items: Array[T]
+
+    // ... (other methods)
+
+    // This creates a shallow copy of the list
+    method copy() : List[T] is
+        var newList: List[T] := List()
+	var index: Integer := 0
+        while index < this.items.size do
+            var item := this.items[index]
+            newList := newList.append(item)
+            index := index + 1
+        end
+        return newList
+    end
+end
+```
 
 `TODO: complete the list implementation (add method .Length, wrap returns of head and tail as ListElement[T], where ListElement has fields curr : T, next : T, prev : T, methods .Detach, .Append, .SetCurr)`
