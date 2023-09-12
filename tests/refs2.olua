@@ -1,6 +1,6 @@
 // Refs2 : emphasizes that a variable is just a slot for the pointer, so that actually immutable classes are safe to pass to the methods, ensuring that from the other scope it is impossible to substitude a variable in your scope
 class Refs2 extends EntryPoint then
-    mathod assert(cond : Boolean) then
+    method assert(cond : Boolean) then
         if cond.Not() then
             this.ExitCode = 1
         end
