@@ -1,0 +1,18 @@
+class UnaryOperationsTest is
+    this() is
+	var a : Integer(5)
+	var c : Real(-2.5)
+	var resultInt : Integer
+	var resultReal : Real
+	var boolTrue : Boolean(true)
+	var boolResult : Boolean
+
+	resultInt := a.UnaryMinus
+	resultReal := c.UnaryMinus
+	boolResult := boolTrue.Not
+	assert resultInt.Equal(-5)
+	assert resultReal.Equal(2.5)
+	assert boolResult.ToInteger().Equal(0)
+    end
+end
+

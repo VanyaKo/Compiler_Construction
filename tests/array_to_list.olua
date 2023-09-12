@@ -1,0 +1,30 @@
+class TestArrayToList is
+    this() is
+        // Initialize an array of Integers
+        var intArray : Array[Integer](5)
+        intArray.set(0, Integer(5))
+        intArray.set(1, Integer(10))
+        intArray.set(2, Integer(15))
+        intArray.set(3, Integer(20))
+        intArray.set(4, Integer(25))
+
+        // Convert the array to a list
+        var intList : List = intArray.toList
+
+        // Test operations on the List
+        var head : Integer = intList.head() // Expected: 5
+        assert head.Equal(Integer(5))
+
+        // Append an element to the list
+        intList.append(Integer(30))
+        assert intList.tail().tail().tail().tail().tail().head().Equal(Integer(30)) // Accessing the last element added
+
+        // Test operations on the Array
+        var thirdElement : Integer = intArray.get(Integer(3)) // Expected: 20
+        assert thirdElement.Equal(Integer(20))
+        
+        intArray.set(3, Integer(23))
+        thirdElement = intArray.get(Integer(3)) // Updated to 23
+        assert thirdElement.Equal(Integer(23))
+    end
+end
