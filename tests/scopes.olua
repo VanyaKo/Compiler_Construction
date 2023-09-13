@@ -1,4 +1,10 @@
 class ScopesTestClass extends EntryPoint is
+    method assert(cond : Boolean) then
+        if cond.Not() then
+            this.ExitCode = 1
+        end
+    end
+
     this() is
         ScopesTest1()
         ScopesTest2()
@@ -9,12 +15,15 @@ class ScopesTestClass extends EntryPoint is
         is
             var a: Integer := 20
             // expected a = 20
+            assert(a.Equal(20))
         end
+        assert(a.Equal(10))
     end
     method ScopesTest1() is
         is
             var a: Integer := 20
+            assert(a.Equal(20))
         end
-        //a is not visible here
+        // accessing a here is a compiler error
     end
 end

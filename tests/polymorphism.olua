@@ -27,7 +27,7 @@ class PolymorphismTest extends EntryPoint is
         var objA : A := A()
         var objB : A := B()  // Upcasting to A
 
-        assert objA.returnSomething().Equal(42) // expects 42 
-        assert objB.returnSomething().Equal(42) // expects 42, not 100
+        assert(objA.returnSomething().Equal(42)) // expects 42 
+        assert(objB.returnSomething().Equal(42)) // expects 42, not 100
     end
 end

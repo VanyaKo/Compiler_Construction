@@ -1,13 +1,19 @@
 class ListTestClass extends EntryPoint is
+    method assert(cond : Boolean) then
+        if cond.Not() then
+            this.ExitCode = 1
+        end
+    end
+
     this() is
-        var list: List[Integer] := List()
+        var list: List[Integer]()
         list := list.append(1)
         list := list.append(20)
         list := list.append(100)
 
-        assert list.get(0).Equal(1) // 1
-        assert list.get(1).Equal(20) // 20
-        assert list.head().Equal(1) // 1
-        assert list.tail().Equal(100) // 100
+        assert(list.get(0).Equal(1)) // 1
+        assert(list.get(1).Equal(20)) // 20
+        assert(list.head().Equal(1)) // 1
+        assert(list.tail().Equal(100)) // 100
     end
 end

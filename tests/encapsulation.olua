@@ -12,6 +12,12 @@ class EncapsulatedClass is
 end
 
 class EncapsulationTest extends EntryPoint is
+    method assert(cond : Boolean) then
+        if cond.Not() then
+            this.ExitCode = 1
+        end
+    end
+
     test() is
         var obj : EncapsulatedClass := EncapsulatedClass()
 
@@ -20,9 +26,9 @@ class EncapsulationTest extends EntryPoint is
 
         // Using public methods to access and modify privateVar
         obj.setPrivateVar(Integer(42))
-        var value : Integer := obj.privateVar()
+        var value := obj.privateVar()
         
-        assert value.Equal(Integer(42)) // Expecting value to be 42
+        assert(value.Equal(Integer(42))) // Expecting value to be 42
     end
 
 end
