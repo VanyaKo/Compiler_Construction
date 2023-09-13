@@ -1,5 +1,5 @@
 class TestArrayToList extends EntryPoint is
-    method assert(cond: Boolean) then
+    method assert(cond: Boolean): TestArrayToList is
         if cond.Not() then
             this.ExitCode := 1
         end
@@ -19,18 +19,18 @@ class TestArrayToList extends EntryPoint is
 
         // Test operations on the List
         var head : intList.head() // Expected: 5
-        this.assert(head.Equal(5))
+        this := this.assert(head.Equal(5))
 
         // Append an element to the list
         intList.append(30)
-        this.assert(intList.tail().tail().tail().tail().tail().head().Equal(30)) // Accessing the last element added
+        this := this.assert(intList.tail().tail().tail().tail().tail().head().Equal(30)) // Accessing the last element added
 
         // Test operations on the Array
         var thirdElement : intArray.get(3) // Expected: 20
-        this.assert(thirdElement.Equal(20))
+        this := this.assert(thirdElement.Equal(20))
         
         intArray.set(3, 23)
         thirdElement := intArray.get(3) // Updated to 23
-        this.assert(thirdElement.Equal(23))
+        this := this.assert(thirdElement.Equal(23))
     end
 end

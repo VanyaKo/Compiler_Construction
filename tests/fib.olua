@@ -15,7 +15,7 @@ class Fib extends EntryPoint is
         // there is no chain call and we cannot do smth like fib(10).Equal(55).Not() directly between `if` and `then`
         var ok : this.fib(10).Equal(55)
         if ok.Not() then
-            this.ExitCode = 1
+            this.ExitCode := 1
         end
     end
 end

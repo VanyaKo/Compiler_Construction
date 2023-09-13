@@ -1,5 +1,5 @@
 class TestTypeConversion extends EntryPoint is
-    method assert(cond: Boolean) then
+    method assert(cond: Boolean): TestTypeConversion is
         if cond.Not() then
             this.ExitCode := 1
         end
@@ -8,12 +8,10 @@ class TestTypeConversion extends EntryPoint is
     this(stdin: CharInput, stdout: CharOutput, stderr: CharOutput, args: Array[Array[Integer]]) is
         var a : Integer(5)
         var b : Real(3.7)
-        var resultInt : Integer
-        var resultReal : Real
 	
-        resultReal := a.toReal // Expected: 5.0
-        resultInt := b.toInteger // Expected: 3 (assuming truncation)
-	assert(resultReal.Equal(5.0))
-	assert(resultInt.Equal(3))
+        var resultReal : a.toReal() // Expected: 5.0
+        var resultInt : b.toInteger() // Expected: 3 (assuming truncation)
+	this := this.assert(resultReal.Equal(5.0))
+	this := this.assert(resultInt.Equal(3))
     end
 end

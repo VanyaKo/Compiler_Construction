@@ -12,7 +12,7 @@ class Echo extends EntryPoint is
                 i := i.Plus(1)
             end
         else
-            this.ExitCode = 2
+            this.ExitCode := 2
         end
     end
 end
