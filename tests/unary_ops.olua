@@ -1,5 +1,5 @@
-class UnaryOperationsTest extends EntryPoint is
-    method assert(cond: Boolean) then
+class TestUnaryOperations extends EntryPoint is
+    method assert(cond: Boolean): TestUnaryOperations then
         if cond.Not() then
             this.ExitCode := 1
         end
@@ -8,17 +8,13 @@ class UnaryOperationsTest extends EntryPoint is
     this(stdin: CharInput, stdout: CharOutput, stderr: CharOutput, args: Array[Array[Integer]]) is
 	var a : Integer(5)
 	var c : Real(-2.5)
-	var resultInt : Integer
-	var resultReal : Real
-	var boolTrue : Boolean(true)
-	var boolResult : Boolean
 
-	resultInt := a.UnaryMinus
-	resultReal := c.UnaryMinus
-	boolResult := boolTrue.Not
-	assert(resultInt.Equal(-5))
-	assert(resultReal.Equal(2.5))
-	assert(boolResult.ToInteger().Equal(0))
+	var resultInt : a.UnaryMinus
+	var resultReal : c.UnaryMinus
+	var boolResult : boolTrue.Not
+	this := this.assert(resultInt.Equal(-5))
+	this := this.assert(resultReal.Equal(2.5))
+	this := this.assert(boolResult.ToInteger().Equal(0))
     end
 end
 
