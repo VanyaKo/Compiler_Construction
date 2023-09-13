@@ -11,7 +11,7 @@ class SomeClass is
 end
 
 class Refs extends EntryPoint is
-    method assert(cond : Boolean): Refs then
+    method assert(cond : Boolean): Refs is
         if cond.Not() then
             this.ExitCode := 1
         end
