@@ -1,5 +1,5 @@
 class TestBinaryOperations extends EntryPoint is
-    method assert(cond : Boolean) then
+    method assert(cond : Boolean): TestBinaryOperations then
         if cond.Not() then
             this.ExitCode := 1
         end
@@ -13,27 +13,27 @@ class TestBinaryOperations extends EntryPoint is
 
 	var resultInt : a.Plus(b)
 	var resultReal : c.Plus(d)
-	assert(resultInt.Equal(8))
+	this := this.assert(resultInt.Equal(8))
 	assert(resultReal.Equal(4.0))
 
 	resultInt := a.Minus(b)
 	resultReal := c.Minus(d) 
-	this.assert(resultInt.Equal(2))
-	this.assert(resultReal.Equal(1.0))
+	this := this.assert(resultInt.Equal(2))
+	this := this.assert(resultReal.Equal(1.0))
 
 	resultInt := a.Mult(b)
 	resultReal := c.Mult(d)
-	this.assert(resultInt.Equal(15))
-	this.assert(resultReal.Equal(3.75))
+	this := this.assert(resultInt.Equal(15))
+	this := this.assert(resultReal.Equal(3.75))
 
 	resultInt := a.Div(b) // Expected: 1 (since it's integer division)
 	resultReal := c.Div(d) // Expected: 1.666...
-	this.assert(resultInt.Equal(1))
+	this := this.assert(resultInt.Equal(1))
 
 	var boolTrue : Boolean(true)
 	var boolFalse : false
 
 	var boolResult : boolTrue.Or(boolFalse)
-	this.assert(boolResult.toInteger().Equal(1))
+	this := this.assert(boolResult.toInteger().Equal(1))
     end
 end
