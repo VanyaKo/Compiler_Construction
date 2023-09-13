@@ -11,20 +11,20 @@ class SomeClass is
 end
 
 class Refs extends EntryPoint is
-    method assert(cond : Boolean) then
+    method assert(cond : Boolean): Refs then
         if cond.Not() then
-            this.ExitCode = 1
+            this.ExitCode := 1
         end
     end
 
     method DoSmth(a : SomeClass) is
         a.mark()
-        this.assert(a.ismarked) // here a.ismarked = true
+        this := this.assert(a.ismarked) // here a.ismarked = true
 
         a := SomeClass()
         // here a.ismarked = false
         var a_mark : a.ismarked
-        this.assert(a_mark.Not())
+        this := this.assert(a_mark.Not())
     end
 
     this(stdin: CharInput, stdout: CharOutput, stderr: CharOutput, args: Array[Array[Integer]]) is
@@ -32,11 +32,11 @@ class Refs extends EntryPoint is
 
         // here a.ismarked = false
         var a_mark : a.ismarked
-        this.assert(a_mark.Not())
+        this := this.assert(a_mark.Not())
 
-        this.DoSmth(a)
+        this := this.DoSmth(a)
 
-        this.assert(a_mark.Not()) // a_mark is still referencing the same object that was not changed
-        this.assert(a.ismarked) // here a.ismarked = true
+        this := this.assert(a_mark.Not()) // a_mark is still referencing the same object that was not changed
+        this := this.assert(a.ismarked) // here a.ismarked = true
     end
 end
