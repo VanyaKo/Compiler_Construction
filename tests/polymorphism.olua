@@ -23,7 +23,7 @@ class B extends A is
 end
 
 class PolymorphismTest extends EntryPoint is
-    method assert(cond : Boolean) then
+    method assert(cond : Boolean) : PolymorphismTest is
         if cond.Not() then
             this.ExitCode := 1
         end
@@ -33,7 +33,7 @@ class PolymorphismTest extends EntryPoint is
         var objA : A := A()
         var objB : A := B()  // Upcasting to A
 
-        assert(objA.returnSomething().Equal(42)) // expects 42 
-        assert(objB.returnSomething().Equal(42)) // expects 42, not 100
+        this := this.assert(objA.returnSomething().Equal(42)) // expects 42 
+        this := this.assert(objB.returnSomething().Equal(42)) // expects 42, not 100
     end
 end

@@ -24,7 +24,7 @@ class B extends A is
 end
 
 class InheritanceTest extends EntryPoint is
-    method assert(cond : Boolean) then
+    method assert(cond : Boolean) : InheritanceTest is
         if cond.Not() then
             this.ExitCode := 1
         end
@@ -34,8 +34,8 @@ class InheritanceTest extends EntryPoint is
         var objA : A := A()
         var objB : B := B()
 
-        assert(objA.displayValue().Equal(42)) // expects 42
-        assert(objB.displayValue().Equal(42)) // expects 42
+        this := this.assert(objA.displayValue().Equal(42)) // expects 42
+        this := this.assert(objB.displayValue().Equal(42)) // expects 42
     end
 end
 
