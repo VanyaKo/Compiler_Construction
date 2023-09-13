@@ -1,5 +1,11 @@
-class UnaryOperationsTest is
-    this() is
+class UnaryOperationsTest extends EntryPoint is
+    method assert(cond: Boolean) then
+        if cond.Not() then
+            this.ExitCode := 1
+        end
+    end
+
+    this(stdin: CharInput, stdout: CharOutput, stderr: CharOutput, args: Array[Array[Integer]]) is
 	var a : Integer(5)
 	var c : Real(-2.5)
 	var resultInt : Integer
@@ -10,9 +16,9 @@ class UnaryOperationsTest is
 	resultInt := a.UnaryMinus
 	resultReal := c.UnaryMinus
 	boolResult := boolTrue.Not
-	assert resultInt.Equal(-5)
-	assert resultReal.Equal(2.5)
-	assert boolResult.ToInteger().Equal(0)
+	assert(resultInt.Equal(-5))
+	assert(resultReal.Equal(2.5))
+	assert(boolResult.ToInteger().Equal(0))
     end
 end
 
