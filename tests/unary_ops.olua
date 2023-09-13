@@ -1,5 +1,5 @@
 class TestUnaryOperations extends EntryPoint is
-    method assert(cond: Boolean): TestUnaryOperations then
+    method assert(cond: Boolean): TestUnaryOperations is
         if cond.Not() then
             this.ExitCode := 1
         end
