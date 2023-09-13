@@ -1,5 +1,5 @@
-class Factorial extends EntryPoint extends EntryPoint is
-    method assert(cond: Boolean) then
+class Factorial extends EntryPoint is
+    method assert(cond: Boolean): Factorial then
         if cond.Not() then
             this.ExitCode := 1
         end
@@ -18,6 +18,6 @@ class Factorial extends EntryPoint extends EntryPoint is
         var tenFactorial: this.computeFactorial(10)
         
         // Expecting 10! to be 3628800
-        assert(tenFactorial.Equal(3628800))
+        this := this.assert(tenFactorial.Equal(3628800))
     end
 end
