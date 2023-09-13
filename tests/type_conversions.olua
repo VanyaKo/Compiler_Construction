@@ -9,8 +9,8 @@ class TestTypeConversion extends EntryPoint is
         var a : Integer(5)
         var b : Real(3.7)
 	
-        var resultReal : a.toReal // Expected: 5.0
-        var resultInt : b.toInteger // Expected: 3 (assuming truncation)
+        var resultReal : a.toReal() // Expected: 5.0
+        var resultInt : b.toInteger() // Expected: 3 (assuming truncation)
 	this := this.assert(resultReal.Equal(5.0))
 	this := this.assert(resultInt.Equal(3))
     end
