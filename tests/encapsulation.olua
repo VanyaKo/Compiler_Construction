@@ -14,11 +14,11 @@ end
 class EncapsulationTest extends EntryPoint is
     method assert(cond : Boolean) then
         if cond.Not() then
-            this.ExitCode = 1
+            this.ExitCode := 1
         end
     end
 
-    test() is
+    this(stdin: CharInput, stdout: CharOutput, stderr: CharOutput, args: Array[Array[Integer]]) is
         var obj : EncapsulatedClass := EncapsulatedClass()
 
         // Attempting to directly set privateVar should result in a compilation error
