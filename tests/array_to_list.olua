@@ -1,5 +1,5 @@
 class TestArrayToList extends EntryPoint is
-    method assert(cond: Boolean): TestArrayToList then
+    method assert(cond: Boolean): TestArrayToList is
         if cond.Not() then
             this.ExitCode := 1
         end
