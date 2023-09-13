@@ -10,34 +10,30 @@ class TestBinaryOperations extends EntryPoint is
 	var b : Integer(3)
 	var c : 2.5 // Real
 	var d : Real(1.5)
-	var resultInt : Integer
-	var resultReal : Real
 
-	resultInt := a.Plus(b)
-	resultReal := c.Plus(d)
+	var resultInt : a.Plus(b)
+	var resultReal : c.Plus(d)
 	assert(resultInt.Equal(8))
 	assert(resultReal.Equal(4.0))
 
 	resultInt := a.Minus(b)
 	resultReal := c.Minus(d) 
-	assert(resultInt.Equal(2))
-	assert(resultReal.Equal(1.0))
+	this.assert(resultInt.Equal(2))
+	this.assert(resultReal.Equal(1.0))
 
 	resultInt := a.Mult(b)
 	resultReal := c.Mult(d)
-	assert(resultInt.Equal(15))
-	assert(resultReal.Equal(3.75))
+	this.assert(resultInt.Equal(15))
+	this.assert(resultReal.Equal(3.75))
 
 	resultInt := a.Div(b) // Expected: 1 (since it's integer division)
 	resultReal := c.Div(d) // Expected: 1.666...
-	assert(resultInt.Equal(1))
-	stdout.WriteLine(resultReal)
+	this.assert(resultInt.Equal(1))
 
 	var boolTrue : Boolean(true)
 	var boolFalse : false
-	var boolResult : Boolean
 
-	boolResult := boolTrue.Or(boolFalse)
-	assert(boolResult.toInteger().Equal(1))
+	var boolResult : boolTrue.Or(boolFalse)
+	this.assert(boolResult.toInteger().Equal(1))
     end
 end
