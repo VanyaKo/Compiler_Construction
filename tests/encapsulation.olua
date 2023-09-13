@@ -11,6 +11,7 @@ class EncapsulationTest extends EntryPoint is
         if cond.Not() then
             this.ExitCode := 1
         end
+        return this
     end
 
     this(stdin: CharInput, stdout: CharOutput, stderr: CharOutput, args: Array[Array[Integer]]) is

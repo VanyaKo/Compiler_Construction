@@ -3,6 +3,7 @@ class Factorial extends EntryPoint is
         if cond.Not() then
             this.ExitCode := 1
         end
+        return this
     end
 
     method computeFactorial(n: Integer): Integer is
