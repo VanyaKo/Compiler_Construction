@@ -1,25 +1,24 @@
 class A is
-    var value : Integer
+    var value : Integer := 42
 
-    this() is
-        this.value := Integer(42)
-    end
-
-    method returnSomething() is
+    method returnSomething() : Real is
         return this.value.toReal()
     end
 
+    method returnSomething(val : Real) : Real is
+        return val
+    end
 end
 
 class B extends A is
-    this() is
-        super.this()
+    // defining something like returnSomething() : Integer is illegal
+    method returnSomething() : Real is
+        return 100.0
     end
 
-    method returnSomething() is
-        return 100
+    method returnSomething(val : Real) : Real is
+        return val.Plus(10.0)
     end
-
 end
 
 class PolymorphismTest extends EntryPoint is
@@ -32,9 +31,11 @@ class PolymorphismTest extends EntryPoint is
     
     this(stdin: CharInput, stdout: CharOutput, stderr: CharOutput, args: Array[Array[Integer]]) is
         var objA : A := A()
-        var objB : A := B()  // Upcasting to A
+        var objBA : A := B()
+        var objBB : B := B()
 
-        this := this.assert(objA.returnSomething().Equal(42)) // expects 42 
-        this := this.assert(objB.returnSomething().Equal(42)) // expects 42, not 100
+        this := this.assert(objA.returnSomething().Equal(42.0)) // expects 42
+        this := this.assert(objBA.returnSomething().Equal(100.0)) // expect 100
+        this := this.assert(objBB.returnSomething().Equal(100.0)) // expect 100
     end
 end
