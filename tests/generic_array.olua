@@ -1,0 +1,37 @@
+class TestArrayToList extends EntryPoint is
+    method assert(cond: Boolean): TestArrayToList is
+        if cond.Not() then
+            this.ExitCode := 1
+        end
+        return this
+    end
+
+    this(stdin: CharInput, stdout: CharOutput, stderr: CharOutput, args: Array[Array[Integer]]) is
+        // Initialize an array of Integers
+        var intArray : Array[Integer](5)
+        intArray.set(0, 5)
+        intArray.set(1, 10)
+        intArray.set(2, 15)
+        intArray.set(3, 20)
+        intArray.set(4, 25)
+
+        // Convert the array to a list
+        var intList : intArray.toList()
+
+        // Test operations on the List
+        var head : intList.head() // Expected: 5
+        this := this.assert(head.Equal(5))
+
+        // Append an element to the list
+        intList.append(30)
+        this := this.assert(intList.tail().tail().tail().tail().tail().head().Equal(30)) // Accessing the last element added
+
+        // Test operations on the Array
+        var thirdElement : intArray.get(3) // Expected: 20
+        this := this.assert(thirdElement.Equal(20))
+        
+        intArray.set(3, 23)
+        thirdElement := intArray.get(3) // Updated to 23
+        this := this.assert(thirdElement.Equal(23))
+    end
+end
