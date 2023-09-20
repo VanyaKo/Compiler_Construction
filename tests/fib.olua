@@ -11,7 +11,7 @@ class Fib extends EntryPoint is
         end
     end
 
-    this(stdin: CharInput, stdout: CharOutput, stderr: CharOutput, args: Array[Array[Integer]]) is
+    this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) is
         // there is no chain call and we cannot do smth like fib(10).Equal(55).Not() directly between `if` and `then`
         var ok : this.fib(10).Equal(55)
         if ok.Not() then

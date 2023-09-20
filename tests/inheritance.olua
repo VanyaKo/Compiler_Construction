@@ -21,7 +21,7 @@ class InheritanceTest extends EntryPoint is
         return this
     end
 
-    this(stdin: CharInput, stdout: CharOutput, stderr: CharOutput, args: Array[Array[Integer]]) is
+    this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) is
         var objA : A := A()
         var objB : B := B()
         var objBA : A := objB

@@ -6,7 +6,7 @@ class TestArrayToList extends EntryPoint is
         return this
     end
 
-    this(stdin: CharInput, stdout: CharOutput, stderr: CharOutput, args: Array[Array[Integer]]) is
+    this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) is
         // Initialize an array of Integers
         var intArray : Array[Integer](5)
         intArray.set(0, 5)

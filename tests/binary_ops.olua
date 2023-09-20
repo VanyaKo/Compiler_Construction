@@ -6,7 +6,7 @@ class TestBinaryOperations extends EntryPoint is
         return this
     end
 
-    this(stdin: CharInput, stdout: CharOutput, stderr: CharOutput, args: Array[Array[Integer]]) is
+    this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) is
 	var a : 5 // Integer
 	var b : Integer(3)
 	var c : 2.5 // Real

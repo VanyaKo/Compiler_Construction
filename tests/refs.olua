@@ -28,7 +28,7 @@ class Refs extends EntryPoint is
         this := this.assert(a_mark.Not())
     end
 
-    this(stdin: CharInput, stdout: CharOutput, stderr: CharOutput, args: Array[Array[Integer]]) is
+    this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) is
         var a : SomeClass()
 
         // here a.ismarked = false

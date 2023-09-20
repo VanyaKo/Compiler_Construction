@@ -14,7 +14,7 @@ class EncapsulationTest extends EntryPoint is
         return this
     end
 
-    this(stdin: CharInput, stdout: CharOutput, stderr: CharOutput, args: Array[Array[Integer]]) is
+    this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) is
         var obj : EncapsulatedClass()
 
         // Attempting to directly set privateVar should result in a compilation error

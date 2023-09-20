@@ -29,7 +29,7 @@ class PolymorphismTest extends EntryPoint is
         return this
     end
     
-    this(stdin: CharInput, stdout: CharOutput, stderr: CharOutput, args: Array[Array[Integer]]) is
+    this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) is
         var objA : A := A()
         var objBA : A := B()
         var objBB : B := B()

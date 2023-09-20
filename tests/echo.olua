@@ -3,7 +3,7 @@ class Echo extends EntryPoint is
 
     // print the first argument string
 
-    this(stdin: CharInput, stdout: CharOutput, stderr: CharOutput, args: Array[Array[Integer]]) is
+    this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) is
         if args.Length.Greater(0) then
             var arg0 : args.get(0)
             var i : 0

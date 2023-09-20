@@ -11,7 +11,7 @@ class Refs2 extends EntryPoint then
         a := a.Plus(2)
     end
 
-    this(stdin: CharInput, stdout: CharOutput, stderr: CharOutput, args: Array[Array[Integer]]) is
+    this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) is
         var a : 1
         var b : a.Plus(1)
 

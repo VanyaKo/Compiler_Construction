@@ -6,7 +6,7 @@ class TestTypeConversion extends EntryPoint is
         return this
     end
 
-    this(stdin: CharInput, stdout: CharOutput, stderr: CharOutput, args: Array[Array[Integer]]) is
+    this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) is
         var a : Integer(5)
         var b : Real(3.7)
 	

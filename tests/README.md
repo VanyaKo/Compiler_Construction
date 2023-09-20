@@ -4,7 +4,7 @@
 - the constructor body cannot contain return
 - the entry point to the code is always the constructor of the class that extends EntryPoint (there must be exactly one such a class in the file)
 - the program must have only one constructor that has exactly this constructor signature:
-    `this(stdin: CharInput, stdout: CharOutput, stderr: CharOutput, args: Array[Array[Integer]]) // where args is a array of strings`
+    `this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) // where args is a array of strings`
 - introducing separate `Invocation: Identifier.method(Arguments)` and `Constructor: ClassName(Arguments)`
 - clarify the specification: `Expression: IntegerLiteral | RealLiteral | BooleanLiteral | this | Invocation | Constructor | Indentifier`
       
@@ -47,6 +47,19 @@ class CharOutput extends Output[Integer] is
     // in addition to the Output.Write described functionality this write forwards only Inetgers that are valid unicode character codes, otherwise the consumed element is ignored
     method Write(s: Array[Integer]) : CharOutput
     method WriteLine(s: Array[Integer]) : CharOutput
+end
+
+class StdIn extends CharInput is
+end
+
+class StdOut extends CharOutput is
+    method Write(Integer) : CharOutput
+    method Write(Real) : CharOutput
+    method Write(Boolean) : CharOutput
+
+    method WriteLine(Integer) : CharOutput
+    method WriteLine(Real) : CharOutput
+    method WriteLine(Boolean) : CharOutput
 end
 ```
 

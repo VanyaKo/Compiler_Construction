@@ -15,7 +15,7 @@ class Factorial extends EntryPoint is
         return result
     end
 
-    this(stdin: CharInput, stdout: CharOutput, stderr: CharOutput, args: Array[Array[Integer]]) is
+    this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) is
         var tenFactorial: this.computeFactorial(10)
         
         // Expecting 10! to be 3628800
