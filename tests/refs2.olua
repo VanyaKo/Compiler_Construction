@@ -11,8 +11,8 @@ class Refs2 extends EntryPoint then
     end
 
     this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) is
-        var a : 1
-        var b : a.Plus(1)
+        var a : Inetger := 1
+        var b : integer := a.Plus(1)
 
         this.assert(a.Equal(1))
         this.assert(b.Equal(2))

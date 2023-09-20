@@ -28,10 +28,10 @@ class Refs extends EntryPoint is
     end
 
     this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) is
-        var a : SomeClass()
+        var a : SomeClass := SomeClass()
 
         // here a.ismarked = false
-        var a_mark : a.ismarked
+        var a_mark : Boolean := a.ismarked
         this.assert(a_mark.Not())
 
         this.DoSmth(a)
