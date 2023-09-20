@@ -2,6 +2,7 @@
 
 - `//` - for single line comments
 - the constructor body cannot contain return
+- the variable declaration is set to `var Identifier : {ClassName} := Expression`
 - the entry point to the code is always the constructor of the class that extends EntryPoint (there must be exactly one such a class in the file)
 - the program must have only one constructor that has exactly this constructor signature:
     `this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) // where args is a array of strings`
