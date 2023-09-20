@@ -75,14 +75,4 @@ class Array[T] is
 end
 ```
 
-```
-// List copy method
-class List[T] is
-    // ... (other methods)
-
-    // This creates a shallow copy of the list
-    method copy() : List[T]
-end
-```
-
-`TODO: complete the list implementation (add method .Length, wrap returns of head and tail as ListElement[T], where ListElement has fields curr : T, next : T, prev : T, methods .Detach, .Append, .SetCurr)`
+Also we decided to delete list from the std library since it can be implemented using existing language constructions.
