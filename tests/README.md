@@ -6,6 +6,9 @@
 - the program must have only one constructor that has exactly this constructor signature:
     `this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) // where args is a array of strings`
 - introducing separate `Invocation: Identifier.method(Arguments)` and `Constructor: ClassName(Arguments)`
+- for method declaration allow `...) : void is` for declaring methods with no return. that leads to the following consequences:
+  - such method bodies are disallowed to have return statement in body
+  - extend `Statement` adding `Invocation` to it such that void functions can be called directly in the body
 - clarify the specification: `Expression: IntegerLiteral | RealLiteral | BooleanLiteral | this | Invocation | Constructor | Indentifier`
       
       note that depending on context even a valid Expression can be banned 
