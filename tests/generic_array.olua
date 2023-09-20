@@ -21,7 +21,7 @@ class TestMixedTypesArray extends EntryPoint is
     end
 
     this(stdin: CharInput, stdout: CharOutput, stderr: CharOutput, args: Array[Array[Integer]]) is
-        var array : Array[A](3)
+        var array : Array[A] := Array[A](3)
         var objBA : A := B()
         var objBB : B := B()
 
