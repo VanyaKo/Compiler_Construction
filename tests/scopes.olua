@@ -1,9 +1,8 @@
 class ScopesTestClass extends EntryPoint is
-    method assert(cond : Boolean) : ScopesTestClass is
+    method assert(cond : Boolean) : void is
         if cond.Not() then
             this.ExitCode := 1
         end
-        return this
     end
 
     this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) is
@@ -18,7 +17,7 @@ class ScopesTestClass extends EntryPoint is
             // expected a = 20
             assert(a.Equal(20))
         end
-        this := this.assert(a.Equal(10))
+        this.assert(a.Equal(10))
     end
     method ScopesTest1() is
         is

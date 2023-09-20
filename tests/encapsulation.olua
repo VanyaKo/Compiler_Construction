@@ -7,11 +7,10 @@ class EncapsulatedClass is
 end
 
 class EncapsulationTest extends EntryPoint is
-    method assert(cond : Boolean) : EncapsulationTest is
+    method assert(cond : Boolean) : void is
         if cond.Not() then
             this.ExitCode := 1
         end
-        return this
     end
 
     this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) is
@@ -24,7 +23,7 @@ class EncapsulationTest extends EntryPoint is
         obj.setPrivateVar(Integer(42))
         var value : obj.privateVar
         
-        this := this.assert(value.Equal(Integer(42))) // Expecting value to be 42
+        this.assert(value.Equal(Integer(42))) // Expecting value to be 42
     end
 
 end

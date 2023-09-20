@@ -1,9 +1,8 @@
 class ListTestClass extends EntryPoint is
-    method assert(cond : Boolean) : ListTestClass is
+    method assert(cond : Boolean) : void is
         if cond.Not() then
             this.ExitCode := 1
         end
-        return this
     end
 
     this() is
@@ -12,9 +11,9 @@ class ListTestClass extends EntryPoint is
         list := list.append(20)
         list := list.append(100)
 
-        this := this.assert(list.get(0).Equal(1)) // 1
-        this := this.assert(list.get(1).Equal(20)) // 20
-        this := this.assert(list.head().Equal(1)) // 1
-        this := this.assert(list.tail().Equal(100)) // 100
+        this.assert(list.get(0).Equal(1)) // 1
+        this.assert(list.get(1).Equal(20)) // 20
+        this.assert(list.head().Equal(1)) // 1
+        this.assert(list.tail().Equal(100)) // 100
     end
 end

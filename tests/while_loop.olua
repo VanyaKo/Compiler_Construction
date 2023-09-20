@@ -1,14 +1,13 @@
 class Factorial extends EntryPoint is
-    method assert(cond: Boolean): Factorial is
+    method assert(cond : Boolean) : void is
         if cond.Not() then
             this.ExitCode := 1
         end
-        return this
     end
 
     method computeFactorial(n: Integer): Integer is
-        var result: 1  // Initialize result
-        while n.Greater(1) loop  // While n is greater than 1
+        var result : Integer := 1
+        while n.Greater(1) loop
             result := result.Mult(n)
             n := n.Minus(Integer(1))
         end
@@ -16,9 +15,9 @@ class Factorial extends EntryPoint is
     end
 
     this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) is
-        var tenFactorial: this.computeFactorial(10)
+        var tenFactorial : Integer := this.computeFactorial(10)
         
         // Expecting 10! to be 3628800
-        this := this.assert(tenFactorial.Equal(3628800))
+        this.assert(tenFactorial.Equal(3628800))
     end
 end

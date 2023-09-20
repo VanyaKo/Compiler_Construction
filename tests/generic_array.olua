@@ -1,37 +1,36 @@
-class TestArrayToList extends EntryPoint is
-    method assert(cond: Boolean): TestArrayToList is
+class A is
+    var value : Integer := 42
+
+    method returnValue() : Integer is
+        return this.value
+    end
+end
+
+class B extends A is
+    method returnValue() : Integer is
+        return 100
+    end
+end
+
+
+class TestMixedTypesArray extends EntryPoint is
+    method assert(cond : Boolean) : void is
         if cond.Not() then
             this.ExitCode := 1
         end
-        return this
     end
 
-    this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) is
-        // Initialize an array of Integers
-        var intArray : Array[Integer](5)
-        intArray.set(0, 5)
-        intArray.set(1, 10)
-        intArray.set(2, 15)
-        intArray.set(3, 20)
-        intArray.set(4, 25)
+    this(stdin: CharInput, stdout: CharOutput, stderr: CharOutput, args: Array[Array[Integer]]) is
+        var array : Array[A](3)
+        var objBA : A := B()
+        var objBB : B := B()
 
-        // Convert the array to a list
-        var intList : intArray.toList()
+        array.set(0, A()) // call constructor directly
+        array.set(1, objBA)
+        array.set(2, objBB)
 
-        // Test operations on the List
-        var head : intList.head() // Expected: 5
-        this := this.assert(head.Equal(5))
-
-        // Append an element to the list
-        intList.append(30)
-        this := this.assert(intList.tail().tail().tail().tail().tail().head().Equal(30)) // Accessing the last element added
-
-        // Test operations on the Array
-        var thirdElement : intArray.get(3) // Expected: 20
-        this := this.assert(thirdElement.Equal(20))
-        
-        intArray.set(3, 23)
-        thirdElement := intArray.get(3) // Updated to 23
-        this := this.assert(thirdElement.Equal(23))
+        this.assert(array.get(0).returnValue().Equal(42)) // expects 42
+        this.assert(array.get(1).returnValue().Equal(100)) // expect 100
+        this.assert(array.get(2).returnValue().Equal(100)) // expect 100
     end
 end
