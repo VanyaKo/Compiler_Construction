@@ -7,6 +7,8 @@
 - the program must have only one constructor that has exactly this constructor signature:
     `this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) // where args is a array of strings`
 - introducing separate `Invocation: Identifier.method(Arguments)` and `Constructor: ClassName(Arguments)`
+- extend `Statement` with `Scope` concept: `Scope: is Body end`
+- redefine `MethodDeclaration : method Identifier [ Parameters ] [ : Identifier ] Scope`
 - for method declaration allow `...) : void is` for declaring methods with no return. that leads to the following consequences:
   - such method bodies are disallowed to have return statement in body
   - extend `Statement` adding `Invocation` to it such that void functions can be called directly in the body
