@@ -5,10 +5,10 @@ class Echo extends EntryPoint is
 
     this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) is
         if args.Length.Greater(0) then
-            var arg0 : args.get(0)
-            var i : 0
+            var arg0 : Array[Integer] := args.get(0)
+            var i : Integer := 0
             while i.Less(arg0.Length) loop
-                stdout := stdout.WriteLine(arg0.get(i)) // there is no void return, as well as call without assignment, so this is how it should be worked around
+                stdout.WriteLine(arg0.get(i)) // there is no void return, as well as call without assignment, so this is how it should be worked around
                 i := i.Plus(1)
             end
         else
