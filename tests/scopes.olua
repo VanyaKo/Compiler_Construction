@@ -19,6 +19,7 @@ class ScopesTestClass extends EntryPoint is
         end
         this.assert(a.Equal(10))
     end
+    
     method ScopesTest1() : void is
         is
             var a: Integer := 20
