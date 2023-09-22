@@ -5,7 +5,7 @@ class ListTestClass extends EntryPoint is
         end
     end
 
-    this() is
+    this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) is
         var list: List[Integer]()
         list := list.append(1)
         list := list.append(20)
