@@ -1,7 +1,7 @@
 class EncapsulatedClass is
     var privateVar : 0
 
-    method setPrivateVar(newValue: Integer) is
+    method setPrivateVar(newValue: Integer) : void is
         this.privateVar := newValue
     end
 end
