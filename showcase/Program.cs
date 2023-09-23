@@ -1,17 +1,16 @@
-﻿using System;
-using OluaLexer;
+﻿using OluaLexer;
 
 public class Showcase 
 {
     public static void Main(string[] args) 
     {
-        var lexer = new OluaLexer.Scanner();
-        lexer.SetSource(System.IO.File.ReadAllText("program.olua"), 0);
+        var lexer = new Scanner();
+        lexer.SetSource(File.ReadAllText("program.olua"), 0);
         
         int token;
-        while ((token = lexer.yylex()) != (int)OluaLexer.Tokens.EOF) 
+        while ((token = lexer.yylex()) != (int)Tokens.EOF) 
         {
-            System.Console.WriteLine($"Token: {token}, Value: {lexer.yylval}");
+            Console.WriteLine($"Token: {token}, Value: {lexer.yylval}");
         }
     }
 }
