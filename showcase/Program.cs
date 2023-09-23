@@ -2,7 +2,7 @@
 
 public class Showcase 
 {
-    public static void Main(string[] args) 
+    public static void Main() 
     {
         var lexer = new Scanner();
         lexer.SetSource(File.ReadAllText("program.olua"), 0);
