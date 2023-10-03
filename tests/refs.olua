@@ -3,40 +3,40 @@
 //    but keep in mind that these classes have no mutation methods and cannot be inherited, so that for both program behaviour and semantics it does not matter whether they are passed by value or by the reference
 
 class SomeClass is
-    var ismarked : Boolean := false
+    var ismarked : Boolean := false;
 
     method mark() : void is
-        this.ismarked := true
+        this.ismarked := true;
     end
 end
 
 class Refs extends EntryPoint is
     method assert(cond : Boolean) : void is
         if cond.Not() then
-            this.ExitCode := 1
+            this.ExitCode := 1;
         end
     end
 
     method DoSmth(a : SomeClass) : void is
-        a.mark()
-        this.assert(a.ismarked) // here a.ismarked = true
+        a.mark();
+        this.assert(a.ismarked); // here a.ismarked = true
 
-        a := SomeClass()
-        // here a.ismarked = false
-        var a_mark : a.ismarked
-        this.assert(a_mark.Not())
+        a := SomeClass();
+        // here a.ismarked = false;
+        var a_mark : a.ismarked;
+        this.assert(a_mark.Not());
     end
 
     this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) is
-        var a : SomeClass := SomeClass()
+        var a : SomeClass := SomeClass();
 
-        // here a.ismarked = false
-        var a_mark : Boolean := a.ismarked
-        this.assert(a_mark.Not())
+        // here a.ismarked = false;
+        var a_mark : Boolean := a.ismarked;
+        this.assert(a_mark.Not());
 
-        this.DoSmth(a)
+        this.DoSmth(a);
 
-        this.assert(a_mark.Not()) // a_mark is still referencing the same object that was not changed
-        this.assert(a.ismarked) // here a.ismarked = true
+        this.assert(a_mark.Not()); // a_mark is still referencing the same object that was not changed
+        this.assert(a.ismarked); // here a.ismarked = true
     end
 end

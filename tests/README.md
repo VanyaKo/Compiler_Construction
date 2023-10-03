@@ -1,6 +1,7 @@
 ### Fixing the ruleset provided on the paper (see [Project_O.pdf](/Project_O.pdf)):
 
 - `//` - for single line comments
+- `;` - statement delimiter
 - the constructor body cannot contain return
 - the variable declaration is set to `var Identifier : {ClassName} := Expression`
 - the entry point to the code is always the constructor of the class that extends EntryPoint (there must be exactly one such a class in the file)
@@ -24,20 +25,20 @@
 ```
 // base class
 class Class is
-    method SameRef(o: Class) : Boolean // test is the other object having the same pointer as me
+    method SameRef(o: Class) : Boolean; // test is the other object having the same pointer as me
 end
 ```
 
 ```
 // convension classes
 class Output[T] is
-    method Avaliable() : Integer // returns the number of items Avaliable to write (usually the remaining size of the reciever's buffer), use for congestion control
-    method Write(e: T) : Output[T] // writes an item, blocks until is Avaliable
+    method Avaliable() : Integer; // returns the number of items Avaliable to write (usually the remaining size of the reciever's buffer), use for congestion control
+    method Write(e: T) : Output[T]; // writes an item, blocks until is Avaliable
 end
 
 class Input[T] is
-    method Avaliable() : Integer // returns the number of items Avaliable to read from the buffer
-    method Read() : T // reads an item, blocks until is available
+    method Avaliable() : Integer; // returns the number of items Avaliable to read from the buffer
+    method Read() : T; // reads an item, blocks until is available
 end
 ```
 
@@ -45,34 +46,34 @@ end
 // IO classes
 class CharInput extends Input[Integer] is
     // in addition to the Input.Read described functionality this read returns only Integer values that are valid unicode character codes
-    method ReadLine() : Array[Integer]
-    method Read(n : Integer) : Array[Integer] // read n next characters
+    method ReadLine() : Array[Integer];
+    method Read(n : Integer) : Array[Integer]; // read n next characters
 end
 
 class CharOutput extends Output[Integer] is
     // in addition to the Output.Write described functionality this write forwards only Inetgers that are valid unicode character codes, otherwise the consumed element is ignored
-    method Write(s: Array[Integer]) : CharOutput
-    method WriteLine(s: Array[Integer]) : CharOutput
+    method Write(s: Array[Integer]) : CharOutput;
+    method WriteLine(s: Array[Integer]) : CharOutput;
 end
 
 class StdIn extends CharInput is
 end
 
 class StdOut extends CharOutput is
-    method Write(Integer) : CharOutput
-    method Write(Real) : CharOutput
-    method Write(Boolean) : CharOutput
+    method Write(Integer) : CharOutput;
+    method Write(Real) : CharOutput;
+    method Write(Boolean) : CharOutput;
 
-    method WriteLine(Integer) : CharOutput
-    method WriteLine(Real) : CharOutput
-    method WriteLine(Boolean) : CharOutput
+    method WriteLine(Integer) : CharOutput;
+    method WriteLine(Real) : CharOutput;
+    method WriteLine(Boolean) : CharOutput;
 end
 ```
 
 ```
 // Class for managing exit code
 class EntryPoint is
-    var ExitCode : integer := 0 // if a invalid value assigned, the real exit code of the program will be set to 1
+    var ExitCode : integer := 0; // if a invalid value assigned, the real exit code of the program will be set to 1
 end
 ```
 
@@ -83,13 +84,13 @@ class Array[T] is
 
     // This creates a shallow copy of the array
     method copy() : Array[T] is
-    	var newArray : Array(this.Length())
-    	var i: 0
+    	var newArray : Array[T] := Array(this.Length());
+    	var i : Integer := 0;
     	while i.Less(this.Length()) loop
-        	newArray.set(i, this.get(i))
-        	i := i.Plus(1)
+        	newArray.set(i, this.get(i));
+        	i := i.Plus(1);
     	end
-	return newArray
+	    return newArray;
     end
 end
 ```

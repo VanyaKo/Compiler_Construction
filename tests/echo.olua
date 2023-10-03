@@ -5,9 +5,9 @@ class Echo extends EntryPoint is
 
     this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) is
         if args.Length.Greater(0) then
-            stdout.WriteLine(args.get(0)) // there is no void return, as well as call without assignment, so this is how it should be worked around
+            stdout.WriteLine(args.get(0)); // there is no void return, as well as call without assignment, so this is how it should be worked around
         else
-            this.ExitCode := 2
+            this.ExitCode := 2;
         end
     end
 end

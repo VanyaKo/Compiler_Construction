@@ -2,13 +2,13 @@ class A is
     var value : Integer := 42
 
     method returnValue() : Integer is
-        return this.value
+        return this.value;
     end
 end
 
 class B extends A is
     method returnValue() : Integer is
-        return 100
+        return 100;
     end
 end
 
@@ -16,21 +16,21 @@ end
 class TestMixedTypesArray extends EntryPoint is
     method assert(cond : Boolean) : void is
         if cond.Not() then
-            this.ExitCode := 1
+            this.ExitCode := 1;
         end
     end
 
     this(stdin: CharInput, stdout: CharOutput, stderr: CharOutput, args: Array[Array[Integer]]) is
-        var array : Array[A] := Array[A](3)
-        var objBA : A := B()
-        var objBB : B := B()
+        var array : Array[A] := Array[A](3);
+        var objBA : A := B();
+        var objBB : B := B();
 
-        array.set(0, A()) // call constructor directly
-        array.set(1, objBA)
-        array.set(2, objBB)
+        array.set(0, A()); // call constructor directly
+        array.set(1, objBA);
+        array.set(2, objBB);
 
-        this.assert(array.get(0).returnValue().Equal(42)) // expects 42
-        this.assert(array.get(1).returnValue().Equal(100)) // expect 100
-        this.assert(array.get(2).returnValue().Equal(100)) // expect 100
+        this.assert(array.get(0).returnValue().Equal(42)); // expects 42
+        this.assert(array.get(1).returnValue().Equal(100)); // expect 100
+        this.assert(array.get(2).returnValue().Equal(100)); // expect 100
     end
 end
