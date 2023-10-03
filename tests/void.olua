@@ -1,0 +1,19 @@
+class Void extends EntryPoint then
+    var a : Integer := 0
+
+    method assert(cond : Boolean) : void is
+        if cond.Not() then
+            this.ExitCode := 1
+        end
+    end
+
+    method DoSmth() : void is
+        this.a := this.a.Plus(2)
+    end
+
+    this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) is
+        this.assert(this.a.Equal(0))
+        this.DoSmth()
+        this.assert(this.a.Equal(2))
+    end
+end

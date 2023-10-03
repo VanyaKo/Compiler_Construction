@@ -1,0 +1,29 @@
+class EncapsulatedClass is
+    var privateVar : Integer := 0
+
+    method setPrivateVar(newValue: Integer) : void is
+        this.privateVar := newValue
+    end
+end
+
+class EncapsulationTest extends EntryPoint is
+    method assert(cond : Boolean) : void is
+        if cond.Not() then
+            this.ExitCode := 1
+        end
+    end
+
+    this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) is
+        var obj : EncapsulatedClass := EncapsulatedClass()
+
+        // Attempting to directly set privateVar should result in a compilation error
+        // obj.privateVar := 42
+
+        // Using public methods to access and modify privateVar
+        obj.setPrivateVar(42)
+        var value : Integer := obj.privateVar
+        
+        this.assert(value.Equal(42)) // Expecting value to be 42
+    end
+
+end

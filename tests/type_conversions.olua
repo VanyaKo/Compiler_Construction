@@ -1,0 +1,17 @@
+class TestTypeConversion extends EntryPoint is
+    method assert(cond : Boolean) : void is
+        if cond.Not() then
+            this.ExitCode := 1
+        end
+    end
+
+    this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) is
+        var a : Integer := 5
+        var b : Real := 3.7
+	
+        var resultReal : Real := a.toReal() // Expected: 5.0
+        var resultInt : Integer := b.toInteger() // Expected: 3 (assuming truncation)
+        this.assert(resultReal.Equal(5.0))
+        this.assert(resultInt.Equal(3))
+    end
+end
