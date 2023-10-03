@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="../lexer/OluaLexer.cs" Link="OluaLexer.cs" />
+    <Compile Include="../OluaLexer.cs" Link="OluaLexer.cs" />
   </ItemGroup>
 
 </Project>
