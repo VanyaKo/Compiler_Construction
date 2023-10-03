@@ -1,0 +1,4 @@
+C:\Users\lenovo\repos\Compiler_Construction\parser\showcase\obj\Debug\net7.0\showcase.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\lenovo\repos\Compiler_Construction\parser\showcase\obj\Debug\net7.0\showcase.AssemblyInfoInputs.cache
+C:\Users\lenovo\repos\Compiler_Construction\parser\showcase\obj\Debug\net7.0\showcase.AssemblyInfo.cs
+C:\Users\lenovo\repos\Compiler_Construction\parser\showcase\obj\Debug\net7.0\showcase.csproj.CoreCompileInputs.cache

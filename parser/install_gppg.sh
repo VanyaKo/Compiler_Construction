@@ -1,0 +1,1 @@
+dotnet tool install --global Springcomp.GPPG --version 1.2.1
