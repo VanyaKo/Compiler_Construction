@@ -21,7 +21,7 @@ public class Application
         }
         else
         {
-            Console.WriteLine($"Parsing failed at line {scanner.yylloc.StartLine}, position {scanner.yylloc.StartColumn}. The error is caused by \"{scanner.yylval}\"");
+            Console.WriteLine($"Parsing failed at {Path.GetFullPath("program.olua")}({scanner.yylloc.StartLine},{scanner.yylloc.StartColumn}) because of \"{scanner.yylval}\"");
         }
     }
 }
