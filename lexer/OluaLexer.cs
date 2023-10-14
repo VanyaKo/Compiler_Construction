@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using OluaParser;
+using StarodubOleg.GPPG.Runtime;
 
 
 namespace OluaLexer
@@ -46,6 +47,10 @@ namespace OluaLexer
         private string _input = string.Empty;
         private int _position = 0;
         public new string yylval { get; private set; } = string.Empty;
+
+        public Scanner() {
+            yylloc = new LexLocation(1, 1, 1, 1);
+        }
 
         public void SetSource(string source, int position)
         {
@@ -98,12 +103,25 @@ namespace OluaLexer
                 {
                     yylval = match.Value;
                     _position += match.Length;
+                    
+                    // Count new lines to determine if we move to a new line
+                    var newLines = match.Value.Split('\n').Length - 1;
+
+                    // If there are new lines, adjust yylloc accordingly
+                    if (newLines > 0)
+                    {
+                        yylloc = new LexLocation(yylloc.EndLine, yylloc.EndColumn, yylloc.EndLine + newLines, match.Value.Length - match.Value.LastIndexOf('\n') - 1);
+                    }
+                    else
+                    {
+                        yylloc = new LexLocation(yylloc.EndLine, yylloc.EndColumn, yylloc.EndLine, yylloc.EndColumn + match.Length - 1);
+                    }
+
                     return token == Tokens.ERROR ? yylex() : (int)token;
                 }
             }
 
-            _position++;  // Move past unrecognized character
-            return (int)Tokens.ERROR;  // Default to error for unrecognized patterns
+            throw new Exception("Unreacheble");
         }
     }
 }

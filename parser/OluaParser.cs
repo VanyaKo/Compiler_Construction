@@ -4,8 +4,8 @@
 
 // GPPG version 1.2.1.0
 // Machine:  PC
-// DateTime: 14.10.2023 5:16:35
-// Input file <parser.y - 14.10.2023 5:16:16>
+// DateTime: 14.10.2023 5:35:02
+// Input file <parser.y - 14.10.2023 5:35:00>
 
 // options: no-lines gplex
 
@@ -249,5 +249,6 @@ public class Parser: ShiftReduceParser<int, LexLocation>
 
 
 public Parser(Scanner scnr) : base(scnr) { }
+
 }
 }
