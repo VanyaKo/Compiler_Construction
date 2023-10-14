@@ -1,7 +1,6 @@
 ### Fixing the ruleset provided on the paper (see [Project_O.pdf](/Project_O.pdf)):
 
 - `//` - for single line comments
-- `;` - statement delimiter
 - the constructor body cannot contain return
 - the variable declaration is set to `var Identifier : {ClassName} := Expression`
 - the entry point to the code is always the constructor of the class that extends EntryPoint (there must be exactly one such a class in the file)

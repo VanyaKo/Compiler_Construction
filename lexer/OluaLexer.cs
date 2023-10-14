@@ -26,7 +26,6 @@ namespace OluaLexer
         ASSIGN,
         IDENTIFIER,
         COLON,
-        SEMICOLON,
         LPAREN,
         RPAREN,
         LBRACKET,
@@ -39,6 +38,8 @@ namespace OluaLexer
         FALSE,
         COMMA,
         THEN,
+
+        UNDEFINED,
     }
 
     public class Scanner : ScanBase
@@ -66,7 +67,7 @@ namespace OluaLexer
             var patterns = new List<(Regex, Tokens)>
             {
                 (new Regex(@"^//.*\n"), Tokens.ERROR),         // Consume single-line comments
-                (new Regex(@"^[ \t\r\n\f]+"), Tokens.ERROR),  // Consume white space
+                (new Regex(@"^[ \t\r\n\f]+"), Tokens.ERROR),   // Consume white space
                 (new Regex(@"^class\b"), Tokens.CLASS),
                 (new Regex(@"^extends\b"), Tokens.EXTENDS),
                 (new Regex(@"^is\b"), Tokens.IS),
@@ -84,16 +85,16 @@ namespace OluaLexer
                 (new Regex(@"^false\b"), Tokens.FALSE),
                 (new Regex(@"^:="), Tokens.ASSIGN),
                 (new Regex(@"^:"), Tokens.COLON),
-                (new Regex(@"^;"), Tokens.SEMICOLON),
                 (new Regex(@"^\("), Tokens.LPAREN),
                 (new Regex(@"^\)"), Tokens.RPAREN),
                 (new Regex(@"^\["), Tokens.LBRACKET),
                 (new Regex(@"^\]"), Tokens.RBRACKET),
                 (new Regex(@"^\."), Tokens.DOT),
                 (new Regex(@"^\,"), Tokens.COMMA),
-                (new Regex(@"^[0-9]*\.[0-9]+([eE][+-]?[0-9]+)?"), Tokens.FLOAT_LITERAL),
-                (new Regex(@"^[0-9]+"), Tokens.INTEGER_LITERAL),
+                (new Regex(@"^-?[0-9]*\.[0-9]+([eE][+-]?[0-9]+)?"), Tokens.FLOAT_LITERAL),
+                (new Regex(@"^-?[0-9]+"), Tokens.INTEGER_LITERAL),
                 (new Regex(@"^[A-Za-z_][A-Za-z_0-9]*"), Tokens.IDENTIFIER),
+                (new Regex(@"^\S+"), Tokens.UNDEFINED),
             };
 
             foreach (var (regex, token) in patterns)

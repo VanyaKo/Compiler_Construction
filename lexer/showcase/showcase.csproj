@@ -7,8 +7,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
+  <!-- <ItemGroup>
     <Compile Include="../OluaLexer.cs" Link="OluaLexer.cs" />
-  </ItemGroup>
+  </ItemGroup> -->
 
 </Project>

@@ -1,47 +1,47 @@
 class TestUnaryAndBinaryOperations extends EntryPoint is
     method assert(cond : Boolean) : void is
         if cond.Not() then
-            this.ExitCode := 1;
+            this.ExitCode := 1
         end
     end
 
     this(stdin: CharInput, stdout: CharOutput, stderr: CharOutput, args: Array[Array[Integer]]) is
-		var a : Integer := 5;
-		var b : Integer := 3;
-		var c : Real := 2.5;
-		var d : Real := 1.5;
+		var a : Integer := 5
+		var b : Integer := 3
+		var c : Real := 2.5
+		var d : Real := 1.5
 
 
 		// Test unary operations
-		var resultInt : Integer := a.UnaryMinus();
-		var resultReal : Real := c.UnaryMinus();
-		var boolResult : Boolean := true.Not();
-		this.assert(resultInt.Equal(-5));
-		this.assert(resultReal.Equal(2.5));
-		this.assert(boolResult.ToInteger().Equal(0));
+		var resultInt : Integer := a.UnaryMinus()
+		var resultReal : Real := c.UnaryMinus()
+		var boolResult : Boolean := true.Not()
+		this.assert(resultInt.Equal(-5))
+		this.assert(resultReal.Equal(2.5))
+		this.assert(boolResult.ToInteger().Equal(0))
 
 
 		// Test binary operations
-		resultInt := a.Plus(b);
-		resultReal := c.Plus(d);
-		this.assert(resultInt.Equal(8));
-		this.assert(resultReal.Equal(4.0));
+		resultInt := a.Plus(b)
+		resultReal := c.Plus(d)
+		this.assert(resultInt.Equal(8))
+		this.assert(resultReal.Equal(4.0))
 
-		resultInt := a.Minus(b);
-		resultReal := c.Minus(d);
-		this.assert(resultInt.Equal(2));
-		this.assert(resultReal.Equal(1.0));
+		resultInt := a.Minus(b)
+		resultReal := c.Minus(d)
+		this.assert(resultInt.Equal(2))
+		this.assert(resultReal.Equal(1.0))
 
-		resultInt := a.Mult(b);
-		resultReal := c.Mult(d);
-		this.assert(resultInt.Equal(15));
-		this.assert(resultReal.Equal(3.75));
+		resultInt := a.Mult(b)
+		resultReal := c.Mult(d)
+		this.assert(resultInt.Equal(15))
+		this.assert(resultReal.Equal(3.75))
 
-		resultInt := a.Div(b); // Expected: 1 (since it's integer division)
-		resultReal := c.Div(d); // Expected: 1.666...
-		this.assert(resultInt.Equal(1));
+		resultInt := a.Div(b) // Expected: 1 (since it's integer division)
+		resultReal := c.Div(d) // Expected: 1.666...
+		this.assert(resultInt.Equal(1))
 
-		boolResult := true.Or(false);
-		this.assert(boolResult.toInteger().Equal(1));
+		boolResult := true.Or(false)
+		this.assert(boolResult.toInteger().Equal(1))
     end
 end

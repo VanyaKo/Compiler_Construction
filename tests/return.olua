@@ -1,6 +1,6 @@
 // return - emphasizes the way to return codes, inheritance of fields and the basic constructor sytax
 class Main extends EntryPoint is
     this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) is
-        this.ExitCode := 10; // with the completion of the constructor, the program exit code will be set to it
+        this.ExitCode := 10 // with the completion of the constructor, the program exit code will be set to it
     end
 end

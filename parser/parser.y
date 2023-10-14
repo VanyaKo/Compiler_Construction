@@ -21,7 +21,6 @@
 %token ASSIGN
 %token IDENTIFIER
 %token COLON
-%token SEMICOLON
 %token LPAREN
 %token RPAREN
 %token LBRACKET
@@ -34,6 +33,7 @@
 %token FALSE
 %token COMMA
 %token THEN
+%token UNDEFINED
 
 %right ASSIGN
 
@@ -41,110 +41,124 @@
 
 %%
 
-program
-    : 
-    | program classDeclaration
+typename
+    : IDENTIFIER
+    | generic
     ;
 
-classDeclaration
-    : CLASS IDENTIFIER EXTENDS IDENTIFIER IS classBody END
-    | CLASS IDENTIFIER IS classBody END
+generic
+    : IDENTIFIER LBRACKET typename RBRACKET
     ;
 
-classBody
-    : 
-    | classBody classMember
+constructorInvocation
+    : typename LPAREN RPAREN
+    | typename LPAREN argumentList RPAREN
     ;
 
-classMember
-    : methodDeclaration
-    | variableDeclaration
-    | constructor
+methodInvocation
+    : attribute LPAREN argumentList RPAREN
+    | attribute LPAREN RPAREN
     ;
 
-variableDeclaration
-    : VAR IDENTIFIER COLON IDENTIFIER ASSIGN expression SEMICOLON
-    | VAR IDENTIFIER COLON IDENTIFIER SEMICOLON
+attribute
+    : object DOT IDENTIFIER
     ;
 
-methodDeclaration
-    : METHOD IDENTIFIER LPAREN formalParameterList RPAREN COLON IDENTIFIER IS methodBody END
-    | METHOD IDENTIFIER LPAREN RPAREN COLON IDENTIFIER IS methodBody END
-    ;
-
-constructor
-    : THIS LPAREN formalParameterList RPAREN IS methodBody END
-    ;
-
-methodBody
-    : statementList
-    ;
-
-statementList
-    : 
-    | statementList statement
-    ;
-
-statement
-    : variableDeclaration
-    | assignmentStatement
-    | methodCall
-    | ifStatement
-    | whileStatement
-    | returnStatement
-    | block
-    ;
-
-block
-    : IS statementList END
-    ;
-
-assignmentStatement
-    : IDENTIFIER ASSIGN expression SEMICOLON
-    ;
-
-methodCall
-    : expression DOT IDENTIFIER LPAREN argumentList RPAREN SEMICOLON
-    | expression DOT IDENTIFIER LPAREN RPAREN SEMICOLON
-    ;
-
-ifStatement
-    : IF expression THEN statementList END
-    | IF expression THEN statementList ELSE statementList END
-    ;
-
-whileStatement
-    : WHILE expression LOOP statementList END
-    ;
-
-returnStatement
-    : RETURN expression SEMICOLON
-    ;
-
-expression
+object
     : IDENTIFIER
     | INTEGER_LITERAL
     | FLOAT_LITERAL
     | TRUE
     | FALSE
     | THIS
-    | expression DOT IDENTIFIER
-    | expression DOT IDENTIFIER LPAREN argumentList RPAREN
-    | expression DOT IDENTIFIER LPAREN RPAREN
+    | attribute
+    | constructorInvocation
+    | methodInvocation
     ;
 
-formalParameterList
-    : formalParameter
-    | formalParameterList COMMA formalParameter
+program
+    : 
+    | classDeclaration program
     ;
 
-formalParameter
-    : IDENTIFIER COLON IDENTIFIER
+classDeclaration
+    : CLASS IDENTIFIER EXTENDS typename IS classBody END
+    | CLASS IDENTIFIER IS classBody END
+    ;
+
+classBody
+    : 
+    | classMember classBody
+    ;
+
+classMember
+    : methodDeclaration
+    | variableDeclaration
+    | constructorDeclaration
+    ;
+
+variableDeclaration
+    : VAR IDENTIFIER COLON typename ASSIGN object
+    ;
+
+methodDeclaration
+    : METHOD IDENTIFIER LPAREN parameterList RPAREN COLON typename scope
+    | METHOD IDENTIFIER LPAREN RPAREN COLON typename scope
+    ;
+
+constructorDeclaration
+    : THIS LPAREN parameterList RPAREN scope
+    ;
+
+scope
+    : IS statementList END
+    ;
+
+statementList
+    : 
+    | statement statementList
+    ;
+
+statement
+    : variableDeclaration
+    | assignment
+    | methodInvocation
+    | if
+    | while
+    | return
+    | scope
+    ;
+
+assignment
+    : IDENTIFIER ASSIGN object
+    | attribute ASSIGN object
+    ;
+
+if
+    : IF object THEN statementList END
+    | IF object THEN statementList ELSE statementList END
+    ;
+
+while
+    : WHILE object LOOP statementList END
+    ;
+
+return
+    : RETURN object
+    ;
+
+parameterList
+    : parameter
+    | parameter COMMA parameterList
+    ;
+
+parameter
+    : IDENTIFIER COLON typename
     ;
 
 argumentList
-    : expression
-    | argumentList COMMA expression
+    : object
+    | object COMMA argumentList
     ;
 
 %%
