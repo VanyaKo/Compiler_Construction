@@ -6,8 +6,8 @@ class Fib extends EntryPoint is
             return 1;
         else
             var a : Integer := this.fib(n.Minus(1));
-            // var b : Integer := this.fib(n.Minus(2));
-            // return a.Plus(b);
+            var b : Integer := this.fib(n.Minus(2));
+            return a.Plus(b);
         end
     end
 

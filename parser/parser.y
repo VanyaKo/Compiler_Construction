@@ -127,6 +127,7 @@ expression
     | FLOAT_LITERAL
     | TRUE
     | FALSE
+    | THIS
     | expression DOT IDENTIFIER
     | expression DOT IDENTIFIER LPAREN argumentList RPAREN
     | expression DOT IDENTIFIER LPAREN RPAREN
