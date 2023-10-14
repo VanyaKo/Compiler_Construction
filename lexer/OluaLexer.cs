@@ -65,8 +65,8 @@ namespace OluaLexer
             // Define your regex patterns for each token
             var patterns = new List<(Regex, Tokens)>
             {
+                (new Regex(@"^//.*\n"), Tokens.ERROR),         // Consume single-line comments
                 (new Regex(@"^[ \t\r\n\f]+"), Tokens.ERROR),  // Consume white space
-                (new Regex(@"^//.*"), Tokens.ERROR),         // Consume single-line comments
                 (new Regex(@"^class\b"), Tokens.CLASS),
                 (new Regex(@"^extends\b"), Tokens.EXTENDS),
                 (new Regex(@"^is\b"), Tokens.IS),
@@ -110,11 +110,11 @@ namespace OluaLexer
                     // If there are new lines, adjust yylloc accordingly
                     if (newLines > 0)
                     {
-                        yylloc = new LexLocation(yylloc.EndLine, yylloc.EndColumn, yylloc.EndLine + newLines, match.Value.Length - match.Value.LastIndexOf('\n') - 1);
+                        yylloc = new LexLocation(yylloc.EndLine, yylloc.EndColumn, yylloc.EndLine + newLines, match.Value.Length - match.Value.LastIndexOf('\n'));
                     }
                     else
                     {
-                        yylloc = new LexLocation(yylloc.EndLine, yylloc.EndColumn, yylloc.EndLine, yylloc.EndColumn + match.Length - 1);
+                        yylloc = new LexLocation(yylloc.EndLine, yylloc.EndColumn, yylloc.EndLine, yylloc.EndColumn + match.Length);
                     }
 
                     return token == Tokens.ERROR ? yylex() : (int)token;

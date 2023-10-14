@@ -1,10 +1,10 @@
 
 // ==========================================================================
-//  GPPG error listing for yacc source file <parser.y - 14.10.2023 5:30:36>
+//  GPPG error listing for yacc source file <parser.y - 14.10.2023 6:21:36>
 // ==========================================================================
 //  Version:  1.2.1.0
 //  Machine:  PC
-//  DateTime: 14.10.2023 5:30:38
+//  DateTime: 14.10.2023 6:21:38
 // ==========================================================================
 
 
@@ -75,6 +75,11 @@ classMember
 variableDeclaration
     : VAR IDENTIFIER COLON IDENTIFIER ASSIGN expression SEMICOLON
     | VAR IDENTIFIER COLON IDENTIFIER SEMICOLON
+    | error { Console.WriteLine($"Error at line {Scanner.yylloc.StartLine}, position {Scanner.yylloc.StartColumn}"); }
+//----------------------------^^^
+// Error: Unknown special marker in semantic action
+// Error: Literal string terminated by end of line
+// ------------------------------------------------
     ;
 
 methodDeclaration
@@ -103,22 +108,7 @@ statement
     | whileStatement
     | returnStatement
     | block
-    | error
     ;
-
-error:
-//^^^
-// Error: This name already defined as a terminal symbol
-// -----------------------------------------------------
-    {
-        Console.WriteLine($"Syntax error at line {scanner.yylloc.StartLine}, column {scanner.yylloc.StartColumn}");
-//-----------------------^^^
-// Error: Unknown special marker in semantic action
-// Error: Literal string terminated by end of line
-// Error: Literal string terminated by end of line
-// ------------------------------------------------
-    }
-;
 
 block
     : IS statementList END
@@ -174,5 +164,6 @@ argumentList
 %%
 
 public Parser(Scanner scnr) : base(scnr) { }
+
 // ==========================================================================
 
