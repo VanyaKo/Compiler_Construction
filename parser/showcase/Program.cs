@@ -1,22 +1,19 @@
-using System;
 using OluaLexer;
+using OluaParser;
 
 public class Application
 {
-    public static void Main(string[] args)
+    public static void Main()
     {
-        Console.WriteLine("Enter the code to parse:");
-        string code = Console.ReadLine();
-
         // Initialize the lexer with the input code
-        Scanner scanner = new Scanner(new System.IO.StringReader(code));
+        Scanner scanner = new();
+        scanner.SetSource(File.ReadAllText("program.olua"), 0);
 
         // Initialize the parser with the lexer
-        Parser parser = new Parser(scanner);
+        Parser parser = new(scanner);
+        bool success = parser.Parse();
 
         // Parse the input code
-        var success = parser.Parse();
-
         if (success)
         {
             Console.WriteLine("Parsing successful!");

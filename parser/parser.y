@@ -1,17 +1,16 @@
-%{
-using OluaLexer;
-using System;
-%}
+%namespace OluaParser
+%using OluaLexer
 
 %union {
     public string Identifier;
 }
 
 %token <Identifier> IDENTIFIER
-%token CLASS EXTENDS IS METHOD VAR IF ELSE WHILE RETURN THIS END ASSIGN COLON SEMICOLON LPAREN RPAREN LBRACKET RBRACKET DOT INTEGER_LITERAL FLOAT_LITERAL LOOP TRUE FALSE
-%token COMMA  // Defining COMMA as a token
+%token CLASS EXTENDS IS METHOD VAR IF ELSE WHILE RETURN THIS END ASSIGN COLON SEMICOLON LPAREN RPAREN LBRACKET RBRACKET DOT INTEGER_LITERAL FLOAT_LITERAL LOOP TRUE FALSE COMMA THEN
 
 %right ASSIGN
+
+%start program
 
 %%
 
@@ -83,8 +82,8 @@ methodCall
     ;
 
 ifStatement
-    : IF expression IS statementList END
-    | IF expression IS statementList ELSE statementList END
+    : IF expression THEN statementList END
+    | IF expression THEN statementList ELSE statementList END
     ;
 
 whileStatement
@@ -122,3 +121,4 @@ argumentList
 
 %%
 
+public Parser(Scanner scnr) : base(scnr) { }

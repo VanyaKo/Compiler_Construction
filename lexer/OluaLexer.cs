@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
+using OluaParser;
+
 
 namespace OluaLexer
 {
@@ -33,14 +36,16 @@ namespace OluaLexer
         LOOP,
         TRUE,
         FALSE,
+        COMMA,
+        THEN,
     }
 
-    public class Scanner
+    public class Scanner : ScanBase
     {
 
         private string _input = string.Empty;
         private int _position = 0;
-        public string yylval { get; private set; } = string.Empty;
+        public new string yylval { get; private set; } = string.Empty;
 
         public void SetSource(string source, int position)
         {
@@ -48,7 +53,7 @@ namespace OluaLexer
             _position = position;
         }
 
-        public int yylex()
+        public override int yylex()
         {
             if (_position >= _input.Length) return (int)Tokens.EOF;
 
@@ -69,6 +74,7 @@ namespace OluaLexer
                 (new Regex(@"^this\b"), Tokens.THIS),
                 (new Regex(@"^end\b"), Tokens.END),
                 (new Regex(@"^loop\b"), Tokens.LOOP),
+                (new Regex(@"^then\b"), Tokens.THEN),
                 (new Regex(@"^true\b"), Tokens.TRUE),
                 (new Regex(@"^false\b"), Tokens.FALSE),
                 (new Regex(@"^:="), Tokens.ASSIGN),
@@ -79,6 +85,7 @@ namespace OluaLexer
                 (new Regex(@"^\["), Tokens.LBRACKET),
                 (new Regex(@"^\]"), Tokens.RBRACKET),
                 (new Regex(@"^\."), Tokens.DOT),
+                (new Regex(@"^\,"), Tokens.COMMA),
                 (new Regex(@"^[0-9]*\.[0-9]+([eE][+-]?[0-9]+)?"), Tokens.FLOAT_LITERAL),
                 (new Regex(@"^[0-9]+"), Tokens.INTEGER_LITERAL),
                 (new Regex(@"^[A-Za-z_][A-Za-z_0-9]*"), Tokens.IDENTIFIER),

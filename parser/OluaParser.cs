@@ -4,8 +4,8 @@
 
 // GPPG version 1.2.1.0
 // Machine:  PC
-// DateTime: 04.10.2023 0:19:08
-// Input file <parser.y - 03.10.2023 23:29:52>
+// DateTime: 14.10.2023 4:57:03
+// Input file <parser.y - 14.10.2023 4:56:44>
 
 // options: no-lines gplex
 
@@ -15,12 +15,15 @@ using System.CodeDom.Compiler;
 using System.Globalization;
 using System.Text;
 using StarodubOleg.GPPG.Runtime;
+using OluaLexer;
 
+namespace OluaParser
+{
 public enum Tokens {error=2,EOF=3,IDENTIFIER=4,CLASS=5,EXTENDS=6,
     IS=7,METHOD=8,VAR=9,IF=10,ELSE=11,WHILE=12,
     RETURN=13,THIS=14,END=15,ASSIGN=16,COLON=17,SEMICOLON=18,
     LPAREN=19,RPAREN=20,LBRACKET=21,RBRACKET=22,DOT=23,INTEGER_LITERAL=24,
-    FLOAT_LITERAL=25,LOOP=26,TRUE=27,FALSE=28,COMMA=29};
+    FLOAT_LITERAL=25,LOOP=26,TRUE=27,FALSE=28,COMMA=29,THEN=30};
 
 public struct ValueType
 {
@@ -48,11 +51,6 @@ public class ScanObj {
 [GeneratedCodeAttribute( "Gardens Point Parser Generator", "1.2.1.0")]
 public class Parser: ShiftReduceParser<ValueType, LexLocation>
 {
-  // Verbatim content from parser.y - 03.10.2023 23:29:52
-using OluaLexer;
-using System;
-  // End verbatim content from parser.y - 03.10.2023 23:29:52
-
 #pragma warning disable 649
   private static Dictionary<int, string> aliases;
 #pragma warning restore 649
@@ -100,7 +98,7 @@ using System;
     states[31] = new State(new int[]{18,32,23,33});
     states[32] = new State(-11);
     states[33] = new State(new int[]{4,34});
-    states[34] = new State(new int[]{19,35,18,-39,23,-39,20,-39,29,-39,7,-39,26,-39});
+    states[34] = new State(new int[]{19,35,18,-39,23,-39,20,-39,29,-39,30,-39,26,-39});
     states[35] = new State(new int[]{20,45,4,40,24,41,25,42,27,43,28,44},new int[]{-20,36,-9,46});
     states[36] = new State(new int[]{20,37,29,38});
     states[37] = new State(-40);
@@ -131,7 +129,7 @@ using System;
     states[62] = new State(-29);
     states[63] = new State(-22);
     states[64] = new State(new int[]{4,40,24,41,25,42,27,43,28,44},new int[]{-9,65});
-    states[65] = new State(new int[]{7,66,23,33});
+    states[65] = new State(new int[]{30,66,23,33});
     states[66] = new State(-17,new int[]{-12,67});
     states[67] = new State(new int[]{15,68,11,69,9,26,4,49,24,41,25,42,27,43,28,44,10,64,12,73,13,79,7,83},new int[]{-13,24,-7,25,-14,48,-15,53,-9,54,-16,63,-17,72,-18,78,-19,82});
     states[68] = new State(-30);
@@ -208,8 +206,8 @@ using System;
     rules[27] = new Rule(-14, new int[]{4,16,-9,18});
     rules[28] = new Rule(-15, new int[]{-9,23,4,19,-20,20,18});
     rules[29] = new Rule(-15, new int[]{-9,23,4,19,20,18});
-    rules[30] = new Rule(-16, new int[]{10,-9,7,-12,15});
-    rules[31] = new Rule(-16, new int[]{10,-9,7,-12,11,-12,15});
+    rules[30] = new Rule(-16, new int[]{10,-9,30,-12,15});
+    rules[31] = new Rule(-16, new int[]{10,-9,30,-12,11,-12,15});
     rules[32] = new Rule(-17, new int[]{12,-9,26,-12,15});
     rules[33] = new Rule(-18, new int[]{13,-9,18});
     rules[34] = new Rule(-9, new int[]{4});
@@ -254,4 +252,6 @@ using System;
   }
 
 
+public Parser(Scanner scnr) : base(scnr) { }
+}
 }
