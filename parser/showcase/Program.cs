@@ -3,11 +3,12 @@ using OluaParser;
 
 public class Application
 {
+    const string target = "program.olua";
     public static void Main()
     {
         // Initialize the lexer with the input code
         Scanner scanner = new();
-        scanner.SetSource(File.ReadAllText("program.olua"), 0);
+        scanner.SetSource(File.ReadAllText(target), 0);
 
         // Initialize the parser with the lexer
         Parser parser = new(scanner);
@@ -21,7 +22,7 @@ public class Application
         }
         else
         {
-            Console.WriteLine($"Parsing failed at {Path.GetFullPath("program.olua")}({scanner.yylloc.StartLine},{scanner.yylloc.StartColumn}) because of \"{scanner.yylval}\"");
+            Console.WriteLine($"Parsing failed at {Path.GetFullPath(target)}({scanner.yylloc.StartLine},{scanner.yylloc.StartColumn}) because of \"{scanner.yylval}\"");
         }
     }
 }
