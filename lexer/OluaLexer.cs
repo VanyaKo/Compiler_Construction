@@ -9,8 +9,8 @@ namespace OluaLexer
 {
     public enum Tokens
     {
-        EOF = -1,
-        ERROR = 0,
+        ERROR = 2,
+        EOF,
         CLASS,
         EXTENDS,
         IS,

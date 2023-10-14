@@ -1,3 +1,13 @@
+
+// ==========================================================================
+//  GPPG error listing for yacc source file <parser.y - 14.10.2023 5:15:15>
+// ==========================================================================
+//  Version:  1.2.1.0
+//  Machine:  PC
+//  DateTime: 14.10.2023 5:15:18
+// ==========================================================================
+
+
 %namespace OluaParser
 %using OluaLexer
 
@@ -6,7 +16,17 @@
 //}
 
 //%token <Identifier> IDENTIFIER
-%token EOF
+%token EOF = -1
+//--------^^^^^
+// Error: This character is invalid in this context
+// Error: This character is invalid in this context
+// Warning: Optional numeric code ignored in this version
+// ------------------------------------------------------
+%token ERROR = 0
+//----------^^^^
+// Error: This character is invalid in this context
+// Warning: Optional numeric code ignored in this version
+// ------------------------------------------------------
 %token CLASS
 %token EXTENDS
 %token IS
@@ -148,4 +168,5 @@ argumentList
 
 %%
 
-public Parser(Scanner scnr) : base(scnr) { }
+public Parser(Scanner scnr) : base(scnr) { }// ==========================================================================
+
