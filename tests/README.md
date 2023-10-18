@@ -3,18 +3,18 @@
 - `//` - for single line comments
 - the constructor body cannot contain return
 - the variable declaration is set to `var Identifier : {ClassName} := Expression`
-- the entry point to the code is always the constructor of the class that extends EntryPoint (there must be exactly one such a class in the file)
-- the program must have only one constructor that has exactly this constructor signature:
+- (semantic rule) the entry point to the code is always the constructor of the class that extends EntryPoint (there must be exactly one such a class in the file)
+- (semantic rule) the program must have only one constructor that has exactly this constructor signature:
     `this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) // where args is a array of strings`
 - introducing separate `Invocation: Identifier.method(Arguments)` and `Constructor: ClassName(Arguments)`
 - extend `Statement` with `Scope` concept: `Scope: is Body end`
 - redefine `MethodDeclaration : method Identifier [ Parameters ] [ : Identifier ] Scope`
 - for method declaration allow `...) : void is` for declaring methods with no return. that leads to the following consequences:
-  - such method bodies are disallowed to have return statement in body
+  - (semantic rule) such method bodies are disallowed to have return statement in body
   - extend `Statement` adding `Invocation` to it such that void functions can be called directly in the body
 - clarify the specification: `Expression: IntegerLiteral | RealLiteral | BooleanLiteral | this | Invocation | Constructor | Indentifier`
       
-      note that depending on context even a valid Expression can be banned 
+      (semantic rule) note that depending on context even a valid Expression can be banned 
       (for example `if Expression then ...` will ban RealLiteral, IntegerLiteral and this for sure,
       only BooleanLiteral always goes through, but Invocation and Constructor can go through only after type validation.
       The same for method call - arguments - are sequence of expressions, and a expression may be incompatible by type)
