@@ -1,6 +1,7 @@
 ### Fixing the ruleset provided on the paper (see [Project_O.pdf](/Project_O.pdf)):
 
 - `//` - for single line comments
+- no way to pass functions as arguments
 - the constructor body cannot contain return
 - the variable declaration is set to `var Identifier : {ClassName} := Expression`
 - (semantic rule) the entry point to the code is always the constructor of the class that extends EntryPoint (there must be exactly one such a class in the file)
@@ -10,7 +11,7 @@
 - extend `Statement` with `Scope` concept: `Scope: is Body end`
 - redefine `MethodDeclaration : method Identifier [ Parameters ] [ : Identifier ] Scope`
 - for method declaration allow `...) : void is` for declaring methods with no return. that leads to the following consequences:
-  - (semantic rule) such method bodies are disallowed to have return statement in body
+  - (semantic rule / may be implemented as syntax rule) such method bodies are disallowed to have return statement in body
   - extend `Statement` adding `Invocation` to it such that void functions can be called directly in the body
 - clarify the specification: `Expression: IntegerLiteral | RealLiteral | BooleanLiteral | this | Invocation | Constructor | Indentifier`
       

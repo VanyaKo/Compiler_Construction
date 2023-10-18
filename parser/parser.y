@@ -31,6 +31,7 @@
 %token LOOP
 %token TRUE
 %token FALSE
+%token VOID
 %token COMMA
 %token THEN
 %token UNDEFINED
@@ -104,10 +105,12 @@ variableDeclaration
 methodDeclaration
     : METHOD IDENTIFIER LPAREN parameterList RPAREN COLON typename scope
     | METHOD IDENTIFIER LPAREN RPAREN COLON typename scope
+    | METHOD IDENTIFIER LPAREN parameterList RPAREN COLON VOID noReturnScope
+    | METHOD IDENTIFIER LPAREN RPAREN COLON VOID noReturnScope
     ;
 
 constructorDeclaration
-    : THIS LPAREN parameterList RPAREN scope
+    : THIS LPAREN parameterList RPAREN noReturnScope
     ;
 
 scope
@@ -129,6 +132,24 @@ statement
     | scope
     ;
 
+noReturnScope
+    : IS noReturnStatementList END
+    ;
+
+noReturnStatementList
+    : 
+    | noReturnStatement noReturnStatementList
+    ;
+
+noReturnStatement
+    : variableDeclaration
+    | assignment
+    | methodInvocation
+    | noReturnIf
+    | noReturnWhile
+    | noReturnScope
+    ;
+
 assignment
     : IDENTIFIER ASSIGN object
     | attribute ASSIGN object
@@ -139,8 +160,17 @@ if
     | IF object THEN statementList ELSE statementList END
     ;
 
+noReturnIf
+    : IF object THEN noReturnStatementList END
+    | IF object THEN noReturnStatementList ELSE noReturnStatementList END
+    ;
+
 while
-    : WHILE object LOOP statementList END
+    : WHILE object LOOP noReturnStatementList END
+    ;
+
+noReturnWhile
+    : WHILE object LOOP noReturnStatementList END
     ;
 
 return

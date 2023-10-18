@@ -36,6 +36,7 @@ namespace OluaLexer
         LOOP,
         TRUE,
         FALSE,
+        VOID,
         COMMA,
         THEN,
 
@@ -83,6 +84,7 @@ namespace OluaLexer
                 (new Regex(@"^then\b"), Tokens.THEN),
                 (new Regex(@"^true\b"), Tokens.TRUE),
                 (new Regex(@"^false\b"), Tokens.FALSE),
+                (new Regex(@"^false\b"), Tokens.VOID),
                 (new Regex(@"^:="), Tokens.ASSIGN),
                 (new Regex(@"^:"), Tokens.COLON),
                 (new Regex(@"^\("), Tokens.LPAREN),
