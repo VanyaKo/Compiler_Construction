@@ -50,14 +50,9 @@ namespace OluaLexer
         private int _position = 0;
         public new string yylval { get; private set; } = string.Empty;
 
-        public Scanner() {
+        public Scanner(string source) {
             yylloc = new LexLocation(1, 1, 1, 1);
-        }
-
-        public void SetSource(string source, int position)
-        {
             _input = source;
-            _position = position;
         }
 
         public override int yylex()

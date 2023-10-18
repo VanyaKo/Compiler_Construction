@@ -1,3 +1,13 @@
+
+// ==========================================================================
+//  GPPG error listing for yacc source file <parser.y - 18.10.2023 9:57:18>
+// ==========================================================================
+//  Version:  1.2.1.0
+//  Machine:  PC
+//  DateTime: 18.10.2023 9:57:20
+// ==========================================================================
+
+
 %namespace OluaParser
 %using OluaLexer
 
@@ -31,12 +41,17 @@
 %token THEN
 %token UNDEFINED
 
+%right ASSIGN
+
 %start program
 
 %%
 
 typename
-    : IDENTIFIER
+    : IDENTIFIER { Console.WriteLine($0); }
+//---------------------------------^^^
+// Error: Semantic action index is out of bounds
+// ---------------------------------------------
     | generic
     ;
 
@@ -187,4 +202,6 @@ argumentList
 %%
 
 public Parser(Scanner scnr) : base(scnr) { }
+
+// ==========================================================================
 

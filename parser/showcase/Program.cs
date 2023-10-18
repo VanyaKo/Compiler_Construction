@@ -7,8 +7,7 @@ public class Application
     public static void Main()
     {
         // Initialize the lexer with the input code
-        Scanner scanner = new();
-        scanner.SetSource(File.ReadAllText(target), 0);
+        Scanner scanner = new(File.ReadAllText(target));
 
         // Initialize the parser with the lexer
         Parser parser = new(scanner);
