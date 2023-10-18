@@ -46,7 +46,7 @@ typename
     ;
 
 generic
-    : IDENTIFIER { Console.WriteLine("Found generic: " + $1); } LBRACKET typename RBRACKET
+    : IDENTIFIER LBRACKET typename RBRACKET
     ;
 
 constructorInvocation

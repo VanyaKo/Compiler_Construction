@@ -19,5 +19,7 @@ class Factorial extends EntryPoint is
         
         // Expecting 10! to be 3628800
         this.assert(tenFactorial.Equal(3628800))
+
+        return
     end
 end

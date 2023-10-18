@@ -21,7 +21,7 @@ public class Application
         }
         else
         {
-            Console.WriteLine($"Parsing failed at {Path.GetFullPath(target)}({scanner.yylloc.StartLine},{scanner.yylloc.StartColumn}) because of \"{scanner.yylval}\"");
+            Console.WriteLine($"Parsing failed at {Path.GetFullPath(target)}({scanner.yylloc.StartLine},{scanner.yylloc.StartColumn}) because of \"{scanner.yylval.sVal}\"");
         }
     }
 }
