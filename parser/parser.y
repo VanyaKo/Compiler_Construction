@@ -4,6 +4,8 @@
 %union  
 {
     public string sVal;
+    public int iVal;
+    public float fVal;
 }
 
 %token EOF
@@ -26,8 +28,8 @@
 %token LBRACKET
 %token RBRACKET
 %token DOT
-%token INTEGER_LITERAL
-%token FLOAT_LITERAL
+%token <iVal> INTEGER_LITERAL
+%token <fVal> FLOAT_LITERAL
 %token LOOP
 %token TRUE
 %token FALSE

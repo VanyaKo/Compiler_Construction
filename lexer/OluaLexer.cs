@@ -99,7 +99,18 @@ namespace OluaLexer
                 var match = regex.Match(_input.Substring(_position));
                 if (match.Success)
                 {
-                    yylval.sVal = match.Value;
+                    switch(token) {
+                        case Tokens.IDENTIFIER:
+                            yylval.sVal = match.Value;
+                            break;
+                        case Tokens.INTEGER_LITERAL:
+                            yylval.iVal = int.Parse(match.Value);
+                            break;
+                        case Tokens.FLOAT_LITERAL:
+                            yylval.fVal = float.Parse(match.Value);
+                            break;
+                    }
+                    
                     _position += match.Length;
                     
                     // Count new lines to determine if we move to a new line
