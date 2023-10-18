@@ -1,6 +1,11 @@
 %namespace OluaParser
 %using OluaLexer
 
+%union  
+{
+    public string sVal;
+}
+
 %token EOF
 %token CLASS
 %token EXTENDS
@@ -14,7 +19,7 @@
 %token THIS
 %token END
 %token ASSIGN
-%token IDENTIFIER
+%token <sVal> IDENTIFIER
 %token COLON
 %token LPAREN
 %token RPAREN
@@ -41,7 +46,7 @@ typename
     ;
 
 generic
-    : IDENTIFIER LBRACKET typename RBRACKET
+    : IDENTIFIER { Console.WriteLine("Found generic: " + $1); } LBRACKET typename RBRACKET
     ;
 
 constructorInvocation

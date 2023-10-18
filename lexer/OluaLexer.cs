@@ -48,11 +48,11 @@ namespace OluaLexer
 
         private string _input = string.Empty;
         private int _position = 0;
-        public new string yylval { get; private set; } = string.Empty;
 
         public Scanner(string source) {
             yylloc = new LexLocation(1, 1, 1, 1);
             _input = source;
+            yylval.sVal = string.Empty;
         }
 
         public override int yylex()
@@ -79,7 +79,7 @@ namespace OluaLexer
                 (new Regex(@"^then\b"), Tokens.THEN),
                 (new Regex(@"^true\b"), Tokens.TRUE),
                 (new Regex(@"^false\b"), Tokens.FALSE),
-                (new Regex(@"^false\b"), Tokens.VOID),
+                (new Regex(@"^void\b"), Tokens.VOID),
                 (new Regex(@"^:="), Tokens.ASSIGN),
                 (new Regex(@"^:"), Tokens.COLON),
                 (new Regex(@"^\("), Tokens.LPAREN),
@@ -99,7 +99,7 @@ namespace OluaLexer
                 var match = regex.Match(_input.Substring(_position));
                 if (match.Success)
                 {
-                    yylval = match.Value;
+                    yylval.sVal = match.Value;
                     _position += match.Length;
                     
                     // Count new lines to determine if we move to a new line
