@@ -1,3 +1,5 @@
+using Indent;
+using OluaAST;
 using OluaLexer;
 using OluaParser;
 
@@ -17,11 +19,14 @@ public class Application
         if (success)
         {
             Console.WriteLine("Parsing successful!");
-            // TODO: Do something with the parsed result (e.g., create an AST, evaluate expressions, etc.)
+            Indentator idnt = new();
+            foreach (ClassDeclaration cls in parser.Program) {
+                Console.WriteLine(idnt.Traverse(cls.ToStrings()));
+            }
         }
         else
         {
-            Console.WriteLine($"Parsing failed at {Path.GetFullPath(target)}({scanner.yylloc.StartLine},{scanner.yylloc.StartColumn}) because of \"{scanner.yylval.sVal}\"");
+            Console.WriteLine($"Parsing failed at {Path.GetFullPath(target)}({scanner.yylloc.StartLine},{scanner.yylloc.StartColumn})");
         }
     }
 }

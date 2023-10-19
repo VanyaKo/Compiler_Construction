@@ -1,11 +1,37 @@
 %namespace OluaParser
 %using OluaLexer
+%using OluaAST;
 
 %union  
 {
     public string sVal;
     public int iVal;
     public float fVal;
+    public bool bVal;
+
+    public Node Node;
+    public TypeName TypeName;
+    public AttributeObject AttributeObject;
+    public OluaObject Object;
+    public OluaObjectList ObjectList;
+    public List<ClassDeclaration> ClassDeclarationList;
+    public ClassDeclaration ClassDeclaration;
+    public List<ClassMember> ClassMemberList;
+    public ClassMember ClassMember;
+    public ParameterList ParameterList;
+    public Parameter Parameter;
+    public VariableDeclaration VariableDeclaration;
+    public Scope Scope;
+    public MethodDeclaration MethodDeclaration;
+    public ConstructorDeclaration ConstructorDeclaration;
+    public StatementList StatementList;
+    public Statement Statement;
+    public Assignment Assignment;
+    public If If;
+    public While While;
+    public Return Return;
+    public MethodInvocation MethodInvocation;
+    public ConstructorInvocation ConstructorInvocation;
 }
 
 %token EOF
@@ -30,168 +56,154 @@
 %token DOT
 %token <iVal> INTEGER_LITERAL
 %token <fVal> FLOAT_LITERAL
+%token <bVal> BOOL_LITERAL
 %token LOOP
-%token TRUE
-%token FALSE
-%token VOID
 %token COMMA
 %token THEN
 %token UNDEFINED
 
-%start program
+%type <TypeName> typename
+%type <ConstructorInvocation> constructorInvocation
+%type <MethodInvocation> methodInvocation
+%type <Object> object
+%type <ObjectList> argumentList
+%type <AttributeObject> attribute
+%type <ClassDeclarationList> classDeclarationList
+%type <ClassDeclaration> classDeclaration
+%type <ClassMemberList> classMemberList
+%type <ClassMember> classMember
+%type <Parameter> parameter
+%type <ParameterList> parameterList
+%type <VariableDeclaration> variableDeclaration
+%type <Scope> scope
+%type <MethodDeclaration> methodDeclaration
+%type <ConstructorDeclaration> constructorDeclaration
+%type <StatementList> statementList
+%type <Statement> statement
+%type <Assignment> assignment
+%type <If> if
+%type <While> while
+%type <Return> return
+
+%start classDeclarationList
 
 %%
 
 typename
-    : IDENTIFIER
-    | generic
-    ;
-
-generic
-    : IDENTIFIER LBRACKET typename RBRACKET
+    : IDENTIFIER { $$ = new TypeName { Identifier = $1 }; }
+    | IDENTIFIER LBRACKET typename RBRACKET { $$ = new TypeName { Identifier = $1, GenericType = $3 }; }
     ;
 
 constructorInvocation
-    : typename LPAREN RPAREN
-    | typename LPAREN argumentList RPAREN
+    : typename LPAREN argumentList RPAREN { $$ = new ConstructorInvocation { Type = $1, Arguments = $3 }; }
     ;
 
 methodInvocation
-    : attribute LPAREN argumentList RPAREN
-    | attribute LPAREN RPAREN
+    : attribute LPAREN argumentList RPAREN { $$ = new MethodInvocation { Method = $1, Arguments = $3 }; }
     ;
 
 attribute
-    : object DOT IDENTIFIER
+    : object DOT IDENTIFIER { $$ = new AttributeObject { Parent = $1, Identifier = $3 }; }
     ;
 
 object
-    : IDENTIFIER
-    | INTEGER_LITERAL
-    | FLOAT_LITERAL
-    | TRUE
-    | FALSE
-    | THIS
-    | attribute
-    | constructorInvocation
-    | methodInvocation
+    : IDENTIFIER { $$ = new ObjectIndentifier { Identifier = $1 }; }
+    | INTEGER_LITERAL { $$ = new Literal<int> { Value = $1 }; }
+    | FLOAT_LITERAL { $$ = new Literal<float> { Value = $1 }; }
+    | BOOL_LITERAL { $$ = new Literal<bool> { Value = $1 }; }
+    | THIS { $$ = new ObjectIndentifier { Identifier = "this" }; }
+    | attribute { $$ = $1; }
+    | constructorInvocation { $$ = $1; }
+    | methodInvocation { $$ = $1; }
     ;
 
-program
-    : 
-    | classDeclaration program
+classDeclarationList
+    : { Program = new List<ClassDeclaration>(); }
+    | classDeclarationList classDeclaration { Program.Add($2); }
     ;
 
 classDeclaration
-    : CLASS IDENTIFIER EXTENDS typename IS classBody END
-    | CLASS IDENTIFIER IS classBody END
+    : CLASS IDENTIFIER EXTENDS typename IS classMemberList END { $$ = new ClassDeclaration { Name = $2, BaseClass = $4, Members = $6 }; }
+    | CLASS IDENTIFIER IS classMemberList END { $$ = new ClassDeclaration { Name = $2, Members = $4 }; }
     ;
 
-classBody
-    : 
-    | classMember classBody
+classMemberList
+    : { $$ = new List<ClassMember>(); }
+    | classMemberList classMember { $1.Add($2); $$ = $1; }
     ;
 
 classMember
-    : methodDeclaration
-    | variableDeclaration
-    | constructorDeclaration
+    : methodDeclaration { $$ = $1; }
+    | variableDeclaration { $$ = $1; }
+    | constructorDeclaration { $$ = $1; }
     ;
 
 variableDeclaration
-    : VAR IDENTIFIER COLON typename ASSIGN object
+    : VAR IDENTIFIER COLON typename ASSIGN object { $$ = new VariableDeclaration { Name = $2, Type = $4, InitialValue = $6 }; }
     ;
 
 methodDeclaration
-    : METHOD IDENTIFIER LPAREN parameterList RPAREN COLON typename scope
-    | METHOD IDENTIFIER LPAREN RPAREN COLON typename scope
-    | METHOD IDENTIFIER LPAREN parameterList RPAREN COLON VOID noReturnScope
-    | METHOD IDENTIFIER LPAREN RPAREN COLON VOID noReturnScope
+    : METHOD IDENTIFIER LPAREN parameterList RPAREN COLON typename scope { $$ = new MethodDeclaration { Name = $2, Parameters = $4, ReturnType = $7, Statements = $8.Statements }; }
     ;
 
 constructorDeclaration
-    : THIS LPAREN parameterList RPAREN noReturnScope
+    : THIS LPAREN parameterList RPAREN scope { $$ = new ConstructorDeclaration { Parameters = $3, Statements = $5.Statements }; }
     ;
 
 scope
-    : IS statementList END
+    : IS statementList END { $$ = new Scope { Statements = $2 }; }
     ;
 
 statementList
-    : 
-    | statement statementList
+    : { $$ = new StatementList { List = new List<Statement>() }; }
+    | statementList statement { $1.List.Add($2); $$ = $1; }
     ;
 
 statement
-    : variableDeclaration
-    | assignment
-    | methodInvocation
-    | if
-    | while
-    | return
-    | scope
-    ;
-
-noReturnScope
-    : IS noReturnStatementList END
-    ;
-
-noReturnStatementList
-    : 
-    | noReturnStatement noReturnStatementList
-    ;
-
-noReturnStatement
-    : variableDeclaration
-    | assignment
-    | methodInvocation
-    | noReturnIf
-    | noReturnWhile
-    | noReturnScope
+    : variableDeclaration { $$ = $1; }
+    | assignment { $$ = $1; }
+    | methodInvocation { $$ = $1; }
+    | if { $$ = $1; }
+    | while { $$ = $1; }
+    | return { $$ = $1; }
+    | scope { $$ = $1; }
     ;
 
 assignment
-    : IDENTIFIER ASSIGN object
-    | attribute ASSIGN object
+    : IDENTIFIER ASSIGN object { $$ = new Assignment { Variable = new ObjectIndentifier { Identifier = $1 }, Value = $3 }; }
+    | attribute ASSIGN object { $$ = new Assignment { Variable = $1, Value = $3 }; }
     ;
 
 if
-    : IF object THEN statementList END
-    | IF object THEN statementList ELSE statementList END
-    ;
-
-noReturnIf
-    : IF object THEN noReturnStatementList END
-    | IF object THEN noReturnStatementList ELSE noReturnStatementList END
+    : IF object THEN statementList END { $$ = new If { Cond = $2, Then = $4 }; }
+    | IF object THEN statementList ELSE statementList END { $$ = new If { Cond = $2, Then = $4, Else = $6 }; }
     ;
 
 while
-    : WHILE object LOOP noReturnStatementList END
-    ;
-
-noReturnWhile
-    : WHILE object LOOP noReturnStatementList END
+    : WHILE object LOOP statementList END { $$ = new While { Cond = $2, Body = $4 }; }
     ;
 
 return
-    : RETURN object
+    : RETURN object { $$ = new Return { Object = $2 }; }
     ;
 
 parameterList
-    : parameter
-    | parameter COMMA parameterList
+    : { $$ = new ParameterList { List = new List<Parameter>() }; }
+    | parameter { ParameterList p = new ParameterList { List = new List<Parameter>() };; p.List.Add($1); $$ = p; }
+    | parameterList COMMA parameter { $1.List.Add($3); $$ = $1; }
     ;
 
 parameter
-    : IDENTIFIER COLON typename
+    : IDENTIFIER COLON typename { $$ = new Parameter { Name = $1, Type = $3 }; }
     ;
 
 argumentList
-    : object
-    | object COMMA argumentList
+    : { $$ = new OluaObjectList { List = new List<OluaObject>() }; }
+    | object { OluaObjectList l = new OluaObjectList { List = new List<OluaObject>() }; l.List.Add($1); $$ = l; }
+    | argumentList COMMA object { $1.List.Add($3); $$ = $1; }
     ;
 
 %%
 
 public Parser(Scanner scnr) : base(scnr) { }
-
+public List<ClassDeclaration> Program;

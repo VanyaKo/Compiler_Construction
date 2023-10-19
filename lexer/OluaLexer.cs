@@ -33,10 +33,8 @@ namespace OluaLexer
         DOT,
         INTEGER_LITERAL,
         FLOAT_LITERAL,
+        BOOL_LITERAL,
         LOOP,
-        TRUE,
-        FALSE,
-        VOID,
         COMMA,
         THEN,
 
@@ -77,9 +75,7 @@ namespace OluaLexer
                 (new Regex(@"^end\b"), Tokens.END),
                 (new Regex(@"^loop\b"), Tokens.LOOP),
                 (new Regex(@"^then\b"), Tokens.THEN),
-                (new Regex(@"^true\b"), Tokens.TRUE),
-                (new Regex(@"^false\b"), Tokens.FALSE),
-                (new Regex(@"^void\b"), Tokens.VOID),
+                (new Regex(@"^(true|false)\b"), Tokens.BOOL_LITERAL),
                 (new Regex(@"^:="), Tokens.ASSIGN),
                 (new Regex(@"^:"), Tokens.COLON),
                 (new Regex(@"^\("), Tokens.LPAREN),
@@ -99,9 +95,10 @@ namespace OluaLexer
                 var match = regex.Match(_input.Substring(_position));
                 if (match.Success)
                 {
+                    yylval.sVal = match.Value;
                     switch(token) {
-                        case Tokens.IDENTIFIER:
-                            yylval.sVal = match.Value;
+                        case Tokens.BOOL_LITERAL:
+                            yylval.bVal = bool.Parse(match.Value);
                             break;
                         case Tokens.INTEGER_LITERAL:
                             yylval.iVal = int.Parse(match.Value);
@@ -110,7 +107,7 @@ namespace OluaLexer
                             yylval.fVal = float.Parse(match.Value);
                             break;
                     }
-                    
+
                     _position += match.Length;
                     
                     // Count new lines to determine if we move to a new line

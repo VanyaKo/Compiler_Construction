@@ -1,5 +1,9 @@
 ## Semantic rules
 
+### typename
+
+- for a generic type, the inner type must be defined
+
 ### constructorInvocation
 
 - typename is a existing class, either declared by the user or is defined in the runtime library

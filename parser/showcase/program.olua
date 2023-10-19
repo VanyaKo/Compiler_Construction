@@ -1,4 +1,6 @@
 class Factorial extends EntryPoint is
+    var variable : Integer := 0
+
     method assert(cond : Boolean) : void is
         if cond.Not() then
             this.ExitCode := 1
@@ -19,7 +21,5 @@ class Factorial extends EntryPoint is
         
         // Expecting 10! to be 3628800
         this.assert(tenFactorial.Equal(3628800))
-
-        return
     end
 end
