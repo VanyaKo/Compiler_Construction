@@ -65,7 +65,7 @@ namespace Indent
     {
         public string identator { get; set; } = "| ";
 
-        public string Traverse(ListWrapper s)
+        public string Traverse(IStringOrList s)
         {
             return Traverse(s, -1);
         }
