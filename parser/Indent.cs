@@ -2,7 +2,10 @@ using System.Text;
 
 namespace Indent
 {
-    public interface IStringOrList {}
+    public interface IStringOrList
+    {
+        IEnumerable<IStringOrList> GetItems();
+    }
 
     public class StringWrapper : IStringOrList
     {
@@ -11,6 +14,11 @@ namespace Indent
         public StringWrapper(string value)
         {
             Value = value;
+        }
+
+        public IEnumerable<IStringOrList> GetItems()
+        {
+            yield return this;
         }
     }
 
@@ -35,11 +43,27 @@ namespace Indent
         {
             Values = values;
         }
+
+        public IEnumerable<IStringOrList> GetItems()
+        {
+            foreach (var item in Values)
+            {
+                yield return item;
+            }
+        }
+
+        public void AddExpanding(IStringOrList sl)
+        {
+            foreach (var item in sl.GetItems())
+            {
+                Values.Add(item);
+            }
+        }
     }
 
     class Indentator
     {
-        public string identator { get; set; } = "    ";
+        public string identator { get; set; } = "| ";
 
         public string Traverse(ListWrapper s)
         {
@@ -52,11 +76,11 @@ namespace Indent
 
             if (item is StringWrapper stringItem)
             {
-                result.AppendLine($"{new string(' ', indentLevel * identator.Length)}{stringItem.Value}");
+                result.AppendLine($"{string.Join("", Enumerable.Repeat(identator, indentLevel))}{stringItem.Value}");
             }
             else if (item is ListWrapper listItem)
             {
-                foreach (var child in listItem.Values)
+                foreach (var child in listItem.GetItems())
                 {
                     result.Append(Traverse(child, indentLevel + 1));
                 }

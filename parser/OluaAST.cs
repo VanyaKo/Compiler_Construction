@@ -80,11 +80,15 @@ namespace OluaAST
         public ListWrapper ToStrings() {
             ListWrapper res = new();
             res.Values.Add(new StringWrapper($"class {Name} {(BaseClass == null ? "" : $"extends {BaseClass} ")}is"));
-            foreach (ClassMember e in Members)
+            for (int i = 0; i < Members.Count; i++)
             {
-                res.Values.Add(e.ToStrings());
-                res.Values.Add(new StringWrapper(""));
+                res.Values.Add(Members[i].ToStrings());
+                if (i < Members.Count - 1) 
+                {
+                    res.Values.Add(new ListWrapper(new StringWrapper("")));
+                }
             }
+
             res.Values.Add(new StringWrapper("end"));
             return res;
         }
@@ -120,7 +124,7 @@ namespace OluaAST
         public ListWrapper ToStrings() {
             ListWrapper res = new();
             res.Values.Add(new StringWrapper($"{Name}({Parameters}) : {ReturnType} is"));
-            res.Values.Add(Statements.ToStrings());
+            res.AddExpanding(Statements.ToStrings());
             res.Values.Add(new StringWrapper("end"));
             return res;
         }
@@ -135,7 +139,7 @@ namespace OluaAST
         {
             ListWrapper res = new();
             res.Values.Add(new StringWrapper($"this({Parameters}) is"));
-            res.Values.Add(Statements.ToStrings());
+            res.AddExpanding(Statements.ToStrings());
             res.Values.Add(new StringWrapper("end"));
             return res;
         }
@@ -148,7 +152,7 @@ namespace OluaAST
         {
             ListWrapper res = new();
             res.Values.Add(new StringWrapper($"is"));
-            res.Values.Add(Statements.ToStrings());
+            res.AddExpanding(Statements.ToStrings());
             res.Values.Add(new StringWrapper("end"));
             return res;
         }
@@ -189,10 +193,10 @@ namespace OluaAST
         {
             ListWrapper res = new();
             res.Values.Add(new StringWrapper($"if {Cond} then"));
-            res.Values.Add(Then.ToStrings());
+            res.AddExpanding(Then.ToStrings());
             if (Else != null) {
                 res.Values.Add(new StringWrapper($"else"));
-                res.Values.Add(Else.ToStrings());
+                res.AddExpanding(Else.ToStrings());
             }
             res.Values.Add(new StringWrapper("end"));
             return res;
@@ -208,7 +212,7 @@ namespace OluaAST
         {
             ListWrapper res = new();
             res.Values.Add(new StringWrapper($"while {Cond} loop"));
-            res.Values.Add(Body.ToStrings());
+            res.AddExpanding(Body.ToStrings());
             res.Values.Add(new StringWrapper("end"));
             return res;
         }
