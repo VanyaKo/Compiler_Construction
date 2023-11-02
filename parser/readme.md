@@ -1,5 +1,7 @@
 ## Semantic rules
 
+Performed after linking the runtime libraries
+
 ### typename
 
 - for a generic type, the inner type must be defined
