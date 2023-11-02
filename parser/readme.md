@@ -31,11 +31,11 @@ Performed after linking the runtime libraries
 
 - IDENTIFIER is not colliding with the superclass attributes and other near defined attributes
 - typename is a existing class, either declared by the user or is defined in the runtime library
-- if typename is void, no return must be in the scope (moved to the syntax layer)
+- if typename is void, no return must be in the scope
 
 ### constructorDeclaration
 
-- no return must be in the scope (moved to the syntax layer)
+- no return must be in the scope
 - iff class extends EntryPoint, the constructor must be `this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]])`
 
 ### variableDeclaration
