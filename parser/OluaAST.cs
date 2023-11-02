@@ -54,7 +54,13 @@ namespace OluaAST
 
     public interface OluaObject : Node {}
 
-    public class ObjectIndentifier : OluaObject // also "this" goes here
+    public class ThisItentifier : OluaObject
+    {
+        public override string ToString() => $"this";
+        public IStringOrList ToStrings() => new StringWrapper(ToString());
+    }
+
+    public class ObjectIndentifier : OluaObject
     {
         public string Identifier { get; set; }
 
@@ -119,7 +125,7 @@ namespace OluaAST
     {
         public string Name { get; set; }
         public ParameterList Parameters { get; set; }
-        public TypeName ReturnType { get; set; }
+        public TypeName? ReturnType { get; set; } // null if void return type
         public StatementList Statements { get; set; }
 
         public IStringOrList ToStrings() {
