@@ -104,36 +104,30 @@ namespace OluaSemanticAnalyzer
         Dictionary<string, IGenericFactory> linkGenerics = new Dictionary<string, IGenericFactory>();
         Dictionary<string, ClassInterface> linkClasses = new Dictionary<string, ClassInterface>();
 
-        public static ExtendableClassInterface TheVeryBaseClass()
+        public static readonly TypeName typeClass = new TypeName { Identifier = "Class", GenericType = null };
+        public static readonly TypeName typeBoolean = new TypeName { Identifier = "Boolean", GenericType = null };
+        private static readonly MethodInterface methodSameRef = new MethodInterface
         {
-            var typeClass = new TypeName { Identifier = "Class", GenericType = null };  // Added comma
-            var typeBoolean = new TypeName { Identifier = "Boolean", GenericType = null };  // Added comma
-
-            var methodSameRef = new MethodInterface
+            Parameters = new List<TypeName> { typeClass },
+            ReturnType = typeBoolean
+        };
+        public static readonly ExtendableClassInterface theVeryBaseClass = new ExtendableClassInterface
+        {
+            Name = "Class",
+            Inf = new ClassInterface
             {
-                Parameters = new List<TypeName> { typeClass },
-                ReturnType = typeBoolean
-            };
-
-            return new ExtendableClassInterface  // Added 'new' keyword
-            {
-                Name = "Class",
-                Inf = new ClassInterface  // Changed 'inf' to 'Inf' to match your class definition
+                BaseClass = null,
+                ConstructorParameters = new List<TypeName>(),
+                Fields = new Dictionary<string, TypeName>(),
+                Methods = new Dictionary<string, MethodInterface>
                 {
-                    BaseClass = null,
-                    ConstructorParameters = new List<TypeName>(),
-                    Fields = new Dictionary<string, TypeName>(),
-                    Methods = new Dictionary<string, MethodInterface>
-                    {
-                        { "SameRef", methodSameRef }
-                    }
+                    { "SameRef", methodSameRef }
                 }
-            };
-        }
+            }
+        };
 
         public Analyzer()
         {
-            var theVeryBaseClass = TheVeryBaseClass();
             linkClasses["Class"] = theVeryBaseClass.Inf;
             linkClasses["EntryPoint"] = theVeryBaseClass.extend(
                 // Constructor parameters

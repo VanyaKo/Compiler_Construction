@@ -20,11 +20,23 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="../../parser/Indent.cs" Link="OluaAST.cs" />
+    <Compile Include="../../parser/Indent.cs" Link="Indent.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Include="../OluaSemanticAnalyzer.cs" Link="OluaSemanticAnalyzer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="../stdlib/types.cs" Link="types.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="../stdlib/integer/interface.cs" Link="IntegerInterface.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="../stdlib/boolean/interface.cs" Link="BooleanInterface.cs" />
   </ItemGroup>
 
   <ItemGroup>

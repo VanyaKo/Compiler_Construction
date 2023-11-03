@@ -2,6 +2,7 @@ using OluaAST;
 using OluaLexer;
 using OluaParser;
 using OluaSemanticAnalyzer;
+using OluaStdLibInterfaces;
 
 public class Application
 {
@@ -18,6 +19,17 @@ public class Application
         }
 
         Analyzer analyzer = new();
+
+        List<ExtendableClassInterface> stdlibClasses = new List<ExtendableClassInterface>
+        {
+            new IntegerInterface(),
+            new BooleanInterface(),
+        };
+
+        foreach (var cls in stdlibClasses)
+            analyzer.LinkClass(cls.Name, cls.Inf);
+
+        // TODO: link generics
 
         try {
             analyzer.LinkFromASTAndValidate(parser.Program);
