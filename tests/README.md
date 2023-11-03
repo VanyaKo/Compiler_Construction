@@ -73,7 +73,7 @@ end
 ```
 // Class for managing exit code
 class EntryPoint is
-    var ExitCode : integer := 0; // if a invalid value assigned, the real exit code of the program will be set to 1
+    var ExitCode : Integer := 0; // if a invalid value assigned, the real exit code of the program will be set to 1
 end
 ```
 

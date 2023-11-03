@@ -15,6 +15,38 @@ namespace OluaAST
                                          ? $"{Identifier}[{GenericType}]" 
                                          : Identifier;
         public IStringOrList ToStrings() => new StringWrapper(ToString());
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+            
+            TypeName other = (TypeName) obj;
+            return Identifier == other.Identifier && 
+                EqualityComparer<TypeName>.Default.Equals(GenericType, other.GenericType);
+        }
+
+        public static bool operator ==(TypeName typeName1, TypeName typeName2)
+        {
+            if (ReferenceEquals(typeName1, typeName2))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(typeName1, null) || ReferenceEquals(typeName2, null))
+            {
+                return false;
+            }
+
+            return typeName1.Equals(typeName2);
+        }
+
+        public static bool operator !=(TypeName typeName1, TypeName typeName2)
+        {
+            return !(typeName1 == typeName2);
+        }
     }
 
     public class OluaObjectList : Node
@@ -43,7 +75,7 @@ namespace OluaAST
         public IStringOrList ToStrings() => new StringWrapper(ToString());
     }
 
-    public class AttributeObject : OluaObject
+    public class AttributeObject : OluaAssignableObject
     {
         public OluaObject Parent { get; set; } // The object on which the attribute is accessed.
         public string Identifier { get; set; }
@@ -53,14 +85,16 @@ namespace OluaAST
     }
 
     public interface OluaObject : Node {}
+    
+    public interface OluaAssignableObject : OluaObject {}
 
-    public class ThisItentifier : OluaObject
+    public class ThisIdentifier : OluaObject
     {
         public override string ToString() => $"this";
         public IStringOrList ToStrings() => new StringWrapper(ToString());
     }
 
-    public class ObjectIndentifier : OluaObject
+    public class ObjectIdentifier : OluaAssignableObject
     {
         public string Identifier { get; set; }
 
@@ -169,7 +203,7 @@ namespace OluaAST
 
     public class Assignment : Statement
     {
-        public OluaObject Variable { get; set; }
+        public OluaAssignableObject Variable { get; set; }
         public OluaObject Value { get; set; }
 
         public override string ToString() => $"{Variable} := {Value}";
@@ -227,7 +261,7 @@ namespace OluaAST
 
     public class Return : Statement
     {
-        public OluaObject Object { get; set; }
+        public OluaObject? Object { get; set; }
 
         public override string ToString() => $"return {Object}";
         public IStringOrList ToStrings() => new StringWrapper(ToString());

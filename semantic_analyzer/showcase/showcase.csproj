@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="../../lexer/OluaLexer.cs" Link="OluaLexer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="../../parser/OluaParser.cs" Link="OluaParser.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="../../parser/OluaAST.cs" Link="OluaAST.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="../../parser/Indent.cs" Link="OluaAST.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="../OluaSemanticAnalyzer.cs" Link="OluaSemanticAnalyzer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="StarodubOleg.GPPG.Runtime" Version="0.1.0-alpha1-2" />
+  </ItemGroup>
+
+</Project>

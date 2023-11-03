@@ -1,0 +1,6 @@
+явно буду писать extends Class чтобы не забыть его экстендить
+
+class Output[T] extends Class is
+    method Avaliable() : Integer;
+    method Write(e: T) : Output[T];
+end

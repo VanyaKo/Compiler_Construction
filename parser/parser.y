@@ -76,15 +76,15 @@
 %type <Parameter> parameter
 %type <ParameterList> parameterList
 %type <VariableDeclaration> variableDeclaration
-%type <Scope> scope, noRetScope
+%type <Scope> scope, voidRetScope
 %type <MethodDeclaration> methodDeclaration
 %type <ConstructorDeclaration> constructorDeclaration
-%type <StatementList> statementList, noRetStatementList
-%type <Statement> statement, noRetStatement
+%type <StatementList> statementList, voidRetStatementList
+%type <Statement> statement, voidRetStatement
 %type <Assignment> assignment
-%type <If> if, noRetIf
-%type <While> while, noRetWhile
-%type <Return> return
+%type <If> if, voidRetIf
+%type <While> while, voidRetWhile
+%type <Return> return, voidReturn
 
 %start classDeclarationList
 
@@ -108,11 +108,11 @@ attribute
     ;
 
 object
-    : IDENTIFIER { $$ = new ObjectIndentifier { Identifier = $1 }; }
+    : IDENTIFIER { $$ = new ObjectIdentifier { Identifier = $1 }; }
     | INTEGER_LITERAL { $$ = new Literal<int> { Value = $1 }; }
     | FLOAT_LITERAL { $$ = new Literal<float> { Value = $1 }; }
     | BOOL_LITERAL { $$ = new Literal<bool> { Value = $1 }; }
-    | THIS { $$ = new ThisItentifier(); }
+    | THIS { $$ = new ThisIdentifier(); }
     | attribute { $$ = $1; }
     | constructorInvocation { $$ = $1; }
     | methodInvocation { $$ = $1; }
@@ -145,19 +145,19 @@ variableDeclaration
 
 methodDeclaration
     : METHOD IDENTIFIER LPAREN parameterList RPAREN COLON typename scope { $$ = new MethodDeclaration { Name = $2, Parameters = $4, ReturnType = $7, Statements = $8.Statements }; }
-    | METHOD IDENTIFIER LPAREN parameterList RPAREN COLON VOID noRetScope { $$ = new MethodDeclaration { Name = $2, Parameters = $4, ReturnType = null, Statements = $8.Statements }; }
+    | METHOD IDENTIFIER LPAREN parameterList RPAREN COLON VOID voidRetScope { $$ = new MethodDeclaration { Name = $2, Parameters = $4, ReturnType = null, Statements = $8.Statements }; }
     ;
 
 constructorDeclaration
-    : THIS LPAREN parameterList RPAREN noRetScope { $$ = new ConstructorDeclaration { Parameters = $3, Statements = $5.Statements }; }
+    : THIS LPAREN parameterList RPAREN voidRetScope { $$ = new ConstructorDeclaration { Parameters = $3, Statements = $5.Statements }; }
     ;
 
 scope
     : IS statementList END { $$ = new Scope { Statements = $2 }; }
     ;
 
-noRetScope
-    : IS noRetStatementList END { $$ = new Scope { Statements = $2 }; }
+voidRetScope
+    : IS voidRetStatementList END { $$ = new Scope { Statements = $2 }; }
     ;
 
 statementList
@@ -175,22 +175,23 @@ statement
     | scope { $$ = $1; }
     ;
 
-noRetStatementList
+voidRetStatementList
     : { $$ = new StatementList { List = new List<Statement>() }; }
-    | noRetStatementList noRetStatement { $1.List.Add($2); $$ = $1; }
+    | voidRetStatementList voidRetStatement { $1.List.Add($2); $$ = $1; }
     ;
 
-noRetStatement
+voidRetStatement
     : variableDeclaration { $$ = $1; }
     | assignment { $$ = $1; }
     | methodInvocation { $$ = $1; }
-    | noRetIf { $$ = $1; }
-    | noRetWhile { $$ = $1; }
-    | noRetScope { $$ = $1; }
+    | voidRetIf { $$ = $1; }
+    | voidRetWhile { $$ = $1; }
+    | voidRetScope { $$ = $1; }
+    | voidReturn { $$ = $1; }
     ;
 
 assignment
-    : IDENTIFIER ASSIGN object { $$ = new Assignment { Variable = new ObjectIndentifier { Identifier = $1 }, Value = $3 }; }
+    : IDENTIFIER ASSIGN object { $$ = new Assignment { Variable = new ObjectIdentifier { Identifier = $1 }, Value = $3 }; }
     | attribute ASSIGN object { $$ = new Assignment { Variable = $1, Value = $3 }; }
     ;
 
@@ -199,21 +200,25 @@ if
     | IF object THEN statementList ELSE statementList END { $$ = new If { Cond = $2, Then = $4, Else = $6 }; }
     ;
 
-noRetIf
-    : IF object THEN noRetStatementList END { $$ = new If { Cond = $2, Then = $4 }; }
-    | IF object THEN noRetStatementList ELSE noRetStatementList END { $$ = new If { Cond = $2, Then = $4, Else = $6 }; }
+voidRetIf
+    : IF object THEN voidRetStatementList END { $$ = new If { Cond = $2, Then = $4 }; }
+    | IF object THEN voidRetStatementList ELSE voidRetStatementList END { $$ = new If { Cond = $2, Then = $4, Else = $6 }; }
     ;
 
 while
     : WHILE object LOOP statementList END { $$ = new While { Cond = $2, Body = $4 }; }
     ;
 
-noRetWhile
-    : WHILE object LOOP noRetStatementList END { $$ = new While { Cond = $2, Body = $4 }; }
+voidRetWhile
+    : WHILE object LOOP voidRetStatementList END { $$ = new While { Cond = $2, Body = $4 }; }
     ;
 
 return
     : RETURN object { $$ = new Return { Object = $2 }; }
+    ;
+
+voidReturn
+    : RETURN { $$ = new Return { Object = null }; }
     ;
 
 parameterList
