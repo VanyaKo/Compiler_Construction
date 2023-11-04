@@ -172,19 +172,27 @@ namespace OluaSemanticAnalyzer
             linkClasses[name] = iface;
         }
 
+        // null aka void is considered valid
         void ValidType(TypeName? type)
         {
             TypeName? curType = type;
             while (curType != null)
             {
-                if (!linkClasses.ContainsKey(curType.Identifier))
-                    throw new InvalidOperationException($"There is no class {curType.Identifier}");
-
                 string prevClassName = curType.Identifier;
-                curType = curType.GenericType;
-                if (curType == null) break;
-                if (!linkGenerics.ContainsKey(prevClassName))
-                    throw new InvalidOperationException($"{prevClassName} cannot have generic");
+                if (linkClasses.ContainsKey(curType.Identifier)) {
+                    if (curType.GenericType != null) {
+                        throw new InvalidOperationException($"{curType.Identifier} cannot have generic");
+                    }
+                }                
+                if (linkGenerics.ContainsKey(curType.Identifier)) {
+                    if (curType.GenericType == null) {
+                        throw new InvalidOperationException($"{curType.Identifier} must have generic");
+                    }
+                    curType = curType.GenericType;
+                }
+                else {
+                    throw new InvalidOperationException($"There is no class {curType.Identifier}");
+                }
             }
         }
 
