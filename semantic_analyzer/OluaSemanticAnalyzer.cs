@@ -50,7 +50,7 @@ namespace OluaSemanticAnalyzer
                 {
                     case ConstructorDeclaration constructor:
                         if (constructorFound)
-                            throw new Exception("There must be exactly one constructor");
+                            throw new InvalidOperationException("There must be exactly one constructor");
                         classInterface.ConstructorParameters = 
                             constructor.Parameters.List.Select(e => e.Type).ToList();
                         constructorFound = true;
@@ -58,23 +58,23 @@ namespace OluaSemanticAnalyzer
 
                     case VariableDeclaration variable:
                         if (classInterface.Fields.ContainsKey(variable.Name))
-                            throw new Exception($"Field {variable.Name} was already declared");
+                            throw new InvalidOperationException($"Field {variable.Name} was already declared");
                         classInterface.Fields[variable.Name] = variable.Type;
                         break;
 
                     case MethodDeclaration method:
                         if (classInterface.Methods.ContainsKey(method.Name))
-                            throw new Exception($"Method {method.Name} was already declared");
+                            throw new InvalidOperationException($"Method {method.Name} was already declared");
                         classInterface.Methods[method.Name] = MethodInterface.FromMethodDeclaration(method);
                         break;
 
                     default:
-                        throw new Exception($"Unknown member type: {member.GetType()}");
+                        throw new InvalidOperationException($"Unknown member type: {member.GetType()}");
                 }
             }
 
             if (!constructorFound)
-                throw new Exception("No constructor found");
+                throw new InvalidOperationException("No constructor found");
 
             return classInterface;
         }
@@ -304,7 +304,7 @@ namespace OluaSemanticAnalyzer
                     return mi.ReturnType;
 
                 default:
-                    throw new Exception($"Unknown object type: {obj.GetType().Name}");
+                    throw new InvalidOperationException($"Unknown object type: {obj.GetType().Name}");
             }
         }
 
@@ -415,7 +415,7 @@ namespace OluaSemanticAnalyzer
                     }
                     catch (Exception ex)
                     {
-                        throw new Exception(ex.ToString() + " caused by " + @class.Name);
+                        throw new InvalidOperationException(ex.ToString() + " caused by " + @class.Name);
                     }
                     tclasses.Remove(@class);
                 }
