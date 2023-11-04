@@ -19,8 +19,8 @@ namespace OluaStdLibInterfaces {
                 {
                     { "Available", new MethodInterface { Parameters = new List<TypeName>(), ReturnType = OLT.Integer } },
                     { "Read", new MethodInterface { Parameters = new List<TypeName>(), ReturnType = OLT.Integer } },
-                    { "ReadLine", new MethodInterface { Parameters = new List<TypeName>(), ReturnType = new TypeName("Array", new List<TypeName> { OLT.Integer }) } },
-                    { "Read", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = new TypeName("Array", new List<TypeName> { OLT.Integer }) } }
+                    { "ReadLine", new MethodInterface { Parameters = new List<TypeName>(), ReturnType = new TypeName { Identifier = "Array", GenericType = new TypeName { Identifier = "Integer",  GenericType = null  } } } },
+                    { "Read", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = new TypeName { Identifier = "Array", GenericType = new TypeName { Identifier = "Integer",  GenericType = null  } } } }
                 }
             );
         }
