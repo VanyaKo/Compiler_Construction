@@ -26,7 +26,11 @@ public class Application
             {
                 new IntegerInterface(),
                 new BooleanInterface(),
-                // new RealInterface(),
+                new RealInterface(),
+                new CharInputInterface(),
+                new CharOutputInterface(),
+                new StdInInterface(),
+                new StdOutInterface(),
             };
 
             foreach (var cls in stdlibClasses)
