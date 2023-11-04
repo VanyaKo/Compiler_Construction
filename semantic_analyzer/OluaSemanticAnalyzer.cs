@@ -34,13 +34,9 @@ namespace OluaSemanticAnalyzer
             Dictionary<string, MethodInterface> baseClassMethods
         )
         {
-            var classInterface = new ClassInterface
-            {
-                BaseClass = baseClass,
-                Fields = new Dictionary<string, TypeName>(baseClassFields),
-                Methods = new Dictionary<string, MethodInterface>(baseClassMethods),
-                ConstructorParameters = new List<TypeName>()
-            };
+            var ConstructorParameters = new List<TypeName>();
+            var Fields = new Dictionary<string, TypeName>();
+            var Methods = new Dictionary<string, MethodInterface>();
 
             bool constructorFound = false;
 
@@ -51,21 +47,21 @@ namespace OluaSemanticAnalyzer
                     case ConstructorDeclaration constructor:
                         if (constructorFound)
                             throw new InvalidOperationException("There must be at most one constructor");
-                        classInterface.ConstructorParameters = 
+                        ConstructorParameters = 
                             constructor.Parameters.List.Select(e => e.Type).ToList();
                         constructorFound = true;
                         break;
 
                     case VariableDeclaration variable:
-                        if (classInterface.Fields.ContainsKey(variable.Name))
+                        if (Fields.ContainsKey(variable.Name))
                             throw new InvalidOperationException($"Field {variable.Name} was already declared");
-                        classInterface.Fields[variable.Name] = variable.Type;
+                        Fields[variable.Name] = variable.Type;
                         break;
 
                     case MethodDeclaration method:
-                        if (classInterface.Methods.ContainsKey(method.Name))
+                        if (Methods.ContainsKey(method.Name))
                             throw new InvalidOperationException($"Method {method.Name} was already declared");
-                        classInterface.Methods[method.Name] = MethodInterface.FromMethodDeclaration(method);
+                        Methods[method.Name] = MethodInterface.FromMethodDeclaration(method);
                         break;
 
                     default:
@@ -73,7 +69,49 @@ namespace OluaSemanticAnalyzer
                 }
             }
 
-            return classInterface;
+            // check overloaded methods have the same signature
+            foreach (var method in Methods)
+            {
+                var name = method.Key;
+                var newSignature = method.Value;
+                if (baseClassMethods.ContainsKey(name)) {
+                    var oldSignature = baseClassMethods[name];
+
+                    if (oldSignature.ReturnType != newSignature.ReturnType)
+                        throw new InvalidOperationException("Overloaded method " + name + " return type mismatch");
+
+                    if (newSignature.Parameters.Count != oldSignature.Parameters.Count)
+                        throw new InvalidOperationException("Overloaded method " + name + " parameter count mismatch");
+
+                    for (int i = 0; i < newSignature.Parameters.Count; i++)
+                    {
+                        if (!newSignature.Parameters[i].Equals(oldSignature.Parameters[i]))
+                            throw new InvalidOperationException($"Overloaded method {name} parameter {i} type mismatch");
+                    }
+                }
+            }
+
+            // check overloaded fields have the same types
+            foreach (var field in Fields)
+            {
+                var name = field.Key;
+                var newType = field.Value;
+                if (baseClassFields.ContainsKey(name)) {
+                    var oldType = baseClassFields[name];
+
+                    if (newType != oldType)
+                        throw new InvalidOperationException("Overloaded field " + name + " type mismatch");
+                }
+            }
+
+
+            return new ClassInterface
+            {
+                BaseClass = baseClass,
+                ConstructorParameters = ConstructorParameters,
+                Fields = baseClassFields.Concat(Fields.Where(kvp => !baseClassFields.ContainsKey(kvp.Key))).ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
+                Methods = baseClassMethods.Concat(Methods.Where(kvp => !baseClassMethods.ContainsKey(kvp.Key))).ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
+            };
         }
     }
 
@@ -242,8 +280,7 @@ namespace OluaSemanticAnalyzer
             for (int i = 0; i < arguments.Count; i++)
             {
                 TypeName t = InferType(@this, variables, arguments[i]);
-                if (!IsValidSubtype(parameters[i], t))
-                    throw new InvalidOperationException($"{t} is not a subtype of {parameters[i]}");
+                ValidSubtype(parameters[i], t);
             }
         }
 
