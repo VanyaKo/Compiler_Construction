@@ -12,5 +12,9 @@ namespace OluaStdLibTypes {
         public static readonly TypeName StdOut = Analyzer.typeStdOut;
         public static readonly TypeName CharInput = new TypeName { Identifier = "CharInput", GenericType = null };
         public static readonly TypeName CharOutput = new TypeName { Identifier = "CharOutput", GenericType = null };
+
+        public static TypeName Array(TypeName genericType) {
+            return Analyzer.typeArray(genericType);
+        }
     }
 }

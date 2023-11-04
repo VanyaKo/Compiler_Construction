@@ -5,7 +5,7 @@ using OluaSemanticAnalyzer;
 namespace OluaStdLibInterfaces {
     public class BooleanInterface : ExtendableClassInterface {
         public BooleanInterface() {
-            Name = "Boolean";
+            Name = OLT.Boolean.Identifier;
             Inf = Analyzer.theVeryBaseClass.extend(
                 // Constructor parameters
                 new List<TypeName> { OLT.Boolean },

@@ -4264,19 +4264,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Batman\\.nuget\\packages\\": {}
+    "C:\\Users\\lenovo\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Innopolis University\\Edu\\3rd year\\Fall\\Compiler Construction\\Compiler_Construction\\semantic_analyzer\\showcase\\showcase.csproj",
+      "projectUniqueName": "C:\\Users\\lenovo\\repos\\Compiler_Construction\\semantic_analyzer\\showcase\\showcase.csproj",
       "projectName": "showcase",
-      "projectPath": "D:\\Innopolis University\\Edu\\3rd year\\Fall\\Compiler Construction\\Compiler_Construction\\semantic_analyzer\\showcase\\showcase.csproj",
-      "packagesPath": "C:\\Users\\Batman\\.nuget\\packages\\",
-      "outputPath": "D:\\Innopolis University\\Edu\\3rd year\\Fall\\Compiler Construction\\Compiler_Construction\\semantic_analyzer\\showcase\\obj\\",
+      "projectPath": "C:\\Users\\lenovo\\repos\\Compiler_Construction\\semantic_analyzer\\showcase\\showcase.csproj",
+      "packagesPath": "C:\\Users\\lenovo\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\lenovo\\repos\\Compiler_Construction\\semantic_analyzer\\showcase\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Batman\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net7.0"

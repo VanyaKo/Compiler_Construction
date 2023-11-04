@@ -5,7 +5,7 @@ using OluaSemanticAnalyzer;
 namespace OluaStdLibInterfaces {
     public class IntegerInterface : ExtendableClassInterface {
         public IntegerInterface() {
-            Name = "Integer";
+            Name = OLT.Integer.Identifier;
             Inf = Analyzer.theVeryBaseClass.extend(
                 // Constructor parameters
                 new List<TypeName> { OLT.Integer },

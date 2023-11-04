@@ -3,10 +3,10 @@ using OluaStdLibTypes;
 using OluaSemanticAnalyzer;
 
 namespace OluaStdLibInterfaces {
-    public class StdInInterface : CharInputInterface {
+    public class StdInInterface : ExtendableClassInterface {
         public StdInInterface() {
-            Name = "StdIn";
-            Inf = Analyzer.theVeryBaseClass.extend(
+            Name = OLT.StdIn.Identifier;
+            Inf = new CharInputInterface().extend(
                 // Constructor parameters
                 new List<TypeName>(),
                 // Fields

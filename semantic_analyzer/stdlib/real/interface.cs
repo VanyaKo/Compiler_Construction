@@ -5,7 +5,7 @@ using OluaSemanticAnalyzer;
 namespace OluaStdLibInterfaces {
     public class RealInterface : ExtendableClassInterface {
         public RealInterface() {
-            Name = "Real";
+            Name = OLT.Real.Identifier;
             Inf = Analyzer.theVeryBaseClass.extend(
                 // Constructor parameters
                 new List<TypeName> { OLT.Real },

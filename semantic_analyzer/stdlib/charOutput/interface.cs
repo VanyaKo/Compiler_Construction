@@ -5,7 +5,7 @@ using OluaSemanticAnalyzer;
 namespace OluaStdLibInterfaces {
     public class CharOutputInterface : ExtendableClassInterface {
         public CharOutputInterface() {
-            Name = "CharOutput";
+            Name = OLT.CharOutput.Identifier;
             Inf = Analyzer.theVeryBaseClass.extend(
                 // Constructor parameters
                 new List<TypeName>(),
@@ -19,8 +19,8 @@ namespace OluaStdLibInterfaces {
                 {
                     { "Available", new MethodInterface { Parameters = new List<TypeName>(), ReturnType = OLT.Integer } },
                     { "WriteChar", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = null } },
-                    { "Write", new MethodInterface { Parameters = new List<TypeName> { new TypeName { Identifier = "Array", GenericType = new TypeName { Identifier = "Integer",  GenericType = null  } } }, ReturnType = null } },
-                    { "WriteLine", new MethodInterface { Parameters = new List<TypeName> { new TypeName { Identifier = "Array", GenericType = new TypeName { Identifier = "Integer",  GenericType = null  } } }, ReturnType = null } }
+                    { "Write", new MethodInterface { Parameters = new List<TypeName> { OLT.Array(OLT.Integer) }, ReturnType = null } },
+                    { "WriteLine", new MethodInterface { Parameters = new List<TypeName> { OLT.Array(OLT.Integer) }, ReturnType = null } }
                 }
             );
         }

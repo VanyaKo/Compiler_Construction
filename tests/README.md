@@ -33,7 +33,7 @@ end
 // IO classes
 class CharInput is
     method Avaliable() : Integer; // returns the number of items Avaliable to read from the buffer
-    method Read() : Integer; // reads an item, blocks until is available
+    method ReadChar() : Integer; // reads an item, blocks until is available
     method ReadLine() : Array[Integer]; // returns only Integer values that are valid unicode character codes, blocks until is available
     method Read(n : Integer) : Array[Integer]; // read n next characters
 end
