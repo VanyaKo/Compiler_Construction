@@ -6,25 +6,14 @@ class ScopesTestClass extends EntryPoint is
     end
 
     this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) is
-        this.scopesTest1()
-        this.scopesTest2()
-    end
-
-    method scopesTest1() : void is
         var a: Integer := 10
         is
-            var a: Integer := 20
-            // expected a = 20
-            this.assert(a.equal(20))
+            var a: Real := 20.0
+            var b: Real := 10.0
+            this.assert(a.equal(20.0))
+            this.assert(b.equal(10.0))
         end
         this.assert(a.equal(10))
-    end
-    
-    method scopesTest2() : void is
-        is
-            var a: Integer := 20
-            this.assert(a.equal(20))
-        end
-        // accessing a here is a compiler error
+        // this.assert(b.equal(10.0)) // b must be undeclared here
     end
 end
