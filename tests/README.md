@@ -33,29 +33,29 @@ end
 // IO classes
 class CharInput is
     method Avaliable() : Integer; // returns the number of items Avaliable to read from the buffer
-    method Read() : T; // reads an item, blocks until is available
+    method Read() : Integer; // reads an item, blocks until is available
     method ReadLine() : Array[Integer]; // returns only Integer values that are valid unicode character codes, blocks until is available
     method Read(n : Integer) : Array[Integer]; // read n next characters
 end
 
 class CharOutput is
     method Avaliable() : Integer; // returns the number of items Avaliable to write (usually the remaining size of the reciever's buffer), use for congestion control
-    method WriteChar(e: Integer) : Output[Integer]; // writes an item, blocks until is Avaliable
-    method Write(s: Array[Integer]) : CharOutput; // forwards only Inetgers that are valid unicode character codes, otherwise the consumed element is ignored, blocks until is avaliable
-    method WriteLine(s: Array[Integer]) : CharOutput;
+    method WriteChar(e: Integer); // writes an item, blocks until is Avaliable
+    method Write(s: Array[Integer]); // forwards only Inetgers that are valid unicode character codes, otherwise the consumed element is ignored, blocks until is avaliable
+    method WriteLine(s: Array[Integer]);
 end
 
 class StdIn extends CharInput is
 end
 
 class StdOut extends CharOutput is
-    method WriteInteger(Integer) : CharOutput;
-    method WriteReal(Real) : CharOutput;
-    method WriteBoolean(Boolean) : CharOutput;
+    method WriteInteger(Integer);
+    method WriteReal(Real);
+    method WriteBoolean(Boolean);
 
-    method WriteIntegerLine(Integer) : CharOutput;
-    method WriteRealLine(Real) : CharOutput;
-    method WriteBooleanLine(Boolean) : CharOutput;
+    method WriteIntegerLine(Integer);
+    method WriteRealLine(Real);
+    method WriteBooleanLine(Boolean);
 end
 ```
 
