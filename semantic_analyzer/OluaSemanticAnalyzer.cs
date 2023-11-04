@@ -386,9 +386,10 @@ namespace OluaSemanticAnalyzer
                 bool end = true;
                 foreach (var @class in tclasses.ToList())  // ToList creates a copy to allow modification during iteration
                 {
-                    string? BaseClass = @class.BaseClass.Identifier;
-                    if (@class.BaseClass.GenericType != null)
+                    if (@class.BaseClass != null && @class.BaseClass.GenericType != null)
                         throw new InvalidOperationException("Prohibited to extend generic");
+
+                    string? BaseClass = @class.BaseClass == null ? null : @class.BaseClass.Identifier;
 
                     if (BaseClass != null && !linkClasses.ContainsKey(BaseClass)) continue;
                     end = false;
