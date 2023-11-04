@@ -42,11 +42,11 @@ public class Application
 
         try {
             analyzer.LinkFromASTAndValidate(parser.Program);
+            Console.WriteLine("Program is valid");
         } catch (InvalidOperationException ex) {
             Console.WriteLine(ex.Message);
         }
 
-        Console.WriteLine("Program is valid");
     }
 }
 
