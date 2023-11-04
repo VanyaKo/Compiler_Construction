@@ -178,13 +178,12 @@ namespace OluaSemanticAnalyzer
             TypeName? curType = type;
             while (curType != null)
             {
-                string prevClassName = curType.Identifier;
                 if (linkClasses.ContainsKey(curType.Identifier)) {
                     if (curType.GenericType != null) {
                         throw new InvalidOperationException($"{curType.Identifier} cannot have generic");
                     }
                 }                
-                if (linkGenerics.ContainsKey(curType.Identifier)) {
+                else if (linkGenerics.ContainsKey(curType.Identifier)) {
                     if (curType.GenericType == null) {
                         throw new InvalidOperationException($"{curType.Identifier} must have generic");
                     }
