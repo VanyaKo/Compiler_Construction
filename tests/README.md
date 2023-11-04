@@ -30,29 +30,18 @@ end
 ```
 
 ```
-// convension classes
-class Output[T] is
-    method Avaliable() : Integer; // returns the number of items Avaliable to write (usually the remaining size of the reciever's buffer), use for congestion control
-    method Write(e: T) : Output[T]; // writes an item, blocks until is Avaliable
-end
-
-class Input[T] is
+// IO classes
+class CharInput is
     method Avaliable() : Integer; // returns the number of items Avaliable to read from the buffer
     method Read() : T; // reads an item, blocks until is available
-end
-```
-
-```
-// IO classes
-class CharInput extends Input[Integer] is
-    // in addition to the Input.Read described functionality this read returns only Integer values that are valid unicode character codes
-    method ReadLine() : Array[Integer];
+    method ReadLine() : Array[Integer]; // returns only Integer values that are valid unicode character codes, blocks until is available
     method Read(n : Integer) : Array[Integer]; // read n next characters
 end
 
-class CharOutput extends Output[Integer] is
-    // in addition to the Output.Write described functionality this write forwards only Inetgers that are valid unicode character codes, otherwise the consumed element is ignored
-    method Write(s: Array[Integer]) : CharOutput;
+class CharOutput is
+    method Avaliable() : Integer; // returns the number of items Avaliable to write (usually the remaining size of the reciever's buffer), use for congestion control
+    method WriteChar(e: Integer) : Output[Integer]; // writes an item, blocks until is Avaliable
+    method Write(s: Array[Integer]) : CharOutput; // forwards only Inetgers that are valid unicode character codes, otherwise the consumed element is ignored, blocks until is avaliable
     method WriteLine(s: Array[Integer]) : CharOutput;
 end
 
@@ -60,13 +49,13 @@ class StdIn extends CharInput is
 end
 
 class StdOut extends CharOutput is
-    method Write(Integer) : CharOutput;
-    method Write(Real) : CharOutput;
-    method Write(Boolean) : CharOutput;
+    method WriteInteger(Integer) : CharOutput;
+    method WriteReal(Real) : CharOutput;
+    method WriteBoolean(Boolean) : CharOutput;
 
-    method WriteLine(Integer) : CharOutput;
-    method WriteLine(Real) : CharOutput;
-    method WriteLine(Boolean) : CharOutput;
+    method WriteIntegerLine(Integer) : CharOutput;
+    method WriteRealLine(Real) : CharOutput;
+    method WriteBooleanLine(Boolean) : CharOutput;
 end
 ```
 
