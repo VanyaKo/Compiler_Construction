@@ -18,7 +18,7 @@ namespace OluaStdLibInterfaces {
                 new Dictionary<string, MethodInterface>
                 {
                     { "Available", new MethodInterface { Parameters = new List<TypeName>(), ReturnType = OLT.Integer } },
-                    { "Read", new MethodInterface { Parameters = new List<TypeName>(), ReturnType = OLT.T } }, // OLT.T needs to be defined or replaced with actual type
+                    { "Read", new MethodInterface { Parameters = new List<TypeName>(), ReturnType = OLT.Integer } },
                     { "ReadLine", new MethodInterface { Parameters = new List<TypeName>(), ReturnType = new TypeName("Array", new List<TypeName> { OLT.Integer }) } },
                     { "Read", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = new TypeName("Array", new List<TypeName> { OLT.Integer }) } }
                 }
