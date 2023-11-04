@@ -14,12 +14,12 @@ namespace OluaStdLibInterfaces {
                 // Methods
                 new Dictionary<string, MethodInterface>
                 {
-                    { "WriteInteger", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = OLT.CharOutput } },
-                    { "WriteReal", new MethodInterface { Parameters = new List<TypeName> { OLT.Real }, ReturnType = OLT.CharOutput } },
-                    { "WriteBoolean", new MethodInterface { Parameters = new List<TypeName> { OLT.Boolean }, ReturnType = OLT.CharOutput } },
-                    { "WriteIntegerLine", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = OLT.CharOutput } },
-                    { "WriteRealLine", new MethodInterface { Parameters = new List<TypeName> { OLT.Real }, ReturnType = OLT.CharOutput } },
-                    { "WriteBooleanLine", new MethodInterface { Parameters = new List<TypeName> { OLT.Boolean }, ReturnType = OLT.CharOutput } }
+                    { "WriteInteger", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = null } },
+                    { "WriteReal", new MethodInterface { Parameters = new List<TypeName> { OLT.Real }, ReturnType = null } },
+                    { "WriteBoolean", new MethodInterface { Parameters = new List<TypeName> { OLT.Boolean }, ReturnType = null } },
+                    { "WriteIntegerLine", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = null } },
+                    { "WriteRealLine", new MethodInterface { Parameters = new List<TypeName> { OLT.Real }, ReturnType = null } },
+                    { "WriteBooleanLine", new MethodInterface { Parameters = new List<TypeName> { OLT.Boolean }, ReturnType = null } }
                 }
             );
         }
