@@ -182,6 +182,7 @@ namespace OluaSemanticAnalyzer
                     if (curType.GenericType != null) {
                         throw new InvalidOperationException($"{curType.Identifier} cannot have generic");
                     }
+                    break;
                 }                
                 else if (linkGenerics.ContainsKey(curType.Identifier)) {
                     if (curType.GenericType == null) {
