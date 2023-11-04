@@ -44,6 +44,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="../stdlib/array/interface.cs" Link="ArrayGeneric.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="StarodubOleg.GPPG.Runtime" Version="0.1.0-alpha1-2" />
   </ItemGroup>
 

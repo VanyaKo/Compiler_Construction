@@ -33,7 +33,8 @@ public class Application
                 analyzer.LinkClass(cls.Name, cls.Inf);
         }
 
-        // TODO: link generics
+        // link the only stdlib generic class - Array
+        analyzer.LinkGeneric("Array", new ArrayGeneric());
 
         try {
             analyzer.LinkFromASTAndValidate(parser.Program);

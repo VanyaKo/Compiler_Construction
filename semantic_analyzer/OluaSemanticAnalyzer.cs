@@ -20,7 +20,6 @@ namespace OluaSemanticAnalyzer
         public ClassInterface Gen(TypeName typeName);
     }
 
-
     public class ClassInterface
     {
         public string? BaseClass { get; set; }
