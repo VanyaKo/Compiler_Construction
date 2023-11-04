@@ -23,21 +23,21 @@ namespace OluaStdLibInterfaces {
                     { "toBoolean", new MethodInterface { Parameters = new List<TypeName>(), ReturnType = OLT.Boolean } },
                     
                     // Unary operators
-                    { "UnaryMinus", new MethodInterface { Parameters = new List<TypeName>(), ReturnType = OLT.Integer } },
+                    { "unaryMinus", new MethodInterface { Parameters = new List<TypeName>(), ReturnType = OLT.Integer } },
                     
                     // Integer binary arithmetics 
-                    { "Plus", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = OLT.Integer } },
-                    { "Minus", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = OLT.Integer } },
-                    { "Mult", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = OLT.Integer } },
-                    { "Div", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = OLT.Integer } },
-                    { "Rem", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = OLT.Integer } },
+                    { "plus", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = OLT.Integer } },
+                    { "minus", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = OLT.Integer } },
+                    { "mult", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = OLT.Integer } },
+                    { "div", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = OLT.Integer } },
+                    { "rem", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = OLT.Integer } },
                     
                     // Relations
-                    { "Less", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = OLT.Boolean } },
-                    { "LessEqual", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = OLT.Boolean } },
-                    { "Greater", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = OLT.Boolean } },
-                    { "GreaterEqual", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = OLT.Boolean } },
-                    { "Equal", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = OLT.Boolean } }
+                    { "less", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = OLT.Boolean } },
+                    { "lessEqual", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = OLT.Boolean } },
+                    { "greater", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = OLT.Boolean } },
+                    { "greaterEqual", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = OLT.Boolean } },
+                    { "equal", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = OLT.Boolean } }
                 }
             );
         }
