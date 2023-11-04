@@ -279,7 +279,7 @@ namespace OluaSemanticAnalyzer
                     TypeName t = InferType(@this, variables, attributeObject.Parent);
                     ClassInterface inf = GetInterface(t);
                     if (!inf.Fields.ContainsKey(attributeObject.Identifier))
-                        throw new InvalidOperationException("Unknown attribute");
+                        throw new InvalidOperationException($"Unknown attribute {attributeObject.Identifier}");
                     return inf.Fields[attributeObject.Identifier];
 
                 case ConstructorInvocation constructorInvocation:
