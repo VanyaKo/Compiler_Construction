@@ -449,7 +449,7 @@ namespace OluaSemanticAnalyzer
                     }
                     catch (InvalidOperationException ex)
                     {
-                        throw new InvalidOperationException(ex.Message + " caused by " + @class.Name);
+                        throw new InvalidOperationException("Error in class " + @class.Name + " : " + ex.Message);
                     }
                     tclasses.Remove(@class);
                 }
