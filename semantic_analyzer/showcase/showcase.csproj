@@ -36,6 +36,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="../stdlib/real/interface.cs" Link="RealInterface.cs" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <Compile Include="../stdlib/boolean/interface.cs" Link="BooleanInterface.cs" />
   </ItemGroup>
 
