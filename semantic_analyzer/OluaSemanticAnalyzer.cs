@@ -263,7 +263,7 @@ namespace OluaSemanticAnalyzer
 
                 case ObjectIdentifier objectIdentifier:
                     if (!variables.ContainsKey(objectIdentifier.Identifier))
-                        throw new InvalidOperationException("Undeclared variable");
+                        throw new InvalidOperationException($"Undeclared variable {objectIdentifier.Identifier}");
                     return variables[objectIdentifier.Identifier];
 
                 case Literal<int>:
@@ -365,6 +365,7 @@ namespace OluaSemanticAnalyzer
                     case VariableDeclaration variableDeclaration:
                         TypeName? argTVarDecl = InferType(@this, variables, variableDeclaration.InitialValue);
                         ValidSubtype(variableDeclaration.Type, argTVarDecl);
+                        variables[variableDeclaration.Name] = variableDeclaration.Type;
                         break;
 
                     default:
