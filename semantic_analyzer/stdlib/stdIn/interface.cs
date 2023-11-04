@@ -6,7 +6,7 @@ namespace OluaStdLibInterfaces {
     public class StdInInterface : CharInputInterface {
         public StdInInterface() {
             Name = "StdIn";
-            Inf = Analyzer.BaseClass.extend( // не знаю правильно ли написал
+            Inf = Analyzer.theVeryBaseClass.extend(
                 // Constructor parameters
                 new List<TypeName>(),
                 // Fields

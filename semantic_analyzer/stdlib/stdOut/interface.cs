@@ -6,7 +6,7 @@ namespace OluaStdLibInterfaces {
     public class StdOutInterface : CharOutputInterface {
         public StdOutInterface() {
             Name = "StdOut";
-            Inf = Analyzer.BaseClass.extend( // не знаю правильно ли написал
+            Inf = Analyzer.theVeryBaseClass.extend(
                 // Constructor parameters
                 new List<TypeName>(),
                 // Fields
