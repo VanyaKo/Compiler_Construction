@@ -103,22 +103,31 @@ namespace OluaSemanticAnalyzer
         Dictionary<string, IGenericFactory> linkGenerics = new Dictionary<string, IGenericFactory>();
         Dictionary<string, ClassInterface> linkClasses = new Dictionary<string, ClassInterface>();
 
+        public static TypeName typeArray(TypeName genericType)
+        {
+            return new TypeName
+            {
+                Identifier = "Array",
+                GenericType = genericType
+            };
+        }
+        public static readonly TypeName typeEntryPoint = new TypeName { Identifier = "EntryPoint", GenericType = null };
         public static readonly TypeName typeClass = new TypeName { Identifier = "Class", GenericType = null };
         public static readonly TypeName typeBoolean = new TypeName { Identifier = "Boolean", GenericType = null };
         public static readonly TypeName typeInteger = new TypeName { Identifier = "Integer", GenericType = null };
         public static readonly TypeName typeReal = new TypeName { Identifier = "Real", GenericType = null };
-        public static readonly TypeName typeCharInput = new TypeName { Identifier = "CharInput", GenericType = null };
-        public static readonly TypeName typeCharOutput = new TypeName { Identifier = "CharOutput", GenericType = null };
         public static readonly TypeName typeStdIn = new TypeName { Identifier = "StdIn", GenericType = null };
         public static readonly TypeName typeStdOut = new TypeName { Identifier = "StdOut", GenericType = null };
+
         private static readonly MethodInterface methodSameRef = new MethodInterface
         {
             Parameters = new List<TypeName> { typeClass },
             ReturnType = typeBoolean
         };
+
         public static readonly ExtendableClassInterface theVeryBaseClass = new ExtendableClassInterface
         {
-            Name = "Class",
+            Name = typeClass.Identifier,
             Inf = new ClassInterface
             {
                 BaseClass = null,
@@ -133,13 +142,13 @@ namespace OluaSemanticAnalyzer
 
         public Analyzer()
         {
-            linkClasses["Class"] = theVeryBaseClass.Inf;
-            linkClasses["EntryPoint"] = theVeryBaseClass.extend(
+            linkClasses[typeClass.Identifier] = theVeryBaseClass.Inf;
+            linkClasses[typeEntryPoint.Identifier] = theVeryBaseClass.extend(
                 // Constructor parameters
                 new List<TypeName>(),
                 // Fields
                 new Dictionary<string, TypeName> {
-                    { "ExitCode", new TypeName { Identifier = "Integer", GenericType = null } }
+                    { "ExitCode", typeInteger }
                 },
                 // Methods
                 new Dictionary<string, MethodInterface>()
@@ -198,7 +207,7 @@ namespace OluaSemanticAnalyzer
         void ValidSubtype(TypeName originT, TypeName? subT)
         {
             if (!IsValidSubtype(originT, subT))
-                throw new InvalidOperationException($"{subT} is not a subtype of {originT}");
+                throw new InvalidOperationException($"{(subT != null ? subT.ToString() : "void")} is not a subtype of {originT}");
         }
 
         ClassInterface GetInterface(TypeName t)
@@ -207,9 +216,9 @@ namespace OluaSemanticAnalyzer
             return t.GenericType != null ? linkGenerics[t.Identifier].Gen(t.GenericType) : linkClasses[t.Identifier];
         }
 
-        MethodInterface ResolveMethod(Dictionary<string, TypeName> variables, AttributeObject attribute)
+        MethodInterface ResolveMethod(TypeName? @this, Dictionary<string, TypeName> variables, AttributeObject attribute)
         {
-            TypeName t = InferType(variables, attribute.Parent);
+            TypeName t = InferType(@this, variables, attribute.Parent);
             ClassInterface inf = GetInterface(t);
             if (!inf.Methods.ContainsKey(attribute.Identifier))
                 throw new InvalidOperationException("Unknown method");
@@ -217,6 +226,7 @@ namespace OluaSemanticAnalyzer
         }
 
         void CheckParamSubmission(
+            TypeName? @this,
             Dictionary<string, TypeName> variables,
             List<OluaObject> arguments,
             List<TypeName> parameters
@@ -226,7 +236,7 @@ namespace OluaSemanticAnalyzer
                 throw new InvalidOperationException("Invalid parameters count");
             for (int i = 0; i < arguments.Count; i++)
             {
-                TypeName t = InferType(variables, arguments[i]);
+                TypeName t = InferType(@this, variables, arguments[i]);
                 if (!IsValidSubtype(parameters[i], t))
                     throw new InvalidOperationException($"{t} is not a subtype of {parameters[i]}");
             }
@@ -236,12 +246,12 @@ namespace OluaSemanticAnalyzer
         // inferes type with all the type checks at the same time
         // also inferred type is always a valid type
         // returns null for void type
-        TypeName? InferType(Dictionary<string, TypeName> variables, OluaObject obj)
+        TypeName? InferType(TypeName? @this, Dictionary<string, TypeName> variables, OluaObject obj)
         {
             switch (obj)
             {
                 case ThisIdentifier thisIdentifier:
-                    return new TypeName { Identifier = this.GetType().Name, GenericType = null };
+                    return @this;
 
                 case ObjectIdentifier objectIdentifier:
                     if (!variables.ContainsKey(objectIdentifier.Identifier))
@@ -249,16 +259,16 @@ namespace OluaSemanticAnalyzer
                     return variables[objectIdentifier.Identifier];
 
                 case Literal<int>:
-                    return new TypeName { Identifier = "Integer", GenericType = null }; 
+                    return typeInteger; 
 
                 case Literal<float>:
-                    return new TypeName { Identifier = "Real", GenericType = null }; 
+                    return typeReal; 
 
                 case Literal<bool>:
-                    return new TypeName { Identifier = "Boolean", GenericType = null }; 
+                    return typeBoolean; 
 
                 case AttributeObject attributeObject:
-                    TypeName t = InferType(variables, attributeObject.Parent);
+                    TypeName t = InferType(@this, variables, attributeObject.Parent);
                     ClassInterface inf = GetInterface(t);
                     if (!inf.Fields.ContainsKey(attributeObject.Identifier))
                         throw new InvalidOperationException("Unknown attribute");
@@ -268,6 +278,7 @@ namespace OluaSemanticAnalyzer
                     TypeName cnstrT = constructorInvocation.Type;
                     ClassInterface cinf = GetInterface(cnstrT);
                     CheckParamSubmission(
+                        @this,
                         variables,
                         constructorInvocation.Arguments.List,
                         cinf.ConstructorParameters
@@ -275,8 +286,9 @@ namespace OluaSemanticAnalyzer
                     return cnstrT;
 
                 case MethodInvocation methodInvocation:
-                    MethodInterface mi = ResolveMethod(variables, methodInvocation.Method);
+                    MethodInterface mi = ResolveMethod(@this, variables, methodInvocation.Method);
                     CheckParamSubmission(
+                        @this,
                         variables,
                         methodInvocation.Arguments.List,
                         mi.Parameters
@@ -289,6 +301,7 @@ namespace OluaSemanticAnalyzer
         }
 
         void ValidScope(
+            TypeName? @this,
             Dictionary<string, TypeName> variables, // mapping from variable name to its type
             TypeName? returnType,
             List<Statement> statementList
@@ -300,33 +313,33 @@ namespace OluaSemanticAnalyzer
                 switch (statement)
                 {
                     case Scope scope:
-                        ValidScope(variables, returnType, scope.Statements.List);
+                        ValidScope(@this, variables, returnType, scope.Statements.List);
                         break;
 
                     case Assignment assignment:
-                        TypeName? argT = InferType(variables, assignment.Value);
+                        TypeName? argT = InferType(@this, variables, assignment.Value);
                         if (argT == null)
                             throw new InvalidOperationException("Cannot assign void");
-                        TypeName paramT = InferType(variables, assignment.Variable) ?? throw new InvalidOperationException("Variable type cannot be null");
+                        TypeName paramT = InferType(@this, variables, assignment.Variable) ?? throw new InvalidOperationException("Variable type cannot be null");
                         ValidSubtype(paramT, argT);
                         break;
 
                     case If @if:
-                        TypeName? argTIf = InferType(variables, @if.Cond);
-                        ValidSubtype(new TypeName { Identifier = "Boolean", GenericType = null }, argTIf);
-                        ValidScope(variables, returnType, @if.Then.List);
+                        TypeName? argTIf = InferType(@this, variables, @if.Cond);
+                        ValidSubtype(typeBoolean, argTIf);
+                        ValidScope(@this, variables, returnType, @if.Then.List);
                         if (@if.Else != null)
-                            ValidScope(variables, returnType, @if.Else.List);
+                            ValidScope(@this, variables, returnType, @if.Else.List);
                         break;
 
                     case While @while:
-                        TypeName? argTWhile = InferType(variables, @while.Cond);
-                        ValidSubtype(new TypeName { Identifier = "Boolean", GenericType = null }, argTWhile);
-                        ValidScope(variables, returnType, @while.Body.List);
+                        TypeName? argTWhile = InferType(@this, variables, @while.Cond);
+                        ValidSubtype(typeBoolean, argTWhile);
+                        ValidScope(@this, variables, returnType, @while.Body.List);
                         break;
 
                     case Return @return:
-                        TypeName? argTReturn = InferType(variables, @return.Object);
+                        TypeName? argTReturn = InferType(@this, variables, @return.Object);
                         if (returnType == null && argTReturn != null)
                             throw new InvalidOperationException("Method requires void return type");
                         ValidSubtype(returnType, argTReturn);
@@ -334,14 +347,15 @@ namespace OluaSemanticAnalyzer
 
                     case MethodInvocation methodInvocation:
                         CheckParamSubmission(
+                            @this,
                             variables,
                             methodInvocation.Arguments.List,
-                            ResolveMethod(variables, methodInvocation.Method).Parameters
+                            ResolveMethod(@this, variables, methodInvocation.Method).Parameters
                         );
                         break;
 
                     case VariableDeclaration variableDeclaration:
-                        TypeName? argTVarDecl = InferType(variables, variableDeclaration.InitialValue);
+                        TypeName? argTVarDecl = InferType(@this, variables, variableDeclaration.InitialValue);
                         ValidSubtype(variableDeclaration.Type, argTVarDecl);
                         break;
 
@@ -371,7 +385,7 @@ namespace OluaSemanticAnalyzer
                     end = false;
 
                     if (BaseClass == null) {
-                        BaseClass = "Class";
+                        BaseClass = typeClass.Identifier;
                     }
 
                     checkNotPresentType(@class.Name);
@@ -418,7 +432,7 @@ namespace OluaSemanticAnalyzer
                         if (!linkClasses.ContainsKey(cls.BaseClass))
                             throw new InvalidOperationException($"Base class of class {name} is invalid");
 
-                        if (cls.BaseClass == "EntryPoint")
+                        if (cls.BaseClass == typeEntryPoint.Identifier)
                         {
                             if (entryPoint)
                                 throw new InvalidOperationException("There must be exactly one class that extends EntryPoint");
@@ -426,10 +440,10 @@ namespace OluaSemanticAnalyzer
 
                             var requiredParameters = new List<TypeName>
                             {
-                                new TypeName { Identifier = "StdIn", GenericType = null },
-                                new TypeName { Identifier = "StdOut", GenericType = null },
-                                new TypeName { Identifier = "StdOut", GenericType = null },
-                                new TypeName { Identifier = "Array", GenericType = new TypeName { Identifier = "Array", GenericType = new TypeName { Identifier = "Integer", GenericType = null } } }
+                                typeStdIn,
+                                typeStdOut,
+                                typeStdOut,
+                                typeArray(typeArray(typeInteger))
                             };
 
                             if (cls.ConstructorParameters.Count != 4)
@@ -463,6 +477,7 @@ namespace OluaSemanticAnalyzer
             // 2. validate bodies
             foreach (var cls in classes)
             {
+                var thisType = new TypeName { Identifier = cls.Name, GenericType = null };
                 foreach (var member in cls.Members)
                 {
                     switch (member)
@@ -473,11 +488,11 @@ namespace OluaSemanticAnalyzer
                             foreach (var p in constructor.Parameters.List)
                                 variables[p.Name] = p.Type;
 
-                            ValidScope(variables, null, constructor.Statements.List);
+                            ValidScope(thisType, variables, null, constructor.Statements.List);
                             break;
 
                         case VariableDeclaration variable:
-                            var argT = InferType(new Dictionary<string, TypeName>(), variable.InitialValue);
+                            var argT = InferType(null, new Dictionary<string, TypeName>(), variable.InitialValue);
                             ValidSubtype(variable.Type, argT);
                             break;
 
@@ -487,7 +502,7 @@ namespace OluaSemanticAnalyzer
                             foreach (var p in method.Parameters.List)
                                 variablesMethod[p.Name] = p.Type;
 
-                            ValidScope(variablesMethod, method.ReturnType, method.Statements.List);
+                            ValidScope(thisType, variablesMethod, method.ReturnType, method.Statements.List);
                             break;
 
                         default:
