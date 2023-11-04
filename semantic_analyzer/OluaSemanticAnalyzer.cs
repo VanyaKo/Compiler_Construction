@@ -229,7 +229,7 @@ namespace OluaSemanticAnalyzer
             TypeName t = InferType(@this, variables, attribute.Parent);
             ClassInterface inf = GetInterface(t);
             if (!inf.Methods.ContainsKey(attribute.Identifier))
-                throw new InvalidOperationException("Unknown method");
+                throw new InvalidOperationException($"Unknown method {attribute.Identifier}");
             return inf.Methods[attribute.Identifier];
         }
 
