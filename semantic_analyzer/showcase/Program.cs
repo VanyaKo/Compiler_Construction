@@ -24,6 +24,7 @@ public class Application
         {
             new IntegerInterface(),
             new BooleanInterface(),
+            // new RealInterface(),
         };
 
         foreach (var cls in stdlibClasses)
