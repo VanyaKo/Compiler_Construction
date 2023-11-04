@@ -413,9 +413,9 @@ namespace OluaSemanticAnalyzer
                     {
                         linkClasses[@class.Name] = ClassInterface.FromDecl(@class.Members, BaseClass, BaseClassFields, BaseClassMethods);
                     }
-                    catch (Exception ex)
+                    catch (InvalidOperationException ex)
                     {
-                        throw new InvalidOperationException(ex.ToString() + " caused by " + @class.Name);
+                        throw new InvalidOperationException(ex.Message + " caused by " + @class.Name);
                     }
                     tclasses.Remove(@class);
                 }
