@@ -135,7 +135,7 @@ namespace OluaSemanticAnalyzer
                 Fields = new Dictionary<string, TypeName>(),
                 Methods = new Dictionary<string, MethodInterface>
                 {
-                    { "SameRef", methodSameRef }
+                    { "sameRef", methodSameRef }
                 }
             }
         };
@@ -148,7 +148,7 @@ namespace OluaSemanticAnalyzer
                 new List<TypeName>(),
                 // Fields
                 new Dictionary<string, TypeName> {
-                    { "ExitCode", typeInteger }
+                    { "exit_code", typeInteger }
                 },
                 // Methods
                 new Dictionary<string, MethodInterface>()

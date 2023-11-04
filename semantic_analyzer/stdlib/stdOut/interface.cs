@@ -14,12 +14,12 @@ namespace OluaStdLibInterfaces {
                 // Methods
                 new Dictionary<string, MethodInterface>
                 {
-                    { "WriteInteger", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = null } },
-                    { "WriteReal", new MethodInterface { Parameters = new List<TypeName> { OLT.Real }, ReturnType = null } },
-                    { "WriteBoolean", new MethodInterface { Parameters = new List<TypeName> { OLT.Boolean }, ReturnType = null } },
-                    { "WriteIntegerLine", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = null } },
-                    { "WriteRealLine", new MethodInterface { Parameters = new List<TypeName> { OLT.Real }, ReturnType = null } },
-                    { "WriteBooleanLine", new MethodInterface { Parameters = new List<TypeName> { OLT.Boolean }, ReturnType = null } }
+                    { "writeInteger", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = null } },
+                    { "writeReal", new MethodInterface { Parameters = new List<TypeName> { OLT.Real }, ReturnType = null } },
+                    { "writeBoolean", new MethodInterface { Parameters = new List<TypeName> { OLT.Boolean }, ReturnType = null } },
+                    { "writeIntegerLine", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = null } },
+                    { "writeRealLine", new MethodInterface { Parameters = new List<TypeName> { OLT.Real }, ReturnType = null } },
+                    { "writeBooleanLine", new MethodInterface { Parameters = new List<TypeName> { OLT.Boolean }, ReturnType = null } }
                 }
             );
         }

@@ -12,8 +12,8 @@ namespace OluaStdLibInterfaces {
                 // Fields
                 new Dictionary<string, TypeName>
                 {
-                    { "Max", OLT.Integer },
-                    { "Min", OLT.Integer }
+                    { "max", OLT.Integer },
+                    { "min", OLT.Integer }
                 },
                 // Methods
                 new Dictionary<string, MethodInterface>

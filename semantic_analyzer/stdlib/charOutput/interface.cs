@@ -17,10 +17,10 @@ namespace OluaStdLibInterfaces {
                 // Methods
                 new Dictionary<string, MethodInterface>
                 {
-                    { "Available", new MethodInterface { Parameters = new List<TypeName>(), ReturnType = OLT.Integer } },
-                    { "WriteChar", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = null } },
-                    { "Write", new MethodInterface { Parameters = new List<TypeName> { OLT.Array(OLT.Integer) }, ReturnType = null } },
-                    { "WriteLine", new MethodInterface { Parameters = new List<TypeName> { OLT.Array(OLT.Integer) }, ReturnType = null } }
+                    { "available", new MethodInterface { Parameters = new List<TypeName>(), ReturnType = OLT.Integer } },
+                    { "writeChar", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = null } },
+                    { "write", new MethodInterface { Parameters = new List<TypeName> { OLT.Array(OLT.Integer) }, ReturnType = null } },
+                    { "writeLine", new MethodInterface { Parameters = new List<TypeName> { OLT.Array(OLT.Integer) }, ReturnType = null } }
                 }
             );
         }

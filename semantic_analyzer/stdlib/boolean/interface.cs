@@ -21,10 +21,10 @@ namespace OluaStdLibInterfaces {
                     { "toInteger", new MethodInterface { Parameters = new List<TypeName>(), ReturnType = OLT.Integer } },
 
                     // Boolean operators
-                    { "Or", new MethodInterface { Parameters = new List<TypeName> { OLT.Boolean }, ReturnType = OLT.Boolean } },
-                    { "And", new MethodInterface { Parameters = new List<TypeName> { OLT.Boolean }, ReturnType = OLT.Boolean } },
-                    { "Xor", new MethodInterface { Parameters = new List<TypeName> { OLT.Boolean }, ReturnType = OLT.Boolean } },
-                    { "Not", new MethodInterface { Parameters = new List<TypeName>(), ReturnType = OLT.Boolean } },
+                    { "or", new MethodInterface { Parameters = new List<TypeName> { OLT.Boolean }, ReturnType = OLT.Boolean } },
+                    { "and", new MethodInterface { Parameters = new List<TypeName> { OLT.Boolean }, ReturnType = OLT.Boolean } },
+                    { "xor", new MethodInterface { Parameters = new List<TypeName> { OLT.Boolean }, ReturnType = OLT.Boolean } },
+                    { "not", new MethodInterface { Parameters = new List<TypeName>(), ReturnType = OLT.Boolean } },
                 }
             );
         }

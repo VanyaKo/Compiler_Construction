@@ -25,44 +25,44 @@
 ```
 // base class
 class Class is
-    method SameRef(o: Class) : Boolean; // test is the other object having the same pointer as me
+    method sameRef(o: Class) : Boolean; // test is the other object having the same pointer as me
 end
 ```
 
 ```
 // IO classes
 class CharInput is
-    method Avaliable() : Integer; // returns the number of items Avaliable to read from the buffer
-    method ReadChar() : Integer; // reads an item, blocks until is available
-    method ReadLine() : Array[Integer]; // returns only Integer values that are valid unicode character codes, blocks until is available
-    method Read(n : Integer) : Array[Integer]; // read n next characters
+    method avaliable() : Integer; // returns the number of items avaliable to read from the buffer
+    method readChar() : Integer; // reads an item, blocks until is available
+    method readLine() : Array[Integer]; // returns only Integer values that are valid unicode character codes, blocks until is available
+    method read(n : Integer) : Array[Integer]; // read n next characters
 end
 
 class CharOutput is
-    method Avaliable() : Integer; // returns the number of items Avaliable to write (usually the remaining size of the reciever's buffer), use for congestion control
-    method WriteChar(e: Integer); // writes an item, blocks until is Avaliable
-    method Write(s: Array[Integer]); // forwards only Inetgers that are valid unicode character codes, otherwise the consumed element is ignored, blocks until is avaliable
-    method WriteLine(s: Array[Integer]);
+    method avaliable() : Integer; // returns the number of items avaliable to write (usually the remaining size of the reciever's buffer), use for congestion control
+    method writeChar(e: Integer); // writes an item, blocks until is avaliable
+    method write(s: Array[Integer]); // forwards only Inetgers that are valid unicode character codes, otherwise the consumed element is ignored, blocks until is avaliable
+    method writeLine(s: Array[Integer]);
 end
 
 class StdIn extends CharInput is
 end
 
 class StdOut extends CharOutput is
-    method WriteInteger(Integer);
-    method WriteReal(Real);
-    method WriteBoolean(Boolean);
+    method writeInteger(Integer);
+    method writeReal(Real);
+    method writeBoolean(Boolean);
 
-    method WriteIntegerLine(Integer);
-    method WriteRealLine(Real);
-    method WriteBooleanLine(Boolean);
+    method writeIntegerLine(Integer);
+    method writeRealLine(Real);
+    method writeBooleanLine(Boolean);
 end
 ```
 
 ```
 // Class for managing exit code
 class EntryPoint is
-    var ExitCode : Integer := 0; // if a invalid value assigned, the real exit code of the program will be set to 1
+    var exit_code : Integer := 0; // if a invalid value assigned, the real exit code of the program will be set to 1
 end
 ```
 
