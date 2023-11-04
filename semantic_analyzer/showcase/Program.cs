@@ -20,15 +20,18 @@ public class Application
 
         Analyzer analyzer = new();
 
-        List<ExtendableClassInterface> stdlibClasses = new List<ExtendableClassInterface>
+        // link stdlib classes
         {
-            new IntegerInterface(),
-            new BooleanInterface(),
-            // new RealInterface(),
-        };
+            List<ExtendableClassInterface> stdlibClasses = new List<ExtendableClassInterface>
+            {
+                new IntegerInterface(),
+                new BooleanInterface(),
+                // new RealInterface(),
+            };
 
-        foreach (var cls in stdlibClasses)
-            analyzer.LinkClass(cls.Name, cls.Inf);
+            foreach (var cls in stdlibClasses)
+                analyzer.LinkClass(cls.Name, cls.Inf);
+        }
 
         // TODO: link generics
 
