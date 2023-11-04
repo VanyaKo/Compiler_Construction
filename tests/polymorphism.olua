@@ -4,10 +4,6 @@ class A is
     method returnSomething() : Real is
         return this.value.toReal()
     end
-
-    method returnSomething(val : Real) : Real is
-        return val
-    end
 end
 
 class B extends A is
@@ -15,16 +11,12 @@ class B extends A is
     method returnSomething() : Real is
         return 100.0
     end
-
-    method returnSomething(val : Real) : Real is
-        return val.Plus(10.0)
-    end
 end
 
 class PolymorphismTest extends EntryPoint is
     method assert(cond : Boolean) : void is
-        if cond.Not() then
-            this.ExitCode := 1
+        if cond.not() then
+            this.exit_code := 1
         end
     end
     
@@ -33,8 +25,8 @@ class PolymorphismTest extends EntryPoint is
         var objBA : A := B()
         var objBB : B := B()
 
-        this.assert(objA.returnSomething().Equal(42.0)) // expects 42
-        this.assert(objBA.returnSomething().Equal(100.0)) // expect 100
-        this.assert(objBB.returnSomething().Equal(100.0)) // expect 100
+        this.assert(objA.returnSomething().equal(42.0)) // expects 42
+        this.assert(objBA.returnSomething().equal(100.0)) // expect 100
+        this.assert(objBB.returnSomething().equal(100.0)) // expect 100
     end
 end

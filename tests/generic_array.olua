@@ -12,15 +12,14 @@ class B extends A is
     end
 end
 
-
 class TestMixedTypesArray extends EntryPoint is
     method assert(cond : Boolean) : void is
-        if cond.Not() then
-            this.ExitCode := 1
+        if cond.not() then
+            this.exit_code := 1
         end
     end
 
-    this(stdin: CharInput, stdout: CharOutput, stderr: CharOutput, args: Array[Array[Integer]]) is
+    this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) is
         var array : Array[A] := Array[A](3)
         var objBA : A := B()
         var objBB : B := B()
@@ -29,8 +28,8 @@ class TestMixedTypesArray extends EntryPoint is
         array.set(1, objBA)
         array.set(2, objBB)
 
-        this.assert(array.get(0).returnValue().Equal(42)) // expects 42
-        this.assert(array.get(1).returnValue().Equal(100)) // expect 100
-        this.assert(array.get(2).returnValue().Equal(100)) // expect 100
+        this.assert(array.get(0).returnValue().equal(42)) // expects 42
+        this.assert(array.get(1).returnValue().equal(100)) // expect 100
+        this.assert(array.get(2).returnValue().equal(100)) // expect 100
     end
 end

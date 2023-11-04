@@ -1,22 +1,22 @@
 class A is
-    var value : Integer := 42
+    var value : Real := 42.0
 
     method displayValue() : Real is
-        return this.value.toReal()
+        return this.value
     end
 end
 
 class B extends A is
     // Method in class B
     method displayValue2() : Real is
-        return this.value.Plus(10.0)
+        return this.value.plus(10.0)
     end
 end
 
 class InheritanceTest extends EntryPoint is
     method assert(cond : Boolean) : void is
-        if cond.Not() then
-            this.ExitCode := 1
+        if cond.not() then
+            this.exit_code := 1
         end
     end
 
@@ -25,9 +25,9 @@ class InheritanceTest extends EntryPoint is
         var objB : B := B()
         var objBA : A := objB
 
-        this.assert(objA.displayValue().Equal(42.0)) // expects 42
-        this.assert(objB.displayValue().Equal(42.0)) // expects 42
-        this.assert(objBA.displayValue2().Equal(52.0)) // expects 52
+        this.assert(objA.displayValue().equal(42.0)) // expects 42
+        this.assert(objB.displayValue().equal(42.0)) // expects 42
+        this.assert(objBA.displayValue().equal(42.0)) // expects 42
+        this.assert(objB.displayValue2().equal(52.0)) // expects 52
     end
 end
-

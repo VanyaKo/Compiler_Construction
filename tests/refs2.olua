@@ -1,36 +1,36 @@
 // Refs2 : emphasizes that a variable is just a slot for the pointer, so that actually immutable classes are safe to pass to the methods, ensuring that from the other scope it is impossible to substitude a variable in your scope
 class Refs2 extends EntryPoint is
     method assert(cond : Boolean) : void is
-        if cond.Not() then
-            this.ExitCode := 1
+        if cond.not() then
+            this.exit_code := 1
         end
     end
 
-    method DoSmth(a : Integer) : void is
-        a := a.Plus(2)
+    method doSmth(a : Integer) : void is
+        a := a.plus(2)
     end
 
     this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) is
-        var a : Inetger := 1
-        var b : integer := a.Plus(1)
+        var a : Integer := 1
+        var b : Integer := a.plus(1)
 
-        this.assert(a.Equal(1))
-        this.assert(b.Equal(2))
+        this.assert(a.equal(1))
+        this.assert(b.equal(2))
 
-        this.DoSmth(a)
+        this.doSmth(a)
 
-        this.assert(a.Equal(1))
-        this.assert(b.Equal(2))
+        this.assert(a.equal(1))
+        this.assert(b.equal(2))
 
         a := b
 
-        this.assert(a.Equal(2))
-        this.assert(b.Equal(2))
-        this.assert(a.SameRef(b))
+        this.assert(a.equal(2))
+        this.assert(b.equal(2))
+        this.assert(a.sameRef(b))
 
-        a := a.Plus(1)
+        a := a.plus(1)
 
-        this.assert(a.Equal(3))
-        this.assert(b.Equal(2))
+        this.assert(a.equal(3))
+        this.assert(b.equal(2))
     end
 end

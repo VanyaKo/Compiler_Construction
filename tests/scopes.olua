@@ -1,29 +1,29 @@
 class ScopesTestClass extends EntryPoint is
     method assert(cond : Boolean) : void is
-        if cond.Not() then
-            this.ExitCode := 1
+        if cond.not() then
+            this.exit_code := 1
         end
     end
 
     this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) is
-        this.ScopesTest1()
-        this.ScopesTest2()
+        this.scopesTest1()
+        this.scopesTest2()
     end
 
-    method ScopesTest1() : void is
+    method scopesTest1() : void is
         var a: Integer := 10
         is
             var a: Integer := 20
             // expected a = 20
-            this.assert(a.Equal(20))
+            this.assert(a.equal(20))
         end
-        this.assert(a.Equal(10))
+        this.assert(a.equal(10))
     end
     
-    method ScopesTest1() : void is
+    method scopesTest2() : void is
         is
             var a: Integer := 20
-            this.assert(a.Equal(20))
+            this.assert(a.equal(20))
         end
         // accessing a here is a compiler error
     end
