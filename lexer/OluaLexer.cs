@@ -1,9 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Text.RegularExpressions;
 using OluaParser;
 using StarodubOleg.GPPG.Runtime;
+using System.Globalization;
 
 
 namespace OluaLexer
@@ -106,7 +104,7 @@ namespace OluaLexer
                             yylval.iVal = int.Parse(match.Value);
                             break;
                         case Tokens.FLOAT_LITERAL:
-                            yylval.fVal = float.Parse(match.Value);
+                            yylval.fVal = float.Parse(match.Value, CultureInfo.InvariantCulture);
                             break;
                     }
 
