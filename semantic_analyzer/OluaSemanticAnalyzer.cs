@@ -50,7 +50,7 @@ namespace OluaSemanticAnalyzer
                 {
                     case ConstructorDeclaration constructor:
                         if (constructorFound)
-                            throw new InvalidOperationException("There must be exactly one constructor");
+                            throw new InvalidOperationException("There must be at most one constructor");
                         classInterface.ConstructorParameters = 
                             constructor.Parameters.List.Select(e => e.Type).ToList();
                         constructorFound = true;
@@ -72,9 +72,6 @@ namespace OluaSemanticAnalyzer
                         throw new InvalidOperationException($"Unknown member type: {member.GetType()}");
                 }
             }
-
-            if (!constructorFound)
-                throw new InvalidOperationException("No constructor found");
 
             return classInterface;
         }
