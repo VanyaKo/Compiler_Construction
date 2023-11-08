@@ -16,6 +16,7 @@ public class Application
 
         if (!success) {
             Console.WriteLine($"Syntax error at {Path.GetFullPath(target)}({scanner.yylloc.StartLine},{scanner.yylloc.StartColumn})");
+            return;
         }
 
         Analyzer analyzer = new();
