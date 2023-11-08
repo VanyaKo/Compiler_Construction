@@ -261,7 +261,9 @@ namespace OluaSemanticAnalyzer
 
         MethodInterface ResolveMethod(TypeName? @this, Dictionary<string, TypeName> variables, AttributeObject attribute)
         {
-            TypeName t = InferType(@this, variables, attribute.Parent);
+            TypeName? t = InferType(@this, variables, attribute.Parent);
+            if (t == null)
+                throw new InvalidOperationException($"Unknown or void resulting type of {attribute.Parent}");
             ClassInterface inf = GetInterface(t);
             if (!inf.Methods.ContainsKey(attribute.Identifier))
                 throw new InvalidOperationException($"Unknown method {attribute.Identifier}");
@@ -279,7 +281,7 @@ namespace OluaSemanticAnalyzer
                 throw new InvalidOperationException("Invalid parameters count");
             for (int i = 0; i < arguments.Count; i++)
             {
-                TypeName t = InferType(@this, variables, arguments[i]);
+                TypeName? t = InferType(@this, variables, arguments[i]);
                 ValidSubtype(parameters[i], t);
             }
         }
@@ -310,7 +312,9 @@ namespace OluaSemanticAnalyzer
                     return typeBoolean; 
 
                 case AttributeObject attributeObject:
-                    TypeName t = InferType(@this, variables, attributeObject.Parent);
+                    TypeName? t = InferType(@this, variables, attributeObject.Parent);
+                    if (t == null)
+                        throw new InvalidOperationException($"Unknown or void resulting type of {attributeObject.Parent}");
                     ClassInterface inf = GetInterface(t);
                     if (!inf.Fields.ContainsKey(attributeObject.Identifier))
                         throw new InvalidOperationException($"Unknown attribute {attributeObject.Identifier}");
