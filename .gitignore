@@ -7,6 +7,10 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
+# cache build directories
+/semantic_analyzer/showcase/bin/Debug/net7.0
+/semantic_analyzer/showcase/obj/
+
 # User-specific files
 *.rsuser
 *.suo

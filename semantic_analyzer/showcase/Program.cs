@@ -42,7 +42,7 @@ public class Application
         analyzer.LinkGeneric("Array", new ArrayGeneric());
 
         try {
-            analyzer.LinkFromASTAndValidate(parser.Program);
+            analyzer.LinkValidateAndOptimize(parser.Program);
             Console.WriteLine("Program is valid");
         } catch (InvalidOperationException ex) {
             Console.WriteLine(ex.Message);

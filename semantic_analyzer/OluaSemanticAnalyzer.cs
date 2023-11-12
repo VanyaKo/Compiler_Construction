@@ -415,7 +415,7 @@ namespace OluaSemanticAnalyzer
         // classes from ast
         // linkClasses to link extenally provided classes, usually the runtime library classes
         // NOTE: all inheritance must be done inside the provided bunch of classes
-        public void LinkFromASTAndValidate(List<ClassDeclaration> classes)
+        public List<ClassDeclaration> LinkValidateAndOptimize(List<ClassDeclaration> classes)
         {
             // 0. patrial validations that does not require back looking (ClassInterface.fromDecl)
             var tclasses = new List<ClassDeclaration>(classes);  // Shallow copy
@@ -522,42 +522,82 @@ namespace OluaSemanticAnalyzer
                     throw new InvalidOperationException("No entry point defined");
             }
 
-            // 2. validate bodies
+            // 2. validate bodies and optimize
             foreach (var cls in classes)
             {
                 var thisType = new TypeName { Identifier = cls.Name, GenericType = null };
-                foreach (var member in cls.Members)
+                foreach (var member in cls.Members.ToList()) // ToList to avoid modifying the collection while iterating
                 {
                     switch (member)
                     {
                         case ConstructorDeclaration constructor:
-                            var variables = new Dictionary<string, TypeName>();
-
-                            foreach (var p in constructor.Parameters.List)
-                                variables[p.Name] = p.Type;
-
-                            ValidScope(thisType, variables, null, constructor.Statements.List);
+                            OptimizeScope(constructor.Statements.List, new HashSet<string>(), cls.Members);
                             break;
-
-                        case VariableDeclaration variable:
-                            var argT = InferType(null, new Dictionary<string, TypeName>(), variable.InitialValue);
-                            ValidSubtype(variable.Type, argT);
-                            break;
-
                         case MethodDeclaration method:
-                            var variablesMethod = new Dictionary<string, TypeName>();
-
-                            foreach (var p in method.Parameters.List)
-                                variablesMethod[p.Name] = p.Type;
-
-                            ValidScope(thisType, variablesMethod, method.ReturnType, method.Statements.List);
+                            OptimizeScope(method.Statements.List, new HashSet<string>(), cls.Members);
                             break;
-
-                        default:
-                            throw new InvalidOperationException($"Unknown member type: {member.GetType().Name}");
                     }
                 }
             }
+
+            return classes;
+        }
+
+        private void OptimizeScope(List<Statement> statements, HashSet<string> usedVariables, List<ClassMember> members)
+        {
+            var localVariables = new HashSet<string>();
+            foreach (var statement in statements)
+            {
+                switch (statement)
+                {
+                    case Assignment assignment:
+                        MarkVariableAsUsed(assignment.Variable, usedVariables, localVariables);
+                        break;
+                    case If @if:
+                        OptimizeScope(@if.Then.List, new HashSet<string>(usedVariables), members); // New HashSet for new scope
+                        if (@if.Else != null) OptimizeScope(@if.Else.List, new HashSet<string>(usedVariables), members);
+                        break;
+                    case While @while:
+                        OptimizeScope(@while.Body.List, new HashSet<string>(usedVariables), members);
+                        break;
+                    case Return @return:
+                        if (@return.Object is ObjectIdentifier identifier)
+                        {
+                            MarkVariableAsUsed(identifier, usedVariables, localVariables);
+                        }
+                        break;
+                    case VariableDeclaration variableDeclaration:
+                        localVariables.Add(variableDeclaration.Name);
+                        break;
+                    // Add other statement types as necessary
+                }
+            }
+
+            // Remove unused variables at the end of the scope
+            foreach (var variableName in localVariables)
+            {
+                if (!usedVariables.Contains(variableName))
+                {
+                    Console.WriteLine($"Removing unused variable: {variableName}");
+                    members.RemoveAll(m => m is VariableDeclaration vd && vd.Name == variableName);
+                }
+            }
+        }
+
+        private void MarkVariableAsUsed(OluaObject variable, HashSet<string> usedVariables, HashSet<string> localVariables)
+        {
+            if (variable is ObjectIdentifier objectIdentifier)
+            {
+                if (localVariables.Contains(objectIdentifier.Identifier))
+                {
+                    usedVariables.Add(objectIdentifier.Identifier);
+                }
+            }
+            else if (variable is AttributeObject attributeObject)
+            {
+                MarkVariableAsUsed(attributeObject.Parent, usedVariables, localVariables);
+            }
+            // Handle other OluaObject types as necessary
         }
     }
 }

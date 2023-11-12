@@ -7,6 +7,7 @@ class ScopesTestClass extends EntryPoint is
 
     this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) is
         var a: Integer := 10
+        var x: Integer := 0
         is
             var a: Real := 20.0
             var b: Real := 10.0
