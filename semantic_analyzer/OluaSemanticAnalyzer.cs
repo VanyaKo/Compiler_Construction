@@ -555,10 +555,12 @@ namespace OluaSemanticAnalyzer
                         MarkVariableAsUsed(assignment.Value, usedVariables, localVariables);
                         break;
                     case If @if:
-                        OptimizeScope(@if.Then.List, new HashSet<string>(usedVariables), members); // New HashSet for new scope
+                        MarkVariableAsUsed(@if.Cond, usedVariables, localVariables);
+                        OptimizeScope(@if.Then.List, new HashSet<string>(usedVariables), members);
                         if (@if.Else != null) OptimizeScope(@if.Else.List, new HashSet<string>(usedVariables), members);
                         break;
                     case While @while:
+                        MarkVariableAsUsed(@while.Cond, usedVariables, localVariables);
                         OptimizeScope(@while.Body.List, new HashSet<string>(usedVariables), members);
                         break;
                     case Return @return:
@@ -571,11 +573,9 @@ namespace OluaSemanticAnalyzer
                         localVariables.Add(variableDeclaration.Name);
                         break;
                     case MethodInvocation methodInvocation:
-                        Console.WriteLine($"Method invocation here: {statement}");
                         MarkVariableAsUsed(methodInvocation.Method, usedVariables, localVariables);
                         foreach (var arg in methodInvocation.Arguments.List)
                         {
-                            Console.WriteLine($"Variable to pass to MarkVariableAsUsed method: {arg}");
                             MarkVariableAsUsed(arg, usedVariables, localVariables);
                         }
                         break;

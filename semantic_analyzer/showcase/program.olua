@@ -1,9 +1,6 @@
 class ScopesTestClass extends EntryPoint is
-   
     this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) is
-        var x: Integer := 0
-        if x.equal(5) then
-            x := 1
-        end
+        var a: Integer := 0
+        a := 5
     end
 end
