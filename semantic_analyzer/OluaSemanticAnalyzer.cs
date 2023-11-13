@@ -552,6 +552,7 @@ namespace OluaSemanticAnalyzer
                 {
                     case Assignment assignment:
                         MarkVariableAsUsed(assignment.Variable, usedVariables, localVariables);
+                        MarkVariableAsUsed(assignment.Value, usedVariables, localVariables);
                         break;
                     case If @if:
                         OptimizeScope(@if.Then.List, new HashSet<string>(usedVariables), members); // New HashSet for new scope
@@ -568,6 +569,15 @@ namespace OluaSemanticAnalyzer
                         break;
                     case VariableDeclaration variableDeclaration:
                         localVariables.Add(variableDeclaration.Name);
+                        break;
+                    case MethodInvocation methodInvocation:
+                        Console.WriteLine($"Method invocation here: {statement}");
+                        MarkVariableAsUsed(methodInvocation.Method, usedVariables, localVariables);
+                        foreach (var arg in methodInvocation.Arguments.List)
+                        {
+                            Console.WriteLine($"Variable to pass to MarkVariableAsUsed method: {arg}");
+                            MarkVariableAsUsed(arg, usedVariables, localVariables);
+                        }
                         break;
                     // Add other statement types as necessary
                 }
@@ -590,14 +600,42 @@ namespace OluaSemanticAnalyzer
             {
                 if (localVariables.Contains(objectIdentifier.Identifier))
                 {
+                    Console.WriteLine($"    ObjectIdentifier variable added: {objectIdentifier.Identifier}");
                     usedVariables.Add(objectIdentifier.Identifier);
                 }
             }
             else if (variable is AttributeObject attributeObject)
             {
+                // Mark the attribute's identifier as used if it is a local variable
+                if (localVariables.Contains(attributeObject.Identifier))
+                {
+                    Console.WriteLine($"    AttributeObject variable added: {attributeObject.Identifier}");
+                    usedVariables.Add(attributeObject.Identifier);
+                }
+
+                // Continue to check the parent object
+                Console.WriteLine($"    Checking parent of AttributeObject: {attributeObject.Parent}");
                 MarkVariableAsUsed(attributeObject.Parent, usedVariables, localVariables);
+            }
+            else if (variable is MethodInvocation methodInvocation)
+            {
+                // If the method is called on an attribute object, check the attribute
+                if (methodInvocation.Method is AttributeObject methodAttributeObject)
+                {
+                    MarkVariableAsUsed(methodAttributeObject, usedVariables, localVariables);
+                }
+
+                // Check each argument in the method call
+                foreach (var arg in methodInvocation.Arguments.List)
+                {
+                    Console.WriteLine($"    MethodInvocation variable here: {arg}");
+                    MarkVariableAsUsed(arg, usedVariables, localVariables);
+                }
             }
             // Handle other OluaObject types as necessary
         }
+
+
+
     }
 }
