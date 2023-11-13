@@ -3,6 +3,8 @@ using OluaLexer;
 using OluaParser;
 using OluaSemanticAnalyzer;
 using OluaStdLibInterfaces;
+using Indent;
+
 
 public class Application
 {
@@ -42,12 +44,16 @@ public class Application
         analyzer.LinkGeneric("Array", new ArrayGeneric());
 
         try {
-            analyzer.LinkValidateAndOptimize(parser.Program);
+            var oclasses = analyzer.LinkValidateAndOptimize(parser.Program);
             Console.WriteLine("Program is valid");
+            
+            Indentator idnt = new();
+            foreach (ClassDeclaration cls in oclasses) {
+                Console.WriteLine(idnt.Traverse(cls.ToStrings()));
+            }
         } catch (InvalidOperationException ex) {
             Console.WriteLine(ex.Message);
         }
-
     }
 }
 
