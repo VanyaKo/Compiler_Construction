@@ -560,12 +560,15 @@ namespace OluaSemanticAnalyzer
             }
 
             // 3. optimize bodies
+            List<ClassDeclaration> newClasses = new List<ClassDeclaration>();
+
             foreach (var cls in classes)
             {
                 var updatedMembers = new List<ClassMember>(cls.Members);
 
                 foreach (var member in cls.Members.ToList()) // ToList to avoid modifying the collection while iterating
                 {
+                    Console.WriteLine($"Current member is {member}");
                     switch (member)
                     {
                         case ConstructorDeclaration constructor:
@@ -587,7 +590,7 @@ namespace OluaSemanticAnalyzer
                 cls.Members = updatedMembers; // Update the members of the class
             }
 
-            return classes;
+            return newClasses;
         }
 
         private List<ClassMember> OptimizeScope(List<Statement> statements, HashSet<string> usedVariables, List<ClassMember> members)
@@ -595,6 +598,7 @@ namespace OluaSemanticAnalyzer
             var localVariables = new HashSet<string>();
             foreach (var statement in statements)
             {
+                Console.WriteLine($"\tCurrent statements is {statement}");
                 switch (statement)
                 {
                     case Assignment assignment:
@@ -618,6 +622,7 @@ namespace OluaSemanticAnalyzer
                         }
                         break;
                     case VariableDeclaration variableDeclaration:
+                        Console.WriteLine($"\t\tCurrent statements type is VariableDeclaration");
                         localVariables.Add(variableDeclaration.Name);
                         break;
                     case MethodInvocation methodInvocation:
@@ -631,13 +636,19 @@ namespace OluaSemanticAnalyzer
                 }
             }
 
+            Console.WriteLine($"\tlocalVariables are:");
             foreach (var variableName in localVariables)
             {
+                Console.WriteLine($"\t\t{variableName}");
+
                 if (!usedVariables.Contains(variableName))
                 {
-                    Console.WriteLine($"Recognized unused variable: {variableName}");
+                    Console.WriteLine($"\t\tRecognized unused variable: {variableName}");
                 }
             }
+
+            // Console.WriteLine($"\tMembers before removing are:");
+        
 
             // Remove unused variables at the end of the scope
             members.RemoveAll(m => m is VariableDeclaration vd && localVariables.Contains(vd.Name) && !usedVariables.Contains(vd.Name));

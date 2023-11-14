@@ -8,19 +8,19 @@
     "net7.0": []
   },
   "packageFolders": {
-    "C:\\Users\\lenovo\\.nuget\\packages\\": {}
+    "C:\\Users\\Batman\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\lenovo\\repos\\Compiler_Construction\\lexer\\showcase\\showcase.csproj",
+      "projectUniqueName": "D:\\Innopolis University\\Edu\\3rd year\\Fall\\Compiler Construction\\Compiler_Construction\\lexer\\showcase\\showcase.csproj",
       "projectName": "showcase",
-      "projectPath": "C:\\Users\\lenovo\\repos\\Compiler_Construction\\lexer\\showcase\\showcase.csproj",
-      "packagesPath": "C:\\Users\\lenovo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\lenovo\\repos\\Compiler_Construction\\lexer\\showcase\\obj\\",
+      "projectPath": "D:\\Innopolis University\\Edu\\3rd year\\Fall\\Compiler Construction\\Compiler_Construction\\lexer\\showcase\\showcase.csproj",
+      "packagesPath": "C:\\Users\\Batman\\.nuget\\packages\\",
+      "outputPath": "D:\\Innopolis University\\Edu\\3rd year\\Fall\\Compiler Construction\\Compiler_Construction\\lexer\\showcase\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Batman\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
