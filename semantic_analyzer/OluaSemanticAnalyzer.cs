@@ -522,7 +522,44 @@ namespace OluaSemanticAnalyzer
                     throw new InvalidOperationException("No entry point defined");
             }
 
-            // 2. validate bodies and optimize
+            // 2. validate bodies
+            foreach (var cls in classes)
+            {
+                var thisType = new TypeName { Identifier = cls.Name, GenericType = null };
+                foreach (var member in cls.Members)
+                {
+                    switch (member)
+                    {
+                        case ConstructorDeclaration constructor:
+                            var variables = new Dictionary<string, TypeName>();
+
+                            foreach (var p in constructor.Parameters.List)
+                                variables[p.Name] = p.Type;
+
+                            ValidScope(thisType, variables, null, constructor.Statements.List);
+                            break;
+
+                        case VariableDeclaration variable:
+                            var argT = InferType(null, new Dictionary<string, TypeName>(), variable.InitialValue);
+                            ValidSubtype(variable.Type, argT);
+                            break;
+
+                        case MethodDeclaration method:
+                            var variablesMethod = new Dictionary<string, TypeName>();
+
+                            foreach (var p in method.Parameters.List)
+                                variablesMethod[p.Name] = p.Type;
+
+                            ValidScope(thisType, variablesMethod, method.ReturnType, method.Statements.List);
+                            break;
+
+                        default:
+                            throw new InvalidOperationException($"Unknown member type: {member.GetType().Name}");
+                    }
+                }
+            }
+
+            // 3. optimize bodies
             foreach (var cls in classes)
             {
                 var thisType = new TypeName { Identifier = cls.Name, GenericType = null };
