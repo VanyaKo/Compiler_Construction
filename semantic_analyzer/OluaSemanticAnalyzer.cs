@@ -562,25 +562,35 @@ namespace OluaSemanticAnalyzer
             // 3. optimize bodies
             foreach (var cls in classes)
             {
-                var thisType = new TypeName { Identifier = cls.Name, GenericType = null };
+                var updatedMembers = new List<ClassMember>(cls.Members);
+
                 foreach (var member in cls.Members.ToList()) // ToList to avoid modifying the collection while iterating
                 {
                     switch (member)
                     {
                         case ConstructorDeclaration constructor:
-                            OptimizeScope(constructor.Statements.List, new HashSet<string>(), cls.Members);
+                            // previous version when OptimizeScope was void
+                            // OptimizeScope(constructor.Statements.List, new HashSet<string>(), cls.Members);
+                            updatedMembers = OptimizeScope(constructor.Statements.List, new HashSet<string>(), updatedMembers);
                             break;
                         case MethodDeclaration method:
-                            OptimizeScope(method.Statements.List, new HashSet<string>(), cls.Members);
+                            // previous version when OptimizeScope was void
+                            // OptimizeScope(method.Statements.List, new HashSet<string>(), cls.Members);
+                            updatedMembers = OptimizeScope(method.Statements.List, new HashSet<string>(), updatedMembers);
                             break;
                     }
                 }
+
+                // Remove unused variable declarations
+                Console.WriteLine("Removing code lines with unused variables");
+                
+                cls.Members = updatedMembers; // Update the members of the class
             }
 
             return classes;
         }
 
-        private void OptimizeScope(List<Statement> statements, HashSet<string> usedVariables, List<ClassMember> members)
+        private List<ClassMember> OptimizeScope(List<Statement> statements, HashSet<string> usedVariables, List<ClassMember> members)
         {
             var localVariables = new HashSet<string>();
             foreach (var statement in statements)
@@ -588,7 +598,8 @@ namespace OluaSemanticAnalyzer
                 switch (statement)
                 {
                     case Assignment assignment:
-                        MarkVariableAsUsed(assignment.Variable, usedVariables, localVariables);
+                        Console.WriteLine($"    Assignment: {assignment}, variable: {assignment.Variable}, value: {assignment.Value}");
+                        // MarkVariableAsUsed(assignment.Variable, usedVariables, localVariables);
                         MarkVariableAsUsed(assignment.Value, usedVariables, localVariables);
                         break;
                     case If @if:
@@ -620,15 +631,17 @@ namespace OluaSemanticAnalyzer
                 }
             }
 
-            // Remove unused variables at the end of the scope
             foreach (var variableName in localVariables)
             {
                 if (!usedVariables.Contains(variableName))
                 {
-                    Console.WriteLine($"Removing unused variable: {variableName}");
-                    members.RemoveAll(m => m is VariableDeclaration vd && vd.Name == variableName);
+                    Console.WriteLine($"Recognized unused variable: {variableName}");
                 }
             }
+
+            // Remove unused variables at the end of the scope
+            members.RemoveAll(m => m is VariableDeclaration vd && localVariables.Contains(vd.Name) && !usedVariables.Contains(vd.Name));
+            return members;
         }
 
         private void MarkVariableAsUsed(OluaObject variable, HashSet<string> usedVariables, HashSet<string> localVariables)

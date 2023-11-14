@@ -1,6 +1,7 @@
 class ScopesTestClass extends EntryPoint is
     this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) is
         var a : Integer := 0
-        a := 5
+        a := 1
+        var x : Integer := 18
     end
 end
