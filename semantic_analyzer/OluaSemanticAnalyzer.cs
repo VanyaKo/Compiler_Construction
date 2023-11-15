@@ -560,7 +560,6 @@ namespace OluaSemanticAnalyzer
             }
 
             // 3. optimize bodies
-            List<ClassDeclaration> newClasses = new List<ClassDeclaration>();
 
             foreach (var cls in classes)
             {
@@ -572,13 +571,9 @@ namespace OluaSemanticAnalyzer
                     switch (member)
                     {
                         case ConstructorDeclaration constructor:
-                            // previous version when OptimizeScope was void
-                            // OptimizeScope(constructor.Statements.List, new HashSet<string>(), cls.Members);
                             updatedMembers = OptimizeScope(constructor.Statements.List, new HashSet<string>(), updatedMembers);
                             break;
                         case MethodDeclaration method:
-                            // previous version when OptimizeScope was void
-                            // OptimizeScope(method.Statements.List, new HashSet<string>(), cls.Members);
                             updatedMembers = OptimizeScope(method.Statements.List, new HashSet<string>(), updatedMembers);
                             break;
                     }
@@ -590,19 +585,21 @@ namespace OluaSemanticAnalyzer
                 cls.Members = updatedMembers; // Update the members of the class
             }
 
-            return newClasses;
+            return classes;
         }
 
         private List<ClassMember> OptimizeScope(List<Statement> statements, HashSet<string> usedVariables, List<ClassMember> members)
         {
             var localVariables = new HashSet<string>();
+            var assignmentsToVariables = new List<Assignment>();
+
             foreach (var statement in statements)
             {
-                Console.WriteLine($"\tCurrent statements is {statement}");
                 switch (statement)
                 {
                     case Assignment assignment:
-                        Console.WriteLine($"    Assignment: {assignment}, variable: {assignment.Variable}, value: {assignment.Value}");
+                        Console.WriteLine($"\tAssignment: {assignment}, variable: {assignment.Variable}, value: {assignment.Value}");
+                        assignmentsToVariables.Add(assignment);
                         // MarkVariableAsUsed(assignment.Variable, usedVariables, localVariables);
                         MarkVariableAsUsed(assignment.Value, usedVariables, localVariables);
                         break;
@@ -622,7 +619,7 @@ namespace OluaSemanticAnalyzer
                         }
                         break;
                     case VariableDeclaration variableDeclaration:
-                        Console.WriteLine($"\t\tCurrent statements type is VariableDeclaration");
+                        Console.WriteLine($"\tVariableDeclaration: {variableDeclaration}");
                         localVariables.Add(variableDeclaration.Name);
                         break;
                     case MethodInvocation methodInvocation:
@@ -637,6 +634,7 @@ namespace OluaSemanticAnalyzer
             }
 
             Console.WriteLine($"\tlocalVariables are:");
+
             foreach (var variableName in localVariables)
             {
                 Console.WriteLine($"\t\t{variableName}");
@@ -644,14 +642,27 @@ namespace OluaSemanticAnalyzer
                 if (!usedVariables.Contains(variableName))
                 {
                     Console.WriteLine($"\t\tRecognized unused variable: {variableName}");
+                    
+                    // Print the variable declaration
+                    var unusedVarDeclaration = statements.OfType<VariableDeclaration>()
+                                                .FirstOrDefault(v => v.Name == variableName);
+                    if (unusedVarDeclaration != null)
+                    {
+                        Console.WriteLine($"\t\tUnused variable declaration: {unusedVarDeclaration}");
+                        statements.Remove(unusedVarDeclaration);
+                    }
+
+                    // Print assignments to the unused variable
+                    var unusedAssignments = assignmentsToVariables
+                                            .Where(a => a.Variable.ToString() == variableName);
+                    foreach (var assignment in unusedAssignments)
+                    {
+                        Console.WriteLine($"\t\tUnused variable assignment: {assignment}");
+                        statements.Remove(assignment);
+                    }
                 }
             }
 
-            // Console.WriteLine($"\tMembers before removing are:");
-        
-
-            // Remove unused variables at the end of the scope
-            members.RemoveAll(m => m is VariableDeclaration vd && localVariables.Contains(vd.Name) && !usedVariables.Contains(vd.Name));
             return members;
         }
 
