@@ -1,8 +1,17 @@
 class ScopesTestClass extends EntryPoint is
+    method assert(cond : Boolean) : void is
+        if cond.not() then
+            this.exit_code := 1
+        end
+    end
+
     this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) is
-        var a : Integer := 0
-        var b : Integer := 1
-        var x : Integer := 18
-        x := a
+        var a: Integer := 10
+        is
+            var a: Real := 20.0
+            var b: Real := 10.0
+            this.assert(a.equal(20.0))
+        end
+        this.assert(a.equal(10))
     end
 end

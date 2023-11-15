@@ -618,6 +618,11 @@ namespace OluaSemanticAnalyzer
                             MarkVariableAsUsed(identifier, usedVariables, localVariables);
                         }
                         break;
+                    case Scope nestedScope:
+                        // Handle nested scopes
+                        Console.WriteLine($"\tScope: {nestedScope}");
+                        OptimizeScope(nestedScope.Statements.List, new HashSet<string>(usedVariables), members);
+                        break;
                     case VariableDeclaration variableDeclaration:
                         Console.WriteLine($"\tVariableDeclaration: {variableDeclaration}");
                         localVariables.Add(variableDeclaration.Name);
@@ -681,12 +686,12 @@ namespace OluaSemanticAnalyzer
                 // Mark the attribute's identifier as used if it is a local variable
                 if (localVariables.Contains(attributeObject.Identifier))
                 {
-                    Console.WriteLine($"    AttributeObject variable added: {attributeObject.Identifier}");
+                    // Console.WriteLine($"    AttributeObject variable added: {attributeObject.Identifier}");
                     usedVariables.Add(attributeObject.Identifier);
                 }
 
                 // Continue to check the parent object
-                Console.WriteLine($"    Checking parent of AttributeObject: {attributeObject.Parent}");
+                // Console.WriteLine($"    Checking parent of AttributeObject: {attributeObject.Parent}");
                 MarkVariableAsUsed(attributeObject.Parent, usedVariables, localVariables);
             }
             else if (variable is MethodInvocation methodInvocation)
@@ -700,7 +705,7 @@ namespace OluaSemanticAnalyzer
                 // Check each argument in the method call
                 foreach (var arg in methodInvocation.Arguments.List)
                 {
-                    Console.WriteLine($"    MethodInvocation variable here: {arg}");
+                    // Console.WriteLine($"    MethodInvocation variable here: {arg}");
                     MarkVariableAsUsed(arg, usedVariables, localVariables);
                 }
             }
