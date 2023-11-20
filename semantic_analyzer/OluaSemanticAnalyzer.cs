@@ -600,17 +600,18 @@ namespace OluaSemanticAnalyzer
                     case Assignment assignment:
                         Console.WriteLine($"\tAssignment: {assignment}, variable: {assignment.Variable}, value: {assignment.Value}");
                         assignmentsToVariables.Add(assignment);
-                        // MarkVariableAsUsed(assignment.Variable, usedVariables, localVariables);
+                        MarkVariableAsUsed(assignment.Variable, usedVariables, localVariables);
                         MarkVariableAsUsed(assignment.Value, usedVariables, localVariables);
                         break;
                     case If @if:
                         MarkVariableAsUsed(@if.Cond, usedVariables, localVariables);
-                        OptimizeScope(@if.Then.List, new HashSet<string>(usedVariables), members);
-                        if (@if.Else != null) OptimizeScope(@if.Else.List, new HashSet<string>(usedVariables), members);
+                        OptimizeScope(@if.Then.List, usedVariables, members);
+                        if (@if.Else != null) OptimizeScope(@if.Else.List, usedVariables, members);
                         break;
                     case While @while:
+                        Console.WriteLine($"\tWhile loop: {@while}");
                         MarkVariableAsUsed(@while.Cond, usedVariables, localVariables);
-                        OptimizeScope(@while.Body.List, new HashSet<string>(usedVariables), members);
+                        OptimizeScope(@while.Body.List, usedVariables, members);
                         break;
                     case Return @return:
                         if (@return.Object is ObjectIdentifier identifier)
@@ -621,7 +622,13 @@ namespace OluaSemanticAnalyzer
                     case Scope nestedScope:
                         // Handle nested scopes
                         Console.WriteLine($"\tScope: {nestedScope}");
-                        OptimizeScope(nestedScope.Statements.List, new HashSet<string>(usedVariables), members);
+                        OptimizeScope(nestedScope.Statements.List, usedVariables, members);
+    
+                        // Additionally, check for usages of outer scope variables in the nested scope
+                        foreach (var nestedStatement in nestedScope.Statements.List)
+                        {
+                            CheckForOuterScopeVariableUsage(nestedStatement, localVariables, usedVariables);
+                        }
                         break;
                     case VariableDeclaration variableDeclaration:
                         Console.WriteLine($"\tVariableDeclaration: {variableDeclaration}");
@@ -671,6 +678,46 @@ namespace OluaSemanticAnalyzer
             return members;
         }
 
+        private void CheckForOuterScopeVariableUsage(Statement statement, HashSet<string> localVariables, HashSet<string> usedVariables)
+        {
+            switch (statement)
+            {
+                case Assignment assignment:
+                    MarkVariableAsUsed(assignment.Variable, usedVariables, localVariables);
+                    MarkVariableAsUsed(assignment.Value, usedVariables, localVariables);
+                    break;
+                case MethodInvocation methodInvocation:
+                    // Check the method invocation for usage of local variables
+                    MarkVariableAsUsed(methodInvocation.Method, usedVariables, localVariables);
+                    foreach (var arg in methodInvocation.Arguments.List)
+                    {
+                        MarkVariableAsUsed(arg, usedVariables, localVariables);
+                    }
+                    break;
+                case While @while:
+                    MarkVariableAsUsed(@while.Cond, usedVariables, localVariables);
+                    foreach (var whileStatement in @while.Body.List)
+                    {
+                        CheckForOuterScopeVariableUsage(whileStatement, localVariables, usedVariables);
+                    }
+                    break;
+                case If @if:
+                    MarkVariableAsUsed(@if.Cond, usedVariables, localVariables);
+                    foreach (var thenStatement in @if.Then.List)
+                    {
+                        CheckForOuterScopeVariableUsage(thenStatement, localVariables, usedVariables);
+                    }
+                    if (@if.Else != null)
+                    {
+                        foreach (var elseStatement in @if.Else.List)
+                        {
+                            CheckForOuterScopeVariableUsage(elseStatement, localVariables, usedVariables);
+                        }
+                    }
+                    break;
+            }
+        }
+        
         private void MarkVariableAsUsed(OluaObject variable, HashSet<string> usedVariables, HashSet<string> localVariables)
         {
             if (variable is ObjectIdentifier objectIdentifier)
