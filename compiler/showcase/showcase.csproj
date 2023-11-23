@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="../Codegen.cs" Link="Codegen.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Include="../OluaLexer.cs" Link="OluaLexer.cs" />
   </ItemGroup>
 

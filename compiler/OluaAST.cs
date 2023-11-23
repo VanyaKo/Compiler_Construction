@@ -77,6 +77,11 @@ namespace OluaAST
 
         public override string ToString() => $"{Method}({Arguments})";
         public IStringOrList ToStrings() => new StringWrapper(ToString());
+
+        public void GenerateStatement(ILGenerator il, TypeTable types)
+        {
+            // TODO
+        }
     }
 
     public class AttributeObject : OluaAssignableObject
@@ -139,12 +144,22 @@ namespace OluaAST
             return res;
         }
 
-        public void GenerateClass(ModuleBuilder mod)
+        // call it on all the classes before GenerateClass on any of them since type map must be populated fully before
+        public TypeBuilder DefineType(ModuleBuilder mod, TypeTable types)
         {
-            TypeBuilder type = mod.DefineType(Name, TypeAttributes.Class);
-            // TODO: inherit from the base class
-            {
+            // Add static type (as it cannot be generic)
+            // TODO: only the array type is built as generic
+            TypeBuilder t = mod.DefineType(Name, TypeAttributes.Class);
+            types.typeMap[Name] = t.AsType();
+            return t;
+        }
 
+        public void GenerateClass(TypeBuilder type, TypeTable types)
+        {
+            // TODO: inherit from the base class
+            foreach (ClassMember cm in Members)
+            {
+                cm.GenerateClassMember(type, typeMap);
             }
             type.CreateType();
         }
@@ -152,7 +167,7 @@ namespace OluaAST
 
     public interface ClassMember : Node
     {
-        public void GenerateClassMember(TypeBuilder type);
+        public void GenerateClassMember(TypeBuilder type, TypeTable types);
     }
 
     public class VariableDeclaration : ClassMember, Statement
@@ -161,12 +176,12 @@ namespace OluaAST
         public TypeName Type { get; set; }
         public OluaObject InitialValue { get; set; }
 
-        public void GenerateClassMember(TypeBuilder type)
+        public void GenerateClassMember(TypeBuilder type, TypeTable types)
         {
             // TODO: build field for the variable declaration in class
         }
 
-        public void GenerateStatement(ILGenerator il)
+        public void GenerateStatement(ILGenerator il, TypeTable types)
         {
             // TODO: build field for the variable declaration in body
         }
@@ -190,13 +205,29 @@ namespace OluaAST
         public TypeName? ReturnType { get; set; } // null if void return type
         public StatementList Statements { get; set; }
 
-        public void GenerateClassMember(TypeBuilder type)
+        public void GenerateClassMember(TypeBuilder type, TypeTable types)
         {
-            MethodBuilder method = type.DefineMethod(Name, MethodAttributes.Public);
+            // Create an array to hold the parameter types.
+            Type[] parameterTypes = new Type[Parameters.List.Count];
+            for (int i = 0; i < Parameters.List.Count; i++)
+            {
+                parameterTypes[i] = types.Resolve(Parameters.List[i].Type.Identifier);
+            }
+
+            // Define the method with the specified name and public visibility.
+            MethodBuilder method = type.DefineMethod(
+                MethodAttributes.Public,
+                methodAttributes,
+                CallingConventions.Standard,
+                ReturnType != null ? types.Resolve(ReturnType.Identifier) : typeof(void),
+                parameterTypes
+            );
+
+            // Generate the method body.
             ILGenerator il = method.GetILGenerator();
             foreach (Statement e in Statements.List)
             {
-                e.GenerateStatement(il);
+                e.GenerateStatement(il, types);
             }
         }
 
@@ -223,6 +254,11 @@ namespace OluaAST
             res.Values.Add(new StringWrapper("end"));
             return res;
         }
+
+        public void GenerateClassMember(TypeBuilder type, TypeTable types)
+        {
+            // TODO
+        }
     }
 
     public class Scope : Statement
@@ -237,11 +273,16 @@ namespace OluaAST
             res.Values.Add(new StringWrapper("end"));
             return res;
         }
+
+        public void GenerateStatement(ILGenerator il, TypeTable types)
+        {
+            // TODO
+        }
     }
 
     public interface Statement : Node
     {
-        public void GenerateStatement(ILGenerator il);
+        public void GenerateStatement(ILGenerator il, TypeTable types);
     }
 
     public class Assignment : Statement
@@ -251,6 +292,11 @@ namespace OluaAST
 
         public override string ToString() => $"{Variable} := {Value}";
         public IStringOrList ToStrings() => new StringWrapper(ToString());
+
+        public void GenerateStatement(ILGenerator il, TypeTable types)
+        {
+            // TODO
+        }
     }
 
     public class StatementList : Node
@@ -265,6 +311,11 @@ namespace OluaAST
                 res.AddExpanding(e.ToStrings());
             }
             return res;
+        }
+
+        public void GenerateStatement(ILGenerator il, TypeTable types)
+        {
+            // TODO
         }
     }
 
@@ -287,6 +338,11 @@ namespace OluaAST
             res.Values.Add(new StringWrapper("end"));
             return res;
         }
+
+        public void GenerateStatement(ILGenerator il, TypeTable types)
+        {
+            // TODO
+        }
     }
 
     public class While : Statement
@@ -302,6 +358,11 @@ namespace OluaAST
             res.Values.Add(new StringWrapper("end"));
             return res;
         }
+
+        public void GenerateStatement(ILGenerator il, TypeTable types)
+        {
+            // TODO
+        }
     }
 
     public class Return : Statement
@@ -310,6 +371,11 @@ namespace OluaAST
 
         public override string ToString() => $"return {Object}";
         public IStringOrList ToStrings() => new StringWrapper(ToString());
+
+        public void GenerateStatement(ILGenerator il, TypeTable types)
+        {
+            // TODO
+        }
     }
 
     public class Parameter : Node

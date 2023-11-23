@@ -16,7 +16,8 @@ public class Application
         Parser parser = new(scanner);
         bool success = parser.Parse();
 
-        if (!success) {
+        if (!success)
+        {
             Console.WriteLine($"Syntax error at {Path.GetFullPath(target)}({scanner.yylloc.StartLine},{scanner.yylloc.StartColumn})");
             return;
         }
@@ -43,17 +44,32 @@ public class Application
         // link the only stdlib generic class - Array
         analyzer.LinkGeneric("Array", new ArrayGeneric());
 
-        try {
+        try
+        {
             var oclasses = analyzer.LinkValidateAndOptimize(parser.Program);
             Console.WriteLine("Program is valid");
-            
+
             Indentator idnt = new();
-            foreach (ClassDeclaration cls in oclasses) {
+            foreach (ClassDeclaration cls in oclasses)
+            {
                 Console.WriteLine(idnt.Traverse(cls.ToStrings()));
             }
-        } catch (InvalidOperationException ex) {
-            Console.WriteLine(ex.Message);
         }
+        catch (InvalidOperationException ex)
+        {
+            Console.WriteLine(ex.Message);
+            return;
+        }
+
+        // generate code
+        OluaCodegenerator codegen = new OluaCodegenerator();
+
+        // TODO: first link stdlib classes
+        // smth like
+        // t = ArrayImpl.defineType(codegen.mod, codegen.typeTable)
+        // ArrayImpl.impl(t, codegen.typeTable)
+
+        codegen.Generate(oclasses);
     }
 }
 
