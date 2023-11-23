@@ -1,8 +1,12 @@
+using System.Linq.Expressions;
+using System.Reflection;
+using System.Reflection.Emit;
 using Indent;
 
 namespace OluaAST
 {
-    public interface Node {
+    public interface Node
+    {
         public IStringOrList ToStrings();
     }
 
@@ -11,8 +15,8 @@ namespace OluaAST
         public string Identifier { get; set; }
         public TypeName? GenericType { get; set; } // Nullable for non-generic types.
 
-        public override string ToString() => GenericType != null 
-                                         ? $"{Identifier}[{GenericType}]" 
+        public override string ToString() => GenericType != null
+                                         ? $"{Identifier}[{GenericType}]"
                                          : Identifier;
         public IStringOrList ToStrings() => new StringWrapper(ToString());
 
@@ -22,9 +26,9 @@ namespace OluaAST
             {
                 return false;
             }
-            
-            TypeName other = (TypeName) obj;
-            return Identifier == other.Identifier && 
+
+            TypeName other = (TypeName)obj;
+            return Identifier == other.Identifier &&
                 EqualityComparer<TypeName>.Default.Equals(GenericType, other.GenericType);
         }
 
@@ -84,9 +88,9 @@ namespace OluaAST
         public IStringOrList ToStrings() => new StringWrapper(ToString());
     }
 
-    public interface OluaObject : Node {}
-    
-    public interface OluaAssignableObject : OluaObject {}
+    public interface OluaObject : Node { }
+
+    public interface OluaAssignableObject : OluaObject { }
 
     public class ThisIdentifier : OluaObject
     {
@@ -117,14 +121,15 @@ namespace OluaAST
         public TypeName? BaseClass { get; set; } // Nullable if the class doesn't extend another.
         public List<ClassMember> Members { get; set; }
 
-        public IStringOrList ToStrings() {
+        public IStringOrList ToStrings()
+        {
             ListWrapper res = new();
             res.Values.Add(new StringWrapper($"class {Name} {(BaseClass == null ? "" : $"extends {BaseClass} ")}is"));
             ListWrapper scope = new();
             for (int i = 0; i < Members.Count; i++)
             {
                 scope.AddExpanding(Members[i].ToStrings());
-                if (i < Members.Count - 1) 
+                if (i < Members.Count - 1)
                 {
                     scope.Values.Add(new StringWrapper(""));
                 }
@@ -133,15 +138,38 @@ namespace OluaAST
             res.Values.Add(new StringWrapper("end"));
             return res;
         }
+
+        public void GenerateClass(ModuleBuilder mod)
+        {
+            TypeBuilder type = mod.DefineType(Name, TypeAttributes.Class);
+            // TODO: inherit from the base class
+            {
+
+            }
+            type.CreateType();
+        }
     }
 
-    public interface ClassMember : Node {}
+    public interface ClassMember : Node
+    {
+        public void GenerateClassMember(TypeBuilder type);
+    }
 
     public class VariableDeclaration : ClassMember, Statement
     {
         public string Name { get; set; }
         public TypeName Type { get; set; }
         public OluaObject InitialValue { get; set; }
+
+        public void GenerateClassMember(TypeBuilder type)
+        {
+            // TODO: build field for the variable declaration in class
+        }
+
+        public void GenerateStatement(ILGenerator il)
+        {
+            // TODO: build field for the variable declaration in body
+        }
 
         public override string ToString() => $"var {Name} : {Type} := {InitialValue}";
         public IStringOrList ToStrings() => new StringWrapper(ToString());
@@ -162,7 +190,18 @@ namespace OluaAST
         public TypeName? ReturnType { get; set; } // null if void return type
         public StatementList Statements { get; set; }
 
-        public IStringOrList ToStrings() {
+        public void GenerateClassMember(TypeBuilder type)
+        {
+            MethodBuilder method = type.DefineMethod(Name, MethodAttributes.Public);
+            ILGenerator il = method.GetILGenerator();
+            foreach (Statement e in Statements.List)
+            {
+                e.GenerateStatement(il);
+            }
+        }
+
+        public IStringOrList ToStrings()
+        {
             ListWrapper res = new();
             res.Values.Add(new StringWrapper($"{Name}({Parameters}) : {ReturnType} is"));
             res.Values.Add(Statements.ToStrings());
@@ -186,7 +225,8 @@ namespace OluaAST
         }
     }
 
-    public class Scope : Statement {
+    public class Scope : Statement
+    {
         public StatementList Statements { get; set; }
 
         public IStringOrList ToStrings()
@@ -199,7 +239,10 @@ namespace OluaAST
         }
     }
 
-    public interface Statement : Node {}
+    public interface Statement : Node
+    {
+        public void GenerateStatement(ILGenerator il);
+    }
 
     public class Assignment : Statement
     {
@@ -214,7 +257,8 @@ namespace OluaAST
     {
         public List<Statement> List { get; set; }
 
-        public IStringOrList ToStrings() {
+        public IStringOrList ToStrings()
+        {
             ListWrapper res = new();
             foreach (Statement e in List)
             {
@@ -235,7 +279,8 @@ namespace OluaAST
             ListWrapper res = new();
             res.Values.Add(new StringWrapper($"if {Cond} then"));
             res.Values.Add(Then.ToStrings());
-            if (Else != null) {
+            if (Else != null)
+            {
                 res.Values.Add(new StringWrapper($"else"));
                 res.Values.Add(Else.ToStrings());
             }

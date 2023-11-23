@@ -8,19 +8,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="../../lexer/OluaLexer.cs" Link="OluaLexer.cs" />
+    <Compile Include="../OluaLexer.cs" Link="OluaLexer.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="../../parser/OluaParser.cs" Link="OluaParser.cs" />
+    <Compile Include="../OluaParser.cs" Link="OluaParser.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="../../parser/OluaAST.cs" Link="OluaAST.cs" />
+    <Compile Include="../OluaAST.cs" Link="OluaAST.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="../../parser/Indent.cs" Link="Indent.cs" />
+    <Compile Include="../Indent.cs" Link="Indent.cs" />
   </ItemGroup>
 
   <ItemGroup>
