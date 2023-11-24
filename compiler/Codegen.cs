@@ -8,25 +8,25 @@ namespace Codegen
 {
     public class TypeTable
     {
-        public Dictionary<string, Type> typeMap { get; set; }
+        public Dictionary<string, TypeBuilder> typeMap { get; set; }
 
         public TypeTable()
         {
-            typeMap = new Dictionary<string, Type>();
+            typeMap = new Dictionary<string, TypeBuilder>();
         }
 
-        public Type Resolve(TypeName typeName)
+        public Type ResolveType(TypeName typeName)
         {
             // Check if the type is a generic type.
             if (typeName.GenericType != null)
             {
-                Type genericTypeDef = typeMap[typeName.Identifier]; // Get the generic type definition.
-                Type[] typeArgs = { Resolve(typeName.GenericType) }; // Resolve type arguments.
+                Type genericTypeDef = typeMap[typeName.Identifier].AsType();
+                Type[] typeArgs = { ResolveType(typeName.GenericType) };
                 return genericTypeDef.MakeGenericType(typeArgs);
             }
             else
             {
-                return typeMap[typeName.Identifier];
+                return typeMap[typeName.Identifier].AsType();
             }
         }
     }
@@ -61,19 +61,16 @@ namespace Codegen
 
         public void Generate(List<ClassDeclaration> clses)
         {
-            // know the classnames
-            List<TypeBuilder> typeBuilders = new();
-
             // First pass: Define types
             foreach (ClassDeclaration c in clses)
             {
-                typeBuilders.Add(c.DefineType(mod, typeTable));
+                c.DefineType(mod, typeTable);
             }
 
             // Second pass: Generate classes
-            for (int i = 0; i < clses.Count; i++)
+            foreach (ClassDeclaration c in clses)
             {
-                clses[i].GenerateClass(typeBuilders[i], typeTable);
+                c.GenerateClass(typeTable);
             }
 
             // TODO: find entry point

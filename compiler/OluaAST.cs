@@ -145,24 +145,25 @@ namespace OluaAST
         }
 
         // call it on all the classes before GenerateClass on any of them since type map must be populated fully before
-        public TypeBuilder DefineType(ModuleBuilder mod, TypeTable types)
+        public void DefineType(ModuleBuilder mod, TypeTable types)
         {
             // Add static type (as it cannot be generic)
             // TODO: only the array type is built as generic
             TypeBuilder t = mod.DefineType(Name, TypeAttributes.Class);
-            types.typeMap[Name] = t.AsType();
-            return t;
+            types.typeMap[Name] = t;
+            // TODO: foratch class memebers and complete the class inteface
         }
 
-        public void GenerateClass(TypeBuilder type, TypeTable types)
+        public void GenerateClass(TypeTable types)
         {
+            TypeBuilder type = types.typeMap[Name];
             // TODO: default constructor that intializes fields? (if it is not implicitly gemnerated by the reflection.emit when defining fields)
             // TODO: inherit from the base class
             foreach (ClassMember cm in Members)
             {
                 cm.GenerateClassMember(type, types);
             }
-            type.CreateType();
+            type.CreateType(); // finalize il generation
         }
     }
 
@@ -212,14 +213,14 @@ namespace OluaAST
             Type[] parameterTypes = new Type[Parameters.List.Count];
             for (int i = 0; i < Parameters.List.Count; i++)
             {
-                parameterTypes[i] = types.Resolve(Parameters.List[i].Type);
+                parameterTypes[i] = types.ResolveType(Parameters.List[i].Type);
             }
 
             // Define the method with the specified name and public visibility.
             MethodBuilder method = type.DefineMethod(
                 Name,
                 MethodAttributes.Public,
-                ReturnType != null ? types.Resolve(ReturnType) : typeof(void),
+                ReturnType != null ? types.ResolveType(ReturnType) : typeof(void),
                 parameterTypes
             );
 
