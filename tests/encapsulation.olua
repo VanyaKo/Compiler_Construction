@@ -7,19 +7,23 @@ class EncapsulatedClass is
 end
 
 class EncapsulationTest extends EntryPoint is
+    var exit_code : Integer := 0
+
     method assert(cond : Boolean) : void is
         if cond.not() then
             this.exit_code := 1
         end
     end
 
-    this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) is
-        var obj : EncapsulatedClass := EncapsulatedClass()
+    method main(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) : Integer is
+        var obj : EncapsulatedClass := new EncapsulatedClass
 
         // Using public methods to access and modify privateVar
         obj.setPrivateVar(42)
         var value : Integer := obj.private_var
         
         this.assert(value.equal(42)) // Expecting value to be 42
+
+        return this.exit_code
     end
 end

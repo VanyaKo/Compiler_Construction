@@ -2,13 +2,14 @@ using OluaAST;
 using OluaStdLibTypes;
 using OluaSemanticAnalyzer;
 
-namespace OluaStdLibInterfaces {
-    public class RealInterface : ExtendableClassInterface {
-        public RealInterface() {
+namespace OluaStdLibInterfaces
+{
+    public class RealInterface : ExtendableClassInterface
+    {
+        public RealInterface()
+        {
             Name = OLT.Real.Identifier;
             Inf = Analyzer.theVeryBaseClass.extend(
-                // Constructor parameters
-                new List<TypeName> { OLT.Real },
                 // Fields
                 new Dictionary<string, TypeName>
                 {

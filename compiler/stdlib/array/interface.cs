@@ -2,12 +2,13 @@ using OluaAST;
 using OluaStdLibTypes;
 using OluaSemanticAnalyzer;
 
-namespace OluaStdLibInterfaces {
-    public class ArrayGeneric : IGenericFactory {
-        public ClassInterface Gen(TypeName typeName) {
+namespace OluaStdLibInterfaces
+{
+    public class ArrayGeneric : IGenericFactory
+    {
+        public ClassInterface Gen(TypeName typeName)
+        {
             return Analyzer.theVeryBaseClass.extend(
-                // Constructor parameters
-                new List<TypeName> { OLT.Integer },
                 // Fields
                 new Dictionary<string, TypeName>
                 {

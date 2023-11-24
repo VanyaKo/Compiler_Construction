@@ -11,6 +11,8 @@ class SomeClass is
 end
 
 class Refs extends EntryPoint is
+    var exit_code : Integer := 0
+
     method assert(cond : Boolean) : void is
         if cond.not() then
             this.exit_code := 1
@@ -21,14 +23,14 @@ class Refs extends EntryPoint is
         a.mark()
         this.assert(a.ismarked) // here a.ismarked = true
 
-        a := SomeClass()
+        a := new SomeClass
         // here a.ismarked = false
         var a_mark : Boolean := a.ismarked
         this.assert(a_mark.not())
     end
 
-    this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) is
-        var a : SomeClass := SomeClass()
+    method main(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) : Integer is
+        var a : SomeClass := new SomeClass
 
         // here a.ismarked = false
         var a_mark : Boolean := a.ismarked
@@ -38,5 +40,7 @@ class Refs extends EntryPoint is
 
         this.assert(a_mark.not()) // a_mark is still referencing the same object that was not changed
         this.assert(a.ismarked) // here a.ismarked = true
+
+        return this.exit_code
     end
 end

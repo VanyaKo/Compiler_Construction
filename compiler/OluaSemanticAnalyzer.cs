@@ -23,7 +23,6 @@ namespace OluaSemanticAnalyzer
     public class ClassInterface
     {
         public string? BaseClass { get; set; }
-        public List<TypeName> ConstructorParameters { get; set; }
         public Dictionary<string, TypeName> Fields { get; set; }
         public Dictionary<string, MethodInterface> Methods { get; set; }
 
@@ -34,24 +33,13 @@ namespace OluaSemanticAnalyzer
             Dictionary<string, MethodInterface> baseClassMethods
         )
         {
-            var ConstructorParameters = new List<TypeName>();
             var Fields = new Dictionary<string, TypeName>();
             var Methods = new Dictionary<string, MethodInterface>();
-
-            bool constructorFound = false;
 
             foreach (var member in Members)
             {
                 switch (member)
                 {
-                    case ConstructorDeclaration constructor:
-                        if (constructorFound)
-                            throw new InvalidOperationException("There must be at most one constructor");
-                        ConstructorParameters = 
-                            constructor.Parameters.List.Select(e => e.Type).ToList();
-                        constructorFound = true;
-                        break;
-
                     case VariableDeclaration variable:
                         if (Fields.ContainsKey(variable.Name))
                             throw new InvalidOperationException($"Field {variable.Name} was already declared");
@@ -74,7 +62,8 @@ namespace OluaSemanticAnalyzer
             {
                 var name = method.Key;
                 var newSignature = method.Value;
-                if (baseClassMethods.ContainsKey(name)) {
+                if (baseClassMethods.ContainsKey(name))
+                {
                     var oldSignature = baseClassMethods[name];
 
                     if (oldSignature.ReturnType != newSignature.ReturnType)
@@ -96,7 +85,8 @@ namespace OluaSemanticAnalyzer
             {
                 var name = field.Key;
                 var newType = field.Value;
-                if (baseClassFields.ContainsKey(name)) {
+                if (baseClassFields.ContainsKey(name))
+                {
                     var oldType = baseClassFields[name];
 
                     if (newType != oldType)
@@ -108,33 +98,32 @@ namespace OluaSemanticAnalyzer
             return new ClassInterface
             {
                 BaseClass = baseClass,
-                ConstructorParameters = ConstructorParameters,
                 Fields = baseClassFields.Concat(Fields.Where(kvp => !baseClassFields.ContainsKey(kvp.Key))).ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
                 Methods = baseClassMethods.Concat(Methods.Where(kvp => !baseClassMethods.ContainsKey(kvp.Key))).ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
             };
         }
     }
 
-    public class ExtendableClassInterface {
+    public class ExtendableClassInterface
+    {
         public string Name { get; set; }
         public ClassInterface Inf { get; set; }
 
         public ClassInterface extend(
-            List<TypeName> newConstructorParameters,
             Dictionary<string, TypeName> newFields,
             Dictionary<string, MethodInterface> newMethods)
         {
             return new ClassInterface
             {
                 BaseClass = Name,
-                ConstructorParameters = newConstructorParameters,
                 Fields = this.Inf.Fields.Concat(newFields.Where(kvp => !this.Inf.Fields.ContainsKey(kvp.Key))).ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
                 Methods = this.Inf.Methods.Concat(newMethods.Where(kvp => !this.Inf.Methods.ContainsKey(kvp.Key))).ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
             };
         }
     }
 
-    class Analyzer {
+    class Analyzer
+    {
         Dictionary<string, IGenericFactory> linkGenerics = new Dictionary<string, IGenericFactory>();
         Dictionary<string, ClassInterface> linkClasses = new Dictionary<string, ClassInterface>();
 
@@ -166,7 +155,6 @@ namespace OluaSemanticAnalyzer
             Inf = new ClassInterface
             {
                 BaseClass = null,
-                ConstructorParameters = new List<TypeName>(),
                 Fields = new Dictionary<string, TypeName>(),
                 Methods = new Dictionary<string, MethodInterface>
                 {
@@ -179,18 +167,29 @@ namespace OluaSemanticAnalyzer
         {
             linkClasses[typeClass.Identifier] = theVeryBaseClass.Inf;
             linkClasses[typeEntryPoint.Identifier] = theVeryBaseClass.extend(
-                // Constructor parameters
-                new List<TypeName>(),
                 // Fields
-                new Dictionary<string, TypeName> {
-                    { "exit_code", typeInteger }
-                },
+                new Dictionary<string, TypeName>(),
                 // Methods
-                new Dictionary<string, MethodInterface>()
+                new Dictionary<string, MethodInterface> {
+                    {
+                        "main",
+                        new MethodInterface{
+                            Parameters = new List<TypeName>
+                            {
+                                typeStdIn,
+                                typeStdOut,
+                                typeStdOut,
+                                typeArray(typeArray(typeInteger))
+                            },
+                            ReturnType = typeInteger,
+                        }
+                    }
+                }
             );
         }
 
-        void checkNotPresentType(string name) {
+        void checkNotPresentType(string name)
+        {
             if (linkClasses.ContainsKey(name) || linkGenerics.ContainsKey(name))
                 throw new InvalidOperationException($"Name collision of class {name}");
         }
@@ -213,19 +212,24 @@ namespace OluaSemanticAnalyzer
             TypeName? curType = type;
             while (curType != null)
             {
-                if (linkClasses.ContainsKey(curType.Identifier)) {
-                    if (curType.GenericType != null) {
+                if (linkClasses.ContainsKey(curType.Identifier))
+                {
+                    if (curType.GenericType != null)
+                    {
                         throw new InvalidOperationException($"{curType.Identifier} cannot have generic");
                     }
                     break;
-                }                
-                else if (linkGenerics.ContainsKey(curType.Identifier)) {
-                    if (curType.GenericType == null) {
+                }
+                else if (linkGenerics.ContainsKey(curType.Identifier))
+                {
+                    if (curType.GenericType == null)
+                    {
                         throw new InvalidOperationException($"{curType.Identifier} must have generic");
                     }
                     curType = curType.GenericType;
                 }
-                else {
+                else
+                {
                     throw new InvalidOperationException($"There is no class {curType.Identifier}");
                 }
             }
@@ -303,13 +307,13 @@ namespace OluaSemanticAnalyzer
                     return variables[objectIdentifier.Identifier];
 
                 case Literal<int>:
-                    return typeInteger; 
+                    return typeInteger;
 
                 case Literal<float>:
-                    return typeReal; 
+                    return typeReal;
 
                 case Literal<bool>:
-                    return typeBoolean; 
+                    return typeBoolean;
 
                 case AttributeObject attributeObject:
                     TypeName? t = InferType(@this, variables, attributeObject.Parent);
@@ -321,15 +325,7 @@ namespace OluaSemanticAnalyzer
                     return inf.Fields[attributeObject.Identifier];
 
                 case ConstructorInvocation constructorInvocation:
-                    TypeName cnstrT = constructorInvocation.Type;
-                    ClassInterface cinf = GetInterface(cnstrT);
-                    CheckParamSubmission(
-                        @this,
-                        variables,
-                        constructorInvocation.Arguments.List,
-                        cinf.ConstructorParameters
-                    );
-                    return cnstrT;
+                    return constructorInvocation.Type;
 
                 case MethodInvocation methodInvocation:
                     MethodInterface mi = ResolveMethod(@this, variables, methodInvocation.Method);
@@ -432,7 +428,8 @@ namespace OluaSemanticAnalyzer
                     if (BaseClass != null && !linkClasses.ContainsKey(BaseClass)) continue;
                     end = false;
 
-                    if (BaseClass == null) {
+                    if (BaseClass == null)
+                    {
                         BaseClass = typeClass.Identifier;
                     }
 
@@ -485,28 +482,8 @@ namespace OluaSemanticAnalyzer
                             if (entryPoint)
                                 throw new InvalidOperationException("There must be exactly one class that extends EntryPoint");
                             entryPoint = true;
-
-                            var requiredParameters = new List<TypeName>
-                            {
-                                typeStdIn,
-                                typeStdOut,
-                                typeStdOut,
-                                typeArray(typeArray(typeInteger))
-                            };
-
-                            if (cls.ConstructorParameters.Count != 4)
-                                throw new InvalidOperationException("Invalid entry point parameter count");
-
-                            for (int i = 0; i < cls.ConstructorParameters.Count; i++)
-                            {
-                                if (!cls.ConstructorParameters[i].Equals(requiredParameters[i]))
-                                    throw new InvalidOperationException("EntryPoint constructor parameter type mismatch");
-                            }
                         }
                     }
-
-                    foreach (var paramT in cls.ConstructorParameters)
-                        ValidType(paramT);
 
                     foreach (var type in cls.Fields.Values)
                         ValidType(type);
@@ -530,15 +507,6 @@ namespace OluaSemanticAnalyzer
                 {
                     switch (member)
                     {
-                        case ConstructorDeclaration constructor:
-                            var variables = new Dictionary<string, TypeName>();
-
-                            foreach (var p in constructor.Parameters.List)
-                                variables[p.Name] = p.Type;
-
-                            ValidScope(thisType, variables, null, constructor.Statements.List);
-                            break;
-
                         case VariableDeclaration variable:
                             var argT = InferType(null, new Dictionary<string, TypeName>(), variable.InitialValue);
                             ValidSubtype(variable.Type, argT);
@@ -570,9 +538,6 @@ namespace OluaSemanticAnalyzer
                     Console.WriteLine($"Current member is {member}");
                     switch (member)
                     {
-                        case ConstructorDeclaration constructor:
-                            updatedMembers = OptimizeScope(constructor.Statements.List, new HashSet<string>(), updatedMembers);
-                            break;
                         case MethodDeclaration method:
                             updatedMembers = OptimizeScope(method.Statements.List, new HashSet<string>(), updatedMembers);
                             break;
@@ -581,7 +546,7 @@ namespace OluaSemanticAnalyzer
 
                 // Remove unused variable declarations
                 Console.WriteLine("Removing code lines with unused variables");
-                
+
                 cls.Members = updatedMembers; // Update the members of the class
             }
 
@@ -623,7 +588,7 @@ namespace OluaSemanticAnalyzer
                         // Handle nested scopes
                         Console.WriteLine($"\tScope: {nestedScope}");
                         OptimizeScope(nestedScope.Statements.List, usedVariables, members);
-    
+
                         // Additionally, check for usages of outer scope variables in the nested scope
                         foreach (var nestedStatement in nestedScope.Statements.List)
                         {
@@ -641,7 +606,7 @@ namespace OluaSemanticAnalyzer
                             MarkVariableAsUsed(arg, usedVariables, localVariables);
                         }
                         break;
-                    // Add other statement types as necessary
+                        // Add other statement types as necessary
                 }
             }
 
@@ -654,7 +619,7 @@ namespace OluaSemanticAnalyzer
                 if (!usedVariables.Contains(variableName))
                 {
                     Console.WriteLine($"\t\tRecognized unused variable: {variableName}");
-                    
+
                     // Print the variable declaration
                     var unusedVarDeclaration = statements.OfType<VariableDeclaration>()
                                                 .FirstOrDefault(v => v.Name == variableName);
@@ -717,7 +682,7 @@ namespace OluaSemanticAnalyzer
                     break;
             }
         }
-        
+
         private void MarkVariableAsUsed(OluaObject variable, HashSet<string> usedVariables, HashSet<string> localVariables)
         {
             if (variable is ObjectIdentifier objectIdentifier)

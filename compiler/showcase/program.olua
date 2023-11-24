@@ -1,0 +1,26 @@
+class Factorial extends EntryPoint is
+    var exit_code : Integer := 0
+
+    method assert(cond : Boolean) : void is
+        if cond.not() then
+            this.exit_code := 1
+        end
+    end
+
+    method computeFactorial(n: Integer): Integer is
+        var result : Integer := 1
+        while n.greater(1) loop
+            result := result.mult(n)
+            n := n.minus(1)
+        end
+        return result
+    end
+
+    method main(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) : Integer is
+        var tenFactorial : Integer := this.computeFactorial(10)
+        
+        // Expecting 10! to be 3628800
+        this.assert(tenFactorial.equal(3628800))
+        return this.exit_code
+    end
+end

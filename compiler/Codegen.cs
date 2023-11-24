@@ -1,14 +1,21 @@
+using System.Reflection;
+using System.Reflection.Emit;
 using System.Text;
 using OluaAST;
 
 
 namespace Codegen
 {
-    class TypeTable
+    public class TypeTable
     {
         public Dictionary<string, Type> typeMap { get; set; }
 
-        private Type Resolve(TypeName typeName)
+        public TypeTable()
+        {
+            typeMap = new Dictionary<string, Type>();
+        }
+
+        public Type Resolve(TypeName typeName)
         {
             // Check if the type is a generic type.
             if (typeName.GenericType != null)
@@ -23,7 +30,7 @@ namespace Codegen
             }
         }
     }
-    class OluaCodegenerator
+    public class OluaCodegenerator
     {
         public AssemblyBuilder asm { get; set; }
         public ModuleBuilder mod { get; set; }
@@ -31,14 +38,14 @@ namespace Codegen
 
         public OluaCodegenerator()
         {
-            asm = AppDomain.CurrentDomain.DefineDynamicAssembly(new AssemblyName("Output"), AssemblyBuilderAccess.RunAndSave);
-            mod = asm.DefineDynamicModule("Output.exe", "Output.exe")
-            typeTable = = new TypeTable();
+            asm = AssemblyBuilder.DefineDynamicAssembly(new AssemblyName("Output"), AssemblyBuilderAccess.Run);
+            mod = asm.DefineDynamicModule("Output.exe");
+            typeTable = new TypeTable();
         }
 
         // TODO: link all the stdlib classes externally
         // TODO: wrap into custom main class with the default msil entry point, pseudocode:
-        // class TheVeryMainEntryPoint // NOTE: redefining this name in the user code may produce unexpected behaviour
+        // class _TheVeryMainEntryPoint
         // {
         //     void Main()
         //     {
@@ -55,19 +62,24 @@ namespace Codegen
         public void Generate(List<ClassDeclaration> clses)
         {
             // know the classnames
-            List<TypeBuilder>[] typeBldrs = new List<TypeBuilder>[clses.Count];
-            foreach (ClassDeclaration cls in clses)
+            List<TypeBuilder> typeBuilders = new();
+
+            // First pass: Define types
+            foreach (ClassDeclaration c in clses)
             {
-                typeBldrs.Add(cls.DefineType(mod, typeTable););
+                typeBuilders.Add(c.DefineType(mod, typeTable));
             }
 
-            foreach (TypeBuilder t, ClassDeclaration cls in zip(typeBldrs, clses)) {
-                cls.GenerateClass(t, typeTable);
+            // Second pass: Generate classes
+            for (int i = 0; i < clses.Count; i++)
+            {
+                clses[i].GenerateClass(typeBuilders[i], typeTable);
             }
 
             // TODO: find entry point
-            asm.SetEntryPoint(main);
-            asm.Save("Output.exe");
+            // NOTE: save is prohibited, run right here
+            // asm.SetEntryPoint(main);
+            // asm.Save("Output.exe");
         }
     }
 }

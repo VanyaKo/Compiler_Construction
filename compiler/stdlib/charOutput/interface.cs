@@ -2,13 +2,14 @@ using OluaAST;
 using OluaStdLibTypes;
 using OluaSemanticAnalyzer;
 
-namespace OluaStdLibInterfaces {
-    public class CharOutputInterface : ExtendableClassInterface {
-        public CharOutputInterface() {
+namespace OluaStdLibInterfaces
+{
+    public class CharOutputInterface : ExtendableClassInterface
+    {
+        public CharOutputInterface()
+        {
             Name = OLT.CharOutput.Identifier;
             Inf = Analyzer.theVeryBaseClass.extend(
-                // Constructor parameters
-                new List<TypeName>(),
                 // Fields
                 new Dictionary<string, TypeName>
                 {

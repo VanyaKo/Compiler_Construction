@@ -1,11 +1,13 @@
 class ScopesTestClass extends EntryPoint is
+    var exit_code : Integer := 0
+
     method assert(cond : Boolean) : void is
         if cond.not() then
             this.exit_code := 1
         end
     end
 
-    this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) is
+    method main(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) : Integer is
         var a: Integer := 10
         is
             var a: Real := 20.0
@@ -15,5 +17,6 @@ class ScopesTestClass extends EntryPoint is
         end
         this.assert(a.equal(10))
         // this.assert(b.equal(10.0)) // b must be undeclared here
+        return this.exit_code
     end
 end

@@ -1,6 +1,7 @@
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
+using Codegen;
 using Indent;
 
 namespace OluaAST
@@ -64,9 +65,8 @@ namespace OluaAST
     public class ConstructorInvocation : OluaObject
     {
         public TypeName Type { get; set; }
-        public OluaObjectList Arguments { get; set; }
 
-        public override string ToString() => $"{Type}({Arguments})";
+        public override string ToString() => $"new {Type}";
         public IStringOrList ToStrings() => new StringWrapper(ToString());
     }
 
@@ -159,7 +159,7 @@ namespace OluaAST
             // TODO: inherit from the base class
             foreach (ClassMember cm in Members)
             {
-                cm.GenerateClassMember(type, typeMap);
+                cm.GenerateClassMember(type, types);
             }
             type.CreateType();
         }
@@ -211,15 +211,14 @@ namespace OluaAST
             Type[] parameterTypes = new Type[Parameters.List.Count];
             for (int i = 0; i < Parameters.List.Count; i++)
             {
-                parameterTypes[i] = types.Resolve(Parameters.List[i].Type.Identifier);
+                parameterTypes[i] = types.Resolve(Parameters.List[i].Type);
             }
 
             // Define the method with the specified name and public visibility.
             MethodBuilder method = type.DefineMethod(
+                Name,
                 MethodAttributes.Public,
-                methodAttributes,
-                CallingConventions.Standard,
-                ReturnType != null ? types.Resolve(ReturnType.Identifier) : typeof(void),
+                ReturnType != null ? types.Resolve(ReturnType) : typeof(void),
                 parameterTypes
             );
 
@@ -234,30 +233,10 @@ namespace OluaAST
         public IStringOrList ToStrings()
         {
             ListWrapper res = new();
-            res.Values.Add(new StringWrapper($"{Name}({Parameters}) : {ReturnType} is"));
+            res.Values.Add(new StringWrapper($"method {Name}({Parameters}) : {ReturnType} is"));
             res.Values.Add(Statements.ToStrings());
             res.Values.Add(new StringWrapper("end"));
             return res;
-        }
-    }
-
-    public class ConstructorDeclaration : ClassMember
-    {
-        public ParameterList Parameters { get; set; }
-        public StatementList Statements { get; set; }
-
-        public IStringOrList ToStrings()
-        {
-            ListWrapper res = new();
-            res.Values.Add(new StringWrapper($"this({Parameters}) is"));
-            res.Values.Add(Statements.ToStrings());
-            res.Values.Add(new StringWrapper("end"));
-            return res;
-        }
-
-        public void GenerateClassMember(TypeBuilder type, TypeTable types)
-        {
-            // TODO
         }
     }
 

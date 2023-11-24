@@ -4,6 +4,7 @@ using OluaParser;
 using OluaSemanticAnalyzer;
 using OluaStdLibInterfaces;
 using Indent;
+using Codegen;
 
 
 public class Application
@@ -44,9 +45,10 @@ public class Application
         // link the only stdlib generic class - Array
         analyzer.LinkGeneric("Array", new ArrayGeneric());
 
+        List<ClassDeclaration> oclasses;
         try
         {
-            var oclasses = analyzer.LinkValidateAndOptimize(parser.Program);
+            oclasses = analyzer.LinkValidateAndOptimize(parser.Program);
             Console.WriteLine("Program is valid");
 
             Indentator idnt = new();
@@ -62,14 +64,14 @@ public class Application
         }
 
         // generate code
-        OluaCodegenerator codegen = new OluaCodegenerator();
+        // OluaCodegenerator codegen = new OluaCodegenerator();
 
-        // TODO: first link stdlib classes
-        // smth like
-        // t = ArrayImpl.defineType(codegen.mod, codegen.typeTable)
-        // ArrayImpl.impl(t, codegen.typeTable)
+        // // TODO: first link stdlib classes
+        // // smth like
+        // // t = ArrayImpl.defineType(codegen.mod, codegen.typeTable)
+        // // ArrayImpl.impl(t, codegen.typeTable)
 
-        codegen.Generate(oclasses);
+        // codegen.Generate(oclasses);
     }
 }
 

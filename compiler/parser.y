@@ -23,7 +23,6 @@
     public VariableDeclaration VariableDeclaration;
     public Scope Scope;
     public MethodDeclaration MethodDeclaration;
-    public ConstructorDeclaration ConstructorDeclaration;
     public StatementList StatementList;
     public Statement Statement;
     public Assignment Assignment;
@@ -61,6 +60,7 @@
 %token LOOP
 %token COMMA
 %token THEN
+%token NEW
 %token UNDEFINED
 
 %type <TypeName> typename
@@ -78,7 +78,6 @@
 %type <VariableDeclaration> variableDeclaration
 %type <Scope> scope, voidRetScope
 %type <MethodDeclaration> methodDeclaration
-%type <ConstructorDeclaration> constructorDeclaration
 %type <StatementList> statementList, voidRetStatementList
 %type <Statement> statement, voidRetStatement
 %type <Assignment> assignment
@@ -96,7 +95,7 @@ typename
     ;
 
 constructorInvocation
-    : typename LPAREN argumentList RPAREN { $$ = new ConstructorInvocation { Type = $1, Arguments = $3 }; }
+    : NEW typename { $$ = new ConstructorInvocation { Type = $2 }; }
     ;
 
 methodInvocation
@@ -136,7 +135,6 @@ classMemberList
 classMember
     : methodDeclaration { $$ = $1; }
     | variableDeclaration { $$ = $1; }
-    | constructorDeclaration { $$ = $1; }
     ;
 
 variableDeclaration
@@ -146,10 +144,6 @@ variableDeclaration
 methodDeclaration
     : METHOD IDENTIFIER LPAREN parameterList RPAREN COLON typename scope { $$ = new MethodDeclaration { Name = $2, Parameters = $4, ReturnType = $7, Statements = $8.Statements }; }
     | METHOD IDENTIFIER LPAREN parameterList RPAREN COLON VOID voidRetScope { $$ = new MethodDeclaration { Name = $2, Parameters = $4, ReturnType = null, Statements = $8.Statements }; }
-    ;
-
-constructorDeclaration
-    : THIS LPAREN parameterList RPAREN voidRetScope { $$ = new ConstructorDeclaration { Parameters = $3, Statements = $5.Statements }; }
     ;
 
 scope

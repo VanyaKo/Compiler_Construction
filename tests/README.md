@@ -5,8 +5,8 @@
 - the constructor body cannot contain return
 - the variable declaration is set to `var Identifier : {ClassName} := Expression`
 - (semantic rule) the entry point to the code is always the constructor of the class that extends EntryPoint (there must be exactly one such a class in the file)
-- (semantic rule) the program must have only one constructor that has exactly this constructor signature:
-    `this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) // where args is a array of strings`
+- there are no constructors
+- to construct an object use `new ClassName`
 - introducing separate `Invocation: Identifier.method(Arguments)` and `Constructor: ClassName(Arguments)`
 - extend `Statement` with `Scope` concept: `Scope: is Body end`
 - redefine `MethodDeclaration : method Identifier [ Parameters ] [ : Identifier ] Scope`
@@ -62,7 +62,7 @@ end
 ```
 // Class for managing exit code
 class EntryPoint is
-    var exit_code : Integer := 0; // if a invalid value assigned, the real exit code of the program will be set to 1
+    methid main(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) : Integer;
 end
 ```
 

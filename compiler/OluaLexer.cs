@@ -36,6 +36,7 @@ namespace OluaLexer
         LOOP,
         COMMA,
         THEN,
+        NEW,
 
         UNDEFINED,
     }
@@ -46,7 +47,8 @@ namespace OluaLexer
         private string _input = string.Empty;
         private int _position = 0;
 
-        public Scanner(string source) {
+        public Scanner(string source)
+        {
             yylloc = new LexLocation(1, 1, 1, 1);
             _input = source;
             yylval.sVal = string.Empty;
@@ -75,6 +77,7 @@ namespace OluaLexer
                 (new Regex(@"^end\b"), Tokens.END),
                 (new Regex(@"^loop\b"), Tokens.LOOP),
                 (new Regex(@"^then\b"), Tokens.THEN),
+                (new Regex(@"^new\b"), Tokens.NEW),
                 (new Regex(@"^(true|false)\b"), Tokens.BOOL_LITERAL),
                 (new Regex(@"^:="), Tokens.ASSIGN),
                 (new Regex(@"^:"), Tokens.COLON),
@@ -96,7 +99,8 @@ namespace OluaLexer
                 if (match.Success)
                 {
                     yylval.sVal = match.Value;
-                    switch(token) {
+                    switch (token)
+                    {
                         case Tokens.BOOL_LITERAL:
                             yylval.bVal = bool.Parse(match.Value);
                             break;
@@ -109,7 +113,7 @@ namespace OluaLexer
                     }
 
                     _position += match.Length;
-                    
+
                     // Count new lines to determine if we move to a new line
                     var newLines = match.Value.Split('\n').Length - 1;
 

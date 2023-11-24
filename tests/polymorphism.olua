@@ -14,19 +14,23 @@ class B extends A is
 end
 
 class PolymorphismTest extends EntryPoint is
+    var exit_code : Integer := 0
+
     method assert(cond : Boolean) : void is
         if cond.not() then
             this.exit_code := 1
         end
     end
     
-    this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) is
-        var objA : A := A()
-        var objBA : A := B()
-        var objBB : B := B()
+    method main(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) : Integer is
+        var objA : A := new A
+        var objBA : A := new B
+        var objBB : B := new B
 
         this.assert(objA.returnSomething().equal(42.0)) // expects 42
         this.assert(objBA.returnSomething().equal(100.0)) // expect 100
         this.assert(objBB.returnSomething().equal(100.0)) // expect 100
+
+        return this.exit_code
     end
 end

@@ -2,13 +2,14 @@ using OluaAST;
 using OluaStdLibTypes;
 using OluaSemanticAnalyzer;
 
-namespace OluaStdLibInterfaces {
-    public class IntegerInterface : ExtendableClassInterface {
-        public IntegerInterface() {
+namespace OluaStdLibInterfaces
+{
+    public class IntegerInterface : ExtendableClassInterface
+    {
+        public IntegerInterface()
+        {
             Name = OLT.Integer.Identifier;
             Inf = Analyzer.theVeryBaseClass.extend(
-                // Constructor parameters
-                new List<TypeName> { OLT.Integer },
                 // Fields
                 new Dictionary<string, TypeName>
                 {

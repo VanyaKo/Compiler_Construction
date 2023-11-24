@@ -1,11 +1,13 @@
 class TestUnaryAndBinaryOperations extends EntryPoint is
+	var exit_code : Integer := 0
+
     method assert(cond : Boolean) : void is
         if cond.not() then
             this.exit_code := 1
         end
     end
 
-    this(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) is
+    method main(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) : Integer is
 		var a : Integer := 5
 		var b : Integer := 3
 		var c : Real := 2.5
@@ -43,5 +45,6 @@ class TestUnaryAndBinaryOperations extends EntryPoint is
 
 		boolResult := true.or(false)
 		this.assert(boolResult.toInteger().equal(1))
+		return this.exit_code
     end
 end

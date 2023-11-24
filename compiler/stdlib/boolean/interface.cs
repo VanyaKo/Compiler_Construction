@@ -2,13 +2,14 @@ using OluaAST;
 using OluaStdLibTypes;
 using OluaSemanticAnalyzer;
 
-namespace OluaStdLibInterfaces {
-    public class BooleanInterface : ExtendableClassInterface {
-        public BooleanInterface() {
+namespace OluaStdLibInterfaces
+{
+    public class BooleanInterface : ExtendableClassInterface
+    {
+        public BooleanInterface()
+        {
             Name = OLT.Boolean.Identifier;
             Inf = Analyzer.theVeryBaseClass.extend(
-                // Constructor parameters
-                new List<TypeName> { OLT.Boolean },
                 // Fields
                 new Dictionary<string, TypeName>
                 {
