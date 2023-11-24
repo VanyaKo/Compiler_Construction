@@ -156,6 +156,7 @@ namespace OluaAST
 
         public void GenerateClass(TypeBuilder type, TypeTable types)
         {
+            // TODO: default constructor that intializes fields? (if it is not implicitly gemnerated by the reflection.emit when defining fields)
             // TODO: inherit from the base class
             foreach (ClassMember cm in Members)
             {
