@@ -14,12 +14,13 @@
         .maxstack 30
         ldarg.s 1
         callvirt Boolean Boolean::not()
-        brfalse.s END_IF_YH7S1MZCJSATUXL11W66O8NRHJSMA4W8
+        brfalse.s END_IF_EOQA1JCDC4AJJQW1KMIIIKWRGWQ57WZ5
         ldarg.0
         ldc.i4 1
         newobj static void Integer::.ctor(int32)
         stfld Integer Factorial::exit_code
-        END_IF_YH7S1MZCJSATUXL11W66O8NRHJSMA4W8:
+        END_IF_EOQA1JCDC4AJJQW1KMIIIKWRGWQ57WZ5:
+        ret
     }
     
     .method public class Integer computeFactorial(Integer) cil managed {
@@ -28,12 +29,12 @@
         ldc.i4 1
         newobj static void Integer::.ctor(int32)
         stloc.s 0
-        WHILE_Y2OIRID1GOHYY2I5DFWCNFU63RS2CCFG:
+        WHILE_3T4LFH10CFMS0SW8M9AXMZ562DCNRKE6:
         ldarg.s 1
         ldc.i4 1
         newobj static void Integer::.ctor(int32)
         callvirt Boolean Integer::greater(Integer)
-        brfalse.s END_WHILE_Y2OIRID1GOHYY2I5DFWCNFU63RS2CCFG
+        brfalse.s END_WHILE_3T4LFH10CFMS0SW8M9AXMZ562DCNRKE6
         ldloc.s 0
         ldarg.s 1
         callvirt Integer Integer::mult(Integer)
@@ -43,7 +44,7 @@
         newobj static void Integer::.ctor(int32)
         callvirt Integer Integer::minus(Integer)
         starg.s 1
-        END_WHILE_Y2OIRID1GOHYY2I5DFWCNFU63RS2CCFG:
+        END_WHILE_3T4LFH10CFMS0SW8M9AXMZ562DCNRKE6:
         ldloc.s 0
         ret
     }

@@ -453,6 +453,10 @@ namespace OluaAST
                     scope.AddExpanding(new StringWrapper(".locals (" + string.Join(", ", accum.Select(e => e.sMsil())) + ")"));
                 }
                 scope.AddExpanding(stmts_msil);
+                if (ReturnType == null) // autoreturn if void return type
+                {
+                    scope.AddExpanding(new StringWrapper("ret"));
+                }
             }
             res.Values.Add(scope);
 
