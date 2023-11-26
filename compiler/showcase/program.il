@@ -2,6 +2,8 @@
     .method public hidebysig specialname rtspecialname instance void .ctor() cil managed {
         .maxstack 30
         ldarg.0
+        call instance void EntryPoint::.ctor()
+        ldarg.0
         ldc.i4 0
         newobj static void Integer::.ctor(int32)
         stfld Integer Factorial::exit_code
@@ -14,12 +16,12 @@
         .maxstack 30
         ldarg.s 1
         callvirt Boolean Boolean::not()
-        brfalse.s END_IF_6QPCTFR81LWOFHWKONP1DPIHPVYWIL9F
+        brfalse.s END_IF_2G4CW0TNP5GLMI5BX02S3MEPAC7EQLIV
         ldarg.0
         ldc.i4 1
         newobj static void Integer::.ctor(int32)
         stfld Integer Factorial::exit_code
-        END_IF_6QPCTFR81LWOFHWKONP1DPIHPVYWIL9F:
+        END_IF_2G4CW0TNP5GLMI5BX02S3MEPAC7EQLIV:
         ret
     }
     
@@ -29,12 +31,12 @@
         ldc.i4 1
         newobj static void Integer::.ctor(int32)
         stloc.s 0
-        WHILE_91ADCL0MK6VZNE4INX3NCHNQ1RTHZGV0:
+        WHILE_Z4GHXZ4UEDFB34OAWFF5EQ0T8HTLK2LW:
         ldarg.s 1
         ldc.i4 1
         newobj static void Integer::.ctor(int32)
         callvirt Boolean Integer::greater(Integer)
-        brfalse.s END_WHILE_91ADCL0MK6VZNE4INX3NCHNQ1RTHZGV0
+        brfalse.s END_WHILE_Z4GHXZ4UEDFB34OAWFF5EQ0T8HTLK2LW
         ldloc.s 0
         ldarg.s 1
         callvirt Integer Integer::mult(Integer)
@@ -44,7 +46,7 @@
         newobj static void Integer::.ctor(int32)
         callvirt Integer Integer::minus(Integer)
         starg.s 1
-        END_WHILE_91ADCL0MK6VZNE4INX3NCHNQ1RTHZGV0:
+        END_WHILE_Z4GHXZ4UEDFB34OAWFF5EQ0T8HTLK2LW:
         ldloc.s 0
         ret
     }
