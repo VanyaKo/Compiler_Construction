@@ -4,7 +4,6 @@ using OluaParser;
 using OluaSemanticAnalyzer;
 using OluaStdLibInterfaces;
 using Indent;
-using Codegen;
 
 
 public class Application
@@ -46,15 +45,15 @@ public class Application
         analyzer.LinkGeneric("Array", new ArrayGeneric());
 
         List<ClassDeclaration> oclasses;
+        Indentator idnt = new();
         try
         {
             oclasses = analyzer.LinkValidateAndOptimize(parser.Program);
             Console.WriteLine("Program is valid");
 
-            Indentator idnt = new();
             foreach (ClassDeclaration cls in oclasses)
             {
-                Console.WriteLine(idnt.Traverse(cls.ToStrings()));
+                Console.WriteLine(idnt.Traverse(cls.ToOlua()));
             }
         }
         catch (InvalidOperationException ex)
@@ -63,15 +62,15 @@ public class Application
             return;
         }
 
-        // generate code
-        // OluaCodegenerator codegen = new OluaCodegenerator();
-
-        // // TODO: first link stdlib classes
-        // // smth like
-        // // t = ArrayImpl.defineType(codegen.mod, codegen.typeTable)
-        // // ArrayImpl.impl(t, codegen.typeTable)
-
-        // codegen.Generate(oclasses);
+        // generate il
+        idnt.identator = "    ";
+        using (StreamWriter writer = new StreamWriter("program.il"))
+        {
+            foreach (ClassDeclaration cls in oclasses)
+            {
+                writer.WriteLine(idnt.Traverse(cls.ToMsil()));
+            }
+        }
     }
 }
 

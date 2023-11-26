@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="../Codegen.cs" Link="Codegen.cs" />
+    <Compile Include="../RandomStringGenerator.cs" Link="RandomStringGenerator.cs" />
   </ItemGroup>
 
   <ItemGroup>

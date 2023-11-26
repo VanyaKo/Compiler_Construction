@@ -299,6 +299,7 @@ namespace OluaSemanticAnalyzer
             switch (obj)
             {
                 case ThisIdentifier thisIdentifier:
+                    thisIdentifier.Type = @this;
                     return @this;
 
                 case ObjectIdentifier objectIdentifier:
@@ -322,7 +323,8 @@ namespace OluaSemanticAnalyzer
                     ClassInterface inf = GetInterface(t);
                     if (!inf.Fields.ContainsKey(attributeObject.Identifier))
                         throw new InvalidOperationException($"Unknown attribute {attributeObject.Identifier}");
-                    return inf.Fields[attributeObject.Identifier];
+                    attributeObject.AttributeType = inf.Fields[attributeObject.Identifier];
+                    return attributeObject.AttributeType;
 
                 case ConstructorInvocation constructorInvocation:
                     return constructorInvocation.Type;
@@ -335,6 +337,7 @@ namespace OluaSemanticAnalyzer
                         methodInvocation.Arguments.List,
                         mi.Parameters
                     );
+                    methodInvocation.ReturnType = mi.ReturnType;
                     return mi.ReturnType;
 
                 default:
@@ -388,12 +391,14 @@ namespace OluaSemanticAnalyzer
                         break;
 
                     case MethodInvocation methodInvocation:
+                        MethodInterface mi = ResolveMethod(@this, variables, methodInvocation.Method);
                         CheckParamSubmission(
                             @this,
                             variables,
                             methodInvocation.Arguments.List,
-                            ResolveMethod(@this, variables, methodInvocation.Method).Parameters
+                            mi.Parameters
                         );
+                        methodInvocation.ReturnType = mi.ReturnType;
                         break;
 
                     case VariableDeclaration variableDeclaration:
@@ -723,8 +728,5 @@ namespace OluaSemanticAnalyzer
             }
             // Handle other OluaObject types as necessary
         }
-
-
-
     }
 }

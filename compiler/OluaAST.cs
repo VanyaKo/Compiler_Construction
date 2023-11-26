@@ -1,14 +1,56 @@
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Reflection.Emit;
-using Codegen;
 using Indent;
+using MsilVarResprenentation;
+using OluaAST;
+
+namespace MsilVarResprenentation
+{
+    public interface MsilVar
+    {
+        public TypeName Type { get; }
+
+        // returns msil line that pops the top stack element and assigns to the variable
+        string MsilToStore();
+
+        // returns msil line that appends variable value to the top of the stack
+        string MsilToGet();
+    }
+
+    public class LocalVar : MsilVar
+    {
+        public int Index { get; }
+        public TypeName Type { get; }
+
+        public LocalVar(TypeName type, int index)
+        {
+            Type = type;
+            Index = index;
+        }
+
+        public string MsilToStore() => $"stloc.s {Index}";
+        public string MsilToGet() => $"ldloc.s {Index}";
+    }
+
+    public class ArgVar : MsilVar
+    {
+        public TypeName Type { get; }
+        public int Index { get; }
+
+        public ArgVar(TypeName type, int index)
+        {
+            Type = type;
+            Index = index;
+        }
+
+        public string MsilToStore() => $"starg.s {Index + 1}";
+        public string MsilToGet() => $"ldarg.s {Index + 1}";
+    }
+}
 
 namespace OluaAST
 {
     public interface Node
     {
-        public IStringOrList ToStrings();
+        public IStringOrList ToOlua();
     }
 
     public class TypeName : Node
@@ -19,7 +61,12 @@ namespace OluaAST
         public override string ToString() => GenericType != null
                                          ? $"{Identifier}[{GenericType}]"
                                          : Identifier;
-        public IStringOrList ToStrings() => new StringWrapper(ToString());
+        public IStringOrList ToOlua() => new StringWrapper(ToString());
+
+        public string sMsil() => GenericType != null
+                                         ? $"{Identifier}`1<{GenericType.sMsil()}>"
+                                         : Identifier;
+
 
         public override bool Equals(object obj)
         {
@@ -59,7 +106,19 @@ namespace OluaAST
         public List<OluaObject> List { get; set; }
 
         public override string ToString() => string.Join(", ", List.Select(e => e.ToString()));
-        public IStringOrList ToStrings() => new StringWrapper(ToString());
+        public IStringOrList ToOlua() => new StringWrapper(ToString());
+
+        public ListWrapper MsilToGet(Dictionary<string, MsilVar> locals)
+        {
+            ListWrapper res = new();
+            for (int i = 0; i < List.Count; i++)
+            {
+                res.AddExpanding(List[i].MsilToGet(locals));
+            }
+            return res;
+        }
+
+        public string MsilTypes(Dictionary<string, MsilVar> locals) => string.Join(", ", List.Select(e => e.MsilType(locals)));
     }
 
     public class ConstructorInvocation : OluaObject
@@ -67,40 +126,99 @@ namespace OluaAST
         public TypeName Type { get; set; }
 
         public override string ToString() => $"new {Type}";
-        public IStringOrList ToStrings() => new StringWrapper(ToString());
+        public IStringOrList ToOlua() => new StringWrapper(ToString());
+
+        public IStringOrList MsilToGet(Dictionary<string, MsilVar> locals) => new StringWrapper($"newobj static void {Type.sMsil()}::.ctor()");
+
+        public string MsilType(Dictionary<string, MsilVar> locals) => Type.sMsil();
     }
 
     public class MethodInvocation : OluaObject, Statement
     {
+        public TypeName? ReturnType { get; set; } // null if void result  // augmented by analyzer
         public AttributeObject Method { get; set; }
         public OluaObjectList Arguments { get; set; }
 
         public override string ToString() => $"{Method}({Arguments})";
-        public IStringOrList ToStrings() => new StringWrapper(ToString());
 
-        public void GenerateStatement(ILGenerator il, TypeTable types)
+        public IStringOrList ToOlua() => new StringWrapper(ToString());
+
+        public IStringOrList MsilToExecute(Dictionary<string, MsilVar> locals, List<TypeName> accum)
         {
-            // TODO
+            ListWrapper res = new();
+            res.AddExpanding(MsilToGet(locals));
+            if (ReturnType != null)
+            {
+                res.AddExpanding(new StringWrapper("pop"));
+            }
+            return res;
         }
+
+        public IStringOrList MsilToGet(Dictionary<string, MsilVar> locals)
+        {
+            ListWrapper res = new();
+            // res.AddExpanding(new StringWrapper(""));
+            res.AddExpanding(Method.Parent.MsilToGet(locals));
+            res.AddExpanding(Arguments.MsilToGet(locals));
+            res.AddExpanding(new StringWrapper($"callvirt {MsilType(locals)} {Method.Parent.MsilType(locals)}::{Method.Identifier}({Arguments.MsilTypes(locals)})"));
+            return res;
+        }
+
+        public string MsilType(Dictionary<string, MsilVar> locals) => ReturnType == null ? "void" : ReturnType.sMsil();
     }
 
     public class AttributeObject : OluaAssignableObject
     {
+        public TypeName? AttributeType { get; set; } // augmented by analyzer
         public OluaObject Parent { get; set; } // The object on which the attribute is accessed.
         public string Identifier { get; set; }
 
         public override string ToString() => $"{Parent}.{Identifier}";
-        public IStringOrList ToStrings() => new StringWrapper(ToString());
+        public IStringOrList ToOlua() => new StringWrapper(ToString());
+
+        public IStringOrList MsilToAssign(OluaObject value, Dictionary<string, MsilVar> locals)
+        {
+            ListWrapper res = new();
+            res.AddExpanding(Parent.MsilToGet(locals));
+            res.AddExpanding(value.MsilToGet(locals));
+            res.AddExpanding(new StringWrapper($"stfld {AttributeType.sMsil()} {Parent.MsilType(locals)}::{Identifier}"));
+            return res;
+        }
+
+        public IStringOrList MsilToGet(Dictionary<string, MsilVar> locals)
+        {
+            ListWrapper res = new();
+            res.AddExpanding(Parent.MsilToGet(locals));
+            res.AddExpanding(new StringWrapper($"ldfld {AttributeType.sMsil()} {Parent.MsilType(locals)}::{Identifier}"));
+            return res;
+        }
+
+        public string MsilType(Dictionary<string, MsilVar> locals) => AttributeType.sMsil();
     }
 
-    public interface OluaObject : Node { }
+    public interface OluaObject : Node
+    {
+        public string MsilType(Dictionary<string, MsilVar> locals);
 
-    public interface OluaAssignableObject : OluaObject { }
+        // returns msil lines that pushes the value on top of the stack
+        public IStringOrList MsilToGet(Dictionary<string, MsilVar> locals);
+    }
+
+    public interface OluaAssignableObject : OluaObject
+    {
+        // returns msil lines that pulls value from the stack
+        public IStringOrList MsilToAssign(OluaObject value, Dictionary<string, MsilVar> locals);
+    }
 
     public class ThisIdentifier : OluaObject
     {
+        public TypeName? Type { get; set; } //  augemented in analyzer
         public override string ToString() => $"this";
-        public IStringOrList ToStrings() => new StringWrapper(ToString());
+        public IStringOrList ToOlua() => new StringWrapper(ToString());
+
+        public IStringOrList MsilToGet(Dictionary<string, MsilVar> locals) => new StringWrapper("ldarg.0");
+
+        public string MsilType(Dictionary<string, MsilVar> locals) => Type.sMsil();
     }
 
     public class ObjectIdentifier : OluaAssignableObject
@@ -108,7 +226,24 @@ namespace OluaAST
         public string Identifier { get; set; }
 
         public override string ToString() => $"{Identifier}";
-        public IStringOrList ToStrings() => new StringWrapper(ToString());
+        public IStringOrList ToOlua() => new StringWrapper(ToString());
+
+        public IStringOrList MsilToAssign(OluaObject value, Dictionary<string, MsilVar> locals)
+        {
+            ListWrapper res = new();
+            res.AddExpanding(value.MsilToGet(locals));
+            res.AddExpanding(new StringWrapper(locals[Identifier].MsilToStore()));
+            return res;
+        }
+
+        public IStringOrList MsilToGet(Dictionary<string, MsilVar> locals)
+        {
+            ListWrapper res = new();
+            res.AddExpanding(new StringWrapper(locals[Identifier].MsilToGet()));
+            return res;
+        }
+
+        public string MsilType(Dictionary<string, MsilVar> locals) => locals[Identifier].Type.sMsil();
     }
 
     public class Literal<T> : OluaObject
@@ -116,7 +251,52 @@ namespace OluaAST
         public T Value { get; set; }
 
         public override string ToString() => $"{Value}";
-        public IStringOrList ToStrings() => new StringWrapper(ToString());
+        public IStringOrList ToOlua() => new StringWrapper(ToString());
+
+        public string MsilType(Dictionary<string, MsilVar> locals)
+        {
+            if (Value is float)
+            {
+                return "Real";
+            }
+            else if (Value is int)
+            {
+                return "Integer";
+            }
+            else if (Value is bool)
+            {
+                return "Boolean";
+            }
+            else
+            {
+                throw new ArgumentException();
+            }
+        }
+
+        public IStringOrList MsilToGet(Dictionary<string, MsilVar> locals)
+        {
+            ListWrapper res = new();
+            if (Value is float)
+            {
+                res.AddExpanding(new StringWrapper($"ldc.r4 {Value}"));
+                res.AddExpanding(new StringWrapper($"newobj static void {MsilType(locals)}::.ctor(float32)"));
+            }
+            else if (Value is int)
+            {
+                res.AddExpanding(new StringWrapper($"ldc.i4 {Value}"));
+                res.AddExpanding(new StringWrapper($"newobj static void {MsilType(locals)}::.ctor(int32)"));
+            }
+            else if (Value is bool)
+            {
+                res.AddExpanding(new StringWrapper((Value.ToString() == "true") ? "ldc.i4.1" : "ldc.i4.0"));
+                res.AddExpanding(new StringWrapper($"newobj static void {MsilType(locals)}::.ctor(bool)"));
+            }
+            else
+            {
+                throw new ArgumentException();
+            }
+            return res;
+        }
     }
 
 
@@ -126,14 +306,58 @@ namespace OluaAST
         public TypeName? BaseClass { get; set; } // Nullable if the class doesn't extend another.
         public List<ClassMember> Members { get; set; }
 
-        public IStringOrList ToStrings()
+        public IStringOrList ToMsil()
+        {
+            ListWrapper res = new();
+            // TODO: by default extend our base class, not the System.Object
+            res.Values.Add(new StringWrapper($".class public auto ansi beforefieldinit {Name} extends " + (BaseClass == null ? "[mscorlib]System.Object" : BaseClass.sMsil()) + " {"));
+            ListWrapper scope = new();
+
+            // constructor
+            {
+                scope.Values.Add(new StringWrapper(".method public hidebysig specialname rtspecialname instance void .ctor() cil managed {"));
+
+                ListWrapper body = new();
+                {
+                    body.AddExpanding(new StringWrapper(".maxstack 30")); // TODO: dynamically decide
+                    foreach (ClassMember e in Members)
+                    {
+                        IStringOrList initializer = e.MsilInitialize(Name);
+                        if (initializer != null)
+                        {
+                            body.AddExpanding(initializer);
+                        }
+                    }
+                    body.AddExpanding(new StringWrapper("ret"));
+                }
+                scope.Values.Add(body);
+
+                scope.Values.Add(new StringWrapper("}"));
+            }
+
+            scope.Values.Add(new StringWrapper(""));
+
+            for (int i = 0; i < Members.Count; i++)
+            {
+                scope.AddExpanding(Members[i].DeclareClassMemberMsil());
+                if (i < Members.Count - 1)
+                {
+                    scope.Values.Add(new StringWrapper(""));
+                }
+            }
+            res.Values.Add(scope);
+            res.Values.Add(new StringWrapper("}"));
+            return res;
+        }
+
+        public IStringOrList ToOlua()
         {
             ListWrapper res = new();
             res.Values.Add(new StringWrapper($"class {Name} {(BaseClass == null ? "" : $"extends {BaseClass} ")}is"));
             ListWrapper scope = new();
             for (int i = 0; i < Members.Count; i++)
             {
-                scope.AddExpanding(Members[i].ToStrings());
+                scope.AddExpanding(Members[i].ToOlua());
                 if (i < Members.Count - 1)
                 {
                     scope.Values.Add(new StringWrapper(""));
@@ -143,33 +367,12 @@ namespace OluaAST
             res.Values.Add(new StringWrapper("end"));
             return res;
         }
-
-        // call it on all the classes before GenerateClass on any of them since type map must be populated fully before
-        public void DefineType(ModuleBuilder mod, TypeTable types)
-        {
-            // Add static type (as it cannot be generic)
-            // TODO: only the array type is built as generic
-            TypeBuilder t = mod.DefineType(Name, TypeAttributes.Class);
-            types.typeMap[Name] = t;
-            // TODO: foratch class memebers and complete the class inteface
-        }
-
-        public void GenerateClass(TypeTable types)
-        {
-            TypeBuilder type = types.typeMap[Name];
-            // TODO: default constructor that intializes fields? (if it is not implicitly gemnerated by the reflection.emit when defining fields)
-            // TODO: inherit from the base class
-            foreach (ClassMember cm in Members)
-            {
-                cm.GenerateClassMember(type, types);
-            }
-            type.CreateType(); // finalize il generation
-        }
     }
 
     public interface ClassMember : Node
     {
-        public void GenerateClassMember(TypeBuilder type, TypeTable types);
+        public IStringOrList DeclareClassMemberMsil();
+        public IStringOrList? MsilInitialize(string belongingClass);
     }
 
     public class VariableDeclaration : ClassMember, Statement
@@ -178,18 +381,35 @@ namespace OluaAST
         public TypeName Type { get; set; }
         public OluaObject InitialValue { get; set; }
 
-        public void GenerateClassMember(TypeBuilder type, TypeTable types)
-        {
-            // TODO: build field for the variable declaration in class
-        }
-
-        public void GenerateStatement(ILGenerator il, TypeTable types)
-        {
-            // TODO: build field for the variable declaration in body
-        }
-
         public override string ToString() => $"var {Name} : {Type} := {InitialValue}";
-        public IStringOrList ToStrings() => new StringWrapper(ToString());
+        public IStringOrList ToOlua() => new StringWrapper(ToString());
+
+        public IStringOrList DeclareClassMemberMsil() => new StringWrapper($".field public class {Type.sMsil()} {Name}");
+
+        public IStringOrList MsilToExecute(Dictionary<string, MsilVar> locals, List<TypeName> accum)
+        {
+            LocalVar new_var = new(Type, accum.Count);
+
+            // assign initial value
+            ListWrapper res = new();
+            res.AddExpanding(InitialValue.MsilToGet(locals));
+            res.AddExpanding(new StringWrapper(new_var.MsilToStore()));
+
+            // remember
+            locals[Name] = new_var;
+            accum.Add(Type);
+
+            return res;
+        }
+
+        public IStringOrList MsilInitialize(string belongingClass)
+        {
+            ListWrapper res = new();
+            res.AddExpanding(new StringWrapper("ldarg.0"));
+            res.AddExpanding(InitialValue.MsilToGet(new Dictionary<string, MsilVar>()));
+            res.AddExpanding(new StringWrapper($"stfld {Type.sMsil()} {belongingClass}::{Name}"));
+            return res;
+        }
     }
 
     public class ParameterList : Node
@@ -197,7 +417,9 @@ namespace OluaAST
         public List<Parameter> List { get; set; }
 
         public override string ToString() => string.Join(", ", List.Select(e => e.ToString()));
-        public IStringOrList ToStrings() => new StringWrapper(ToString());
+        public IStringOrList ToOlua() => new StringWrapper(ToString());
+
+        public string TypesMsil() => string.Join(", ", List.Select(e => e.Type.sMsil()));
     }
 
     public class MethodDeclaration : ClassMember
@@ -207,36 +429,47 @@ namespace OluaAST
         public TypeName? ReturnType { get; set; } // null if void return type
         public StatementList Statements { get; set; }
 
-        public void GenerateClassMember(TypeBuilder type, TypeTable types)
+        public IStringOrList DeclareClassMemberMsil()
         {
-            // Create an array to hold the parameter types.
-            Type[] parameterTypes = new Type[Parameters.List.Count];
+            ListWrapper res = new();
+            res.Values.Add(new StringWrapper(".method public " + (ReturnType == null ? "void" : $"class {ReturnType.sMsil()}") + $" {Name}({Parameters.TypesMsil()}) cil managed {{"));
+
+
+            List<TypeName> accum = new();
+            Dictionary<string, MsilVar> locals = new();
             for (int i = 0; i < Parameters.List.Count; i++)
             {
-                parameterTypes[i] = types.ResolveType(Parameters.List[i].Type);
+                Parameter p = Parameters.List[i];
+                locals[p.Name] = new ArgVar(p.Type, i);
             }
 
-            // Define the method with the specified name and public visibility.
-            MethodBuilder method = type.DefineMethod(
-                Name,
-                MethodAttributes.Public,
-                ReturnType != null ? types.ResolveType(ReturnType) : typeof(void),
-                parameterTypes
-            );
+            IStringOrList stmts_msil = Statements.MsilToExecute(locals, accum);
 
-            // Generate the method body.
-            ILGenerator il = method.GetILGenerator();
-            foreach (Statement e in Statements.List)
+            ListWrapper scope = new();
             {
-                e.GenerateStatement(il, types);
+                scope.AddExpanding(new StringWrapper(".maxstack 30")); // TODO: dynamically decide
+                if (accum.Count > 0)
+                {
+                    scope.AddExpanding(new StringWrapper(".locals (" + string.Join(", ", accum.Select(e => e.sMsil())) + ")"));
+                }
+                scope.AddExpanding(stmts_msil);
             }
+            res.Values.Add(scope);
+
+            res.Values.Add(new StringWrapper("}"));
+            return res;
         }
 
-        public IStringOrList ToStrings()
+        public IStringOrList? MsilInitialize(string belongingClass)
+        {
+            return null;
+        }
+
+        public IStringOrList ToOlua()
         {
             ListWrapper res = new();
             res.Values.Add(new StringWrapper($"method {Name}({Parameters}) : {ReturnType} is"));
-            res.Values.Add(Statements.ToStrings());
+            res.Values.Add(Statements.ToOlua());
             res.Values.Add(new StringWrapper("end"));
             return res;
         }
@@ -246,24 +479,23 @@ namespace OluaAST
     {
         public StatementList Statements { get; set; }
 
-        public IStringOrList ToStrings()
+        public IStringOrList MsilToExecute(Dictionary<string, MsilVar> locals, List<TypeName> accum)
+        => Statements.MsilToExecute(locals, accum);
+
+        public IStringOrList ToOlua()
         {
             ListWrapper res = new();
             res.Values.Add(new StringWrapper($"is"));
-            res.Values.Add(Statements.ToStrings());
+            res.Values.Add(Statements.ToOlua());
             res.Values.Add(new StringWrapper("end"));
             return res;
-        }
-
-        public void GenerateStatement(ILGenerator il, TypeTable types)
-        {
-            // TODO
         }
     }
 
     public interface Statement : Node
     {
-        public void GenerateStatement(ILGenerator il, TypeTable types);
+        // msil lines that execute the statement
+        public IStringOrList MsilToExecute(Dictionary<string, MsilVar> locals, List<TypeName> accum);
     }
 
     public class Assignment : Statement
@@ -272,31 +504,35 @@ namespace OluaAST
         public OluaObject Value { get; set; }
 
         public override string ToString() => $"{Variable} := {Value}";
-        public IStringOrList ToStrings() => new StringWrapper(ToString());
+        public IStringOrList ToOlua() => new StringWrapper(ToString());
 
-        public void GenerateStatement(ILGenerator il, TypeTable types)
-        {
-            // TODO
-        }
+        // returns msil lines that reads the value from the top of the stack
+        public IStringOrList MsilToExecute(Dictionary<string, MsilVar> locals, List<TypeName> accum) => Variable.MsilToAssign(Value, locals);
     }
 
     public class StatementList : Node
     {
         public List<Statement> List { get; set; }
 
-        public IStringOrList ToStrings()
+        public IStringOrList ToOlua()
         {
             ListWrapper res = new();
             foreach (Statement e in List)
             {
-                res.AddExpanding(e.ToStrings());
+                res.AddExpanding(e.ToOlua());
             }
             return res;
         }
 
-        public void GenerateStatement(ILGenerator il, TypeTable types)
+        public IStringOrList MsilToExecute(Dictionary<string, MsilVar> locals, List<TypeName> accum)
         {
-            // TODO
+            locals = new Dictionary<string, MsilVar>(locals); // shallow copy
+            ListWrapper res = new();
+            foreach (Statement e in List)
+            {
+                res.AddExpanding(e.MsilToExecute(locals, accum));
+            }
+            return res;
         }
     }
 
@@ -306,23 +542,38 @@ namespace OluaAST
         public StatementList Then { get; set; }
         public StatementList? Else { get; set; }
 
-        public IStringOrList ToStrings()
+        public IStringOrList MsilToExecute(Dictionary<string, MsilVar> locals, List<TypeName> accum)
         {
+            string id = RandomStringGenerator.GenerateRandomString(32);
+            string else_label = "ELSE_" + id;
+            string endif_label = "END_IF_" + id;
+
             ListWrapper res = new();
-            res.Values.Add(new StringWrapper($"if {Cond} then"));
-            res.Values.Add(Then.ToStrings());
+            res.AddExpanding(Cond.MsilToGet(locals));
+            res.AddExpanding(new StringWrapper("brfalse.s " + (Else == null ? endif_label : else_label)));
+            res.AddExpanding(Then.MsilToExecute(locals, accum));
             if (Else != null)
             {
-                res.Values.Add(new StringWrapper($"else"));
-                res.Values.Add(Else.ToStrings());
+                res.AddExpanding(new StringWrapper("br.s" + endif_label));
+                res.AddExpanding(new StringWrapper(else_label + ":"));
+                res.AddExpanding(Else.MsilToExecute(locals, accum));
             }
-            res.Values.Add(new StringWrapper("end"));
+            res.AddExpanding(new StringWrapper(endif_label + ":"));
             return res;
         }
 
-        public void GenerateStatement(ILGenerator il, TypeTable types)
+        public IStringOrList ToOlua()
         {
-            // TODO
+            ListWrapper res = new();
+            res.Values.Add(new StringWrapper($"if {Cond} then"));
+            res.Values.Add(Then.ToOlua());
+            if (Else != null)
+            {
+                res.Values.Add(new StringWrapper($"else"));
+                res.Values.Add(Else.ToOlua());
+            }
+            res.Values.Add(new StringWrapper("end"));
+            return res;
         }
     }
 
@@ -331,18 +582,28 @@ namespace OluaAST
         public OluaObject Cond { get; set; }
         public StatementList Body { get; set; }
 
-        public IStringOrList ToStrings()
+        public IStringOrList MsilToExecute(Dictionary<string, MsilVar> locals, List<TypeName> accum)
         {
+            string id = RandomStringGenerator.GenerateRandomString(32);
+            string start_label = "WHILE_" + id;
+            string end_label = "END_WHILE_" + id;
+
             ListWrapper res = new();
-            res.Values.Add(new StringWrapper($"while {Cond} loop"));
-            res.Values.Add(Body.ToStrings());
-            res.Values.Add(new StringWrapper("end"));
+            res.AddExpanding(new StringWrapper(start_label + ":"));
+            res.AddExpanding(Cond.MsilToGet(locals));
+            res.AddExpanding(new StringWrapper("brfalse.s " + end_label));
+            res.AddExpanding(Body.MsilToExecute(locals, accum));
+            res.AddExpanding(new StringWrapper(end_label + ":"));
             return res;
         }
 
-        public void GenerateStatement(ILGenerator il, TypeTable types)
+        public IStringOrList ToOlua()
         {
-            // TODO
+            ListWrapper res = new();
+            res.Values.Add(new StringWrapper($"while {Cond} loop"));
+            res.Values.Add(Body.ToOlua());
+            res.Values.Add(new StringWrapper("end"));
+            return res;
         }
     }
 
@@ -351,11 +612,17 @@ namespace OluaAST
         public OluaObject? Object { get; set; }
 
         public override string ToString() => $"return {Object}";
-        public IStringOrList ToStrings() => new StringWrapper(ToString());
+        public IStringOrList ToOlua() => new StringWrapper(ToString());
 
-        public void GenerateStatement(ILGenerator il, TypeTable types)
+        public IStringOrList MsilToExecute(Dictionary<string, MsilVar> locals, List<TypeName> accum)
         {
-            // TODO
+            ListWrapper res = new();
+            if (Object != null)
+            {
+                res.AddExpanding(Object.MsilToGet(locals));
+            }
+            res.AddExpanding(new StringWrapper("ret"));
+            return res;
         }
     }
 
@@ -365,6 +632,6 @@ namespace OluaAST
         public TypeName Type { get; set; }
 
         public override string ToString() => $"{Name} : {Type}";
-        public IStringOrList ToStrings() => new StringWrapper(ToString());
+        public IStringOrList ToOlua() => new StringWrapper(ToString());
     }
 }
