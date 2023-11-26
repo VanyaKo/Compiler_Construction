@@ -11,12 +11,13 @@
         ret
     }
 
-    // sameRef method (implementation details depend on the method's functionality)
-    .method public hidebysig instance bool sameRef(...) cil managed
+    // sameRef method
+    .method public hidebysig instance bool sameRef(class Class o) cil managed
     {
-        .maxstack 8
-        // Method implementation
-        // ...
-        ret
+        .maxstack 2
+        ldarg.0   // Load the current object reference
+        ldarg.1   // Load the reference to the object passed as a parameter
+        ceq       // Compare the two references
+        ret       // Return the result of the comparison
     }
 }
