@@ -309,8 +309,7 @@ namespace OluaAST
         public IStringOrList ToMsil()
         {
             ListWrapper res = new();
-            // TODO: by default extend our base class, not the System.Object
-            res.Values.Add(new StringWrapper($".class public auto ansi beforefieldinit {Name} extends " + (BaseClass == null ? "[mscorlib]System.Object" : BaseClass.sMsil()) + " {"));
+            res.Values.Add(new StringWrapper($".class public auto ansi beforefieldinit {Name} extends " + (BaseClass == null ? "Class" : BaseClass.sMsil()) + " {"));
             ListWrapper scope = new();
 
             // constructor

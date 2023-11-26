@@ -14,12 +14,12 @@
         .maxstack 30
         ldarg.s 1
         callvirt Boolean Boolean::not()
-        brfalse.s END_IF_EOQA1JCDC4AJJQW1KMIIIKWRGWQ57WZ5
+        brfalse.s END_IF_6QPCTFR81LWOFHWKONP1DPIHPVYWIL9F
         ldarg.0
         ldc.i4 1
         newobj static void Integer::.ctor(int32)
         stfld Integer Factorial::exit_code
-        END_IF_EOQA1JCDC4AJJQW1KMIIIKWRGWQ57WZ5:
+        END_IF_6QPCTFR81LWOFHWKONP1DPIHPVYWIL9F:
         ret
     }
     
@@ -29,12 +29,12 @@
         ldc.i4 1
         newobj static void Integer::.ctor(int32)
         stloc.s 0
-        WHILE_3T4LFH10CFMS0SW8M9AXMZ562DCNRKE6:
+        WHILE_91ADCL0MK6VZNE4INX3NCHNQ1RTHZGV0:
         ldarg.s 1
         ldc.i4 1
         newobj static void Integer::.ctor(int32)
         callvirt Boolean Integer::greater(Integer)
-        brfalse.s END_WHILE_3T4LFH10CFMS0SW8M9AXMZ562DCNRKE6
+        brfalse.s END_WHILE_91ADCL0MK6VZNE4INX3NCHNQ1RTHZGV0
         ldloc.s 0
         ldarg.s 1
         callvirt Integer Integer::mult(Integer)
@@ -44,7 +44,7 @@
         newobj static void Integer::.ctor(int32)
         callvirt Integer Integer::minus(Integer)
         starg.s 1
-        END_WHILE_3T4LFH10CFMS0SW8M9AXMZ562DCNRKE6:
+        END_WHILE_91ADCL0MK6VZNE4INX3NCHNQ1RTHZGV0:
         ldloc.s 0
         ret
     }
