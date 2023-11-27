@@ -3,7 +3,7 @@
 {
     // Abstract main method
     .method public newslot abstract virtual 
-            static class Integer main(class StdIn, class StdOut, class Array`1<class Array`1<class Integer>>) cil managed
+            class Integer main(class StdIn, class StdOut, class Array`1<class Array`1<class Integer>>) cil managed
     {
     }
 }
