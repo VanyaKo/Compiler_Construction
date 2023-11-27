@@ -1,3 +1,7 @@
+// Commented for now, see the example of inetger and adopt
+
+/*
+
 .class public auto ansi beforefieldinit Real
        extends Class
 {
@@ -160,3 +164,5 @@
 
     // Implement additional methods and fields
 }
+
+*/
