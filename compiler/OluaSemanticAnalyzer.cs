@@ -184,7 +184,6 @@ namespace OluaSemanticAnalyzer
                             {
                                 typeStdIn,
                                 typeStdOut,
-                                typeStdOut,
                                 typeArray(typeArray(typeInteger))
                             },
                             ReturnType = typeInteger,
