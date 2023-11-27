@@ -34,7 +34,7 @@
         ret
     }
 
-    .method public final instance int32 toInteger() cil managed
+    .method public newslot virtual instance int32 toInteger() cil managed
     {
         .maxstack 1
         ldarg.0
@@ -46,7 +46,7 @@
         ret
     }
 
-    .method public final instance bool or(bool val) cil managed
+    .method public newslot virtual instance bool or(bool val) cil managed
     {
         .maxstack 2
         ldarg.0
@@ -56,7 +56,7 @@
         ret
     }
     
-    .method public final instance bool and(bool val) cil managed
+    .method public newslot virtual instance bool and(bool val) cil managed
     {
         .maxstack 2
         ldarg.0
@@ -66,7 +66,7 @@
         ret
     }
     
-    .method public final instance bool xor(bool val) cil managed
+    .method public newslot virtual instance bool xor(bool val) cil managed
     {
         .maxstack 2
         ldarg.0
@@ -76,7 +76,7 @@
         ret
     }
     
-    .method public final instance bool not() cil managed
+    .method public newslot virtual instance bool not() cil managed
     {
         .maxstack 1
         ldarg.0
