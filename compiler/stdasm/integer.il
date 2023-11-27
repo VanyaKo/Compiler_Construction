@@ -29,6 +29,7 @@
 
     .method public final instance int32 $data() cil managed
     {
+        .maxstack 3
         ldarg.0
         ldfld int32 Integer::data
         ret

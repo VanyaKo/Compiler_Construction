@@ -2,7 +2,7 @@ class Main extends EntryPoint is
     var exit_code : Integer := 0
 
     method assert(cond : Boolean) : void is
-        if cond.not() then
+        if cond.negate() then
             this.exit_code := 1
         end
     end
@@ -16,7 +16,7 @@ class Main extends EntryPoint is
         return result
     end
 
-    method main(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) : Integer is
+    method main(stdin: StdIn, stdout: StdOut, args: Array[Array[Integer]]) : Integer is
         var a: Integer := 10
         is
             var a : Real := 20.0

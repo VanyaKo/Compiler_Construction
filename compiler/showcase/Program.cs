@@ -65,6 +65,8 @@ public class Application
         // generate il
         using (StreamWriter writer = new StreamWriter("program.il"))
         {
+            writer.WriteLine(".assembly extern mscorlib {}");
+
             // link stdasm
             foreach (string file in Directory.GetFiles("../stdasm"))
             {

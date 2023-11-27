@@ -29,60 +29,56 @@
 
     .method public final instance bool $data() cil managed
     {
+        .maxstack 3
         ldarg.0
         ldfld bool Boolean::data
         ret
     }
 
-    .method public newslot virtual instance int32 toInteger() cil managed
+    .method public newslot virtual instance class Integer toInteger() cil managed
     {
-        .maxstack 1
+        .maxstack 3
         ldarg.0
         ldfld bool Boolean::data
-        ldc.i4.0
-        ceq
-        ldc.i4.0
-        ceq
+        newobj instance void Integer::.ctor(int32)
         ret
     }
 
-    .method public newslot virtual instance bool or(bool val) cil managed
+    // aka or, but or is prohibited
+    .method public newslot virtual instance class Boolean disjunct(class Boolean) cil managed
     {
-        .maxstack 2
+        .maxstack 3
         ldarg.0
         ldfld bool Boolean::data
         ldarg.1
+        ldfld bool Boolean::data
         or
+        newobj instance void Boolean::.ctor(bool)
         ret
     }
-    
-    .method public newslot virtual instance bool and(bool val) cil managed
+
+    // aka and, but and is prohibited
+    .method public newslot virtual instance class Boolean conjunct(class Boolean) cil managed
     {
-        .maxstack 2
+        .maxstack 3
         ldarg.0
         ldfld bool Boolean::data
         ldarg.1
+        ldfld bool Boolean::data
         and
+        newobj instance void Boolean::.ctor(bool)
         ret
     }
-    
-    .method public newslot virtual instance bool xor(bool val) cil managed
+
+    // aka not, but not is prohibited
+    .method public newslot virtual instance class Boolean negate() cil managed
     {
-        .maxstack 2
-        ldarg.0
-        ldfld bool Boolean::data
-        ldarg.1
-        xor
-        ret
-    }
-    
-    .method public newslot virtual instance bool not() cil managed
-    {
-        .maxstack 1
+        .maxstack 3
         ldarg.0
         ldfld bool Boolean::data
         ldc.i4.0
         ceq
+        newobj instance void Boolean::.ctor(bool)
         ret
     }
 }

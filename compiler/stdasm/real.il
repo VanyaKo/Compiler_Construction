@@ -32,6 +32,7 @@
     // Getter for data
     .method public final instance float64 $data() cil managed
     {
+        .maxstack 3
         ldarg.0
         ldfld float64 Real::data
         ret
