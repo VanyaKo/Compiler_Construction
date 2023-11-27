@@ -13,21 +13,21 @@
 
     // writeChar(e: Integer) implementation
     .method public virtual instance void 
-            writeChar(class Integer e) cil managed
+            writeChar(class Integer) cil managed
     {
         // Implement System.Write(chr(e))
     }
 
     // write(s: Array[Integer]) implementation
     .method public virtual instance void 
-            write(class Array`1<class Integer> s) cil managed
+            write(class Array`1<class Integer>) cil managed
     {
         // Implement like consequent writeChar on each element of the array
     }
 
     // writeLine(s: Array[Integer]) implementation
     .method public virtual instance void 
-            writeLine(class Array`1<class Integer> s) cil managed
+            writeLine(class Array`1<class Integer>) cil managed
     {
         // Implement like consequent writeChar on each element of the array, but add '\n' at the end
     }

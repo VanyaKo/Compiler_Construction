@@ -16,7 +16,7 @@
     }
 
     .method public hidebysig specialname rtspecialname 
-            instance void .ctor(int32 val) cil managed 
+            instance void .ctor(int32) cil managed 
     {
         .maxstack 8
         ldarg.0
@@ -34,8 +34,8 @@
         ret
     }
 
-    .method public instance class Integer 
-            plus(class Integer other) cil managed
+    .method public newslot virtual instance class Integer 
+            plus(class Integer) cil managed
     {
         .maxstack 2
         newobj instance void Integer::.ctor(int32)

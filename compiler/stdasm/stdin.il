@@ -27,7 +27,7 @@
 
     // read(n: Integer) implementation
     .method public virtual instance class Array`1<class Integer> 
-            read(class Integer n) cil managed
+            read(class Integer) cil managed
     {
         // Implement reading n characters from stdin and returning their integer values
     }

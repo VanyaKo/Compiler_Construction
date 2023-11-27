@@ -18,7 +18,7 @@
     }
 
     .method public newslot abstract virtual 
-            instance class Array`1<class Integer> read(class Integer n) cil managed
+            instance class Array`1<class Integer> read(class Integer) cil managed
     {
     }
 }

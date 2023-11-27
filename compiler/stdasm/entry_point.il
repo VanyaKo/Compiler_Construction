@@ -3,7 +3,7 @@
 {
     // Abstract main method
     .method public newslot abstract virtual 
-            static class Integer main(class StdIn stdin, class StdOut stdout, class StdOut stderr, class Array`1<class Array`1<class Integer>> args) cil managed
+            static class Integer main(class StdIn, class StdOut, class StdOut, class Array`1<class Array`1<class Integer>>) cil managed
     {
     }
 }
@@ -22,7 +22,7 @@
     // TODO
     ldnull // For StdIn
     ldnull // For StdOut
-    ldnull // For StdErr
+    ldnull // For StdErr // TODO: StdErr is a separate class
     ldnull // for args
 
     // Call the Factorial.main method with prepared arguments

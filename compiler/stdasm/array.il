@@ -5,7 +5,7 @@
     .field private !T[] items
 
     .method public specialname rtspecialname 
-            instance void .ctor(class Integer len) cil managed 
+            instance void .ctor(class Integer) cil managed 
     {
         .maxstack 8
         ldarg.0
@@ -31,7 +31,7 @@
     }
 
     .method public instance !!T 
-            get(class Integer i) cil managed
+            get(class Integer) cil managed
     {
         .maxstack 2
         ldarg.0
@@ -43,7 +43,7 @@
     }
 
     .method public instance void 
-            set(class Integer i, !!T data) cil managed
+            set(class Integer, !!T) cil managed
     {
         .maxstack 3
         ldarg.0

@@ -8,17 +8,17 @@
     }
 
     .method public newslot abstract virtual 
-            instance void writeChar(class Integer e) cil managed
+            instance void writeChar(class Integer) cil managed
     {
     }
 
     .method public newslot abstract virtual 
-            instance void write(class Array`1<class Integer> s) cil managed
+            instance void write(class Array`1<class Integer>) cil managed
     {
     }
 
     .method public newslot abstract virtual 
-            instance void writeLine(class Array`1<class Integer> s) cil managed
+            instance void writeLine(class Array`1<class Integer>) cil managed
     {
     }
 }

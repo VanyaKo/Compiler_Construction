@@ -16,7 +16,7 @@
     }
 
     .method public hidebysig specialname rtspecialname 
-            instance void .ctor(bool val) cil managed 
+            instance void .ctor(bool) cil managed 
     {
         .maxstack 8
         ldarg.0
