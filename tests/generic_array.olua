@@ -22,11 +22,11 @@ class TestMixedTypesArray extends EntryPoint is
     end
 
     method main(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) : Integer is
-        var array : Array[A] := new Array[A]
-        var objBA : A := new B
-        var objBB : B := new B
+        var array : Array[A] := Array[A](3)
+        var objBA : A := B()
+        var objBB : B := B()
 
-        array.set(0, new A) // call constructor directly
+        array.set(0, A()) // call constructor directly
         array.set(1, objBA)
         array.set(2, objBB)
 

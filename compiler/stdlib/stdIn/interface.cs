@@ -10,6 +10,8 @@ namespace OluaStdLibInterfaces
         {
             Name = OLT.StdIn.Identifier;
             Inf = new CharInputInterface().extend(
+                // Constructor parameters
+                new List<TypeName>(),
                 // Fields
                 new Dictionary<string, TypeName>(),
                 // Methods

@@ -10,11 +10,11 @@ namespace OluaStdLibInterfaces
         {
             Name = OLT.Integer.Identifier;
             Inf = Analyzer.theVeryBaseClass.extend(
+                // Constructor parameters
+                new List<TypeName>(),
                 // Fields
                 new Dictionary<string, TypeName>
                 {
-                    { "max", OLT.Integer },
-                    { "min", OLT.Integer }
                 },
                 // Methods
                 new Dictionary<string, MethodInterface>

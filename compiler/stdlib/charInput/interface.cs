@@ -10,6 +10,8 @@ namespace OluaStdLibInterfaces
         {
             Name = OLT.CharInput.Identifier;
             Inf = Analyzer.theVeryBaseClass.extend(
+                // Constructor parameters
+                new List<TypeName>(),
                 // Fields
                 new Dictionary<string, TypeName>
                 {

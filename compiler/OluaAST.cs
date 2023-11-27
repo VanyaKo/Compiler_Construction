@@ -41,8 +41,8 @@ namespace MsilVarResprenentation
             Index = index;
         }
 
-        public string MsilToStore() => $"starg.s {Index + 1}";
-        public string MsilToGet() => $"ldarg.s {Index + 1}";
+        public string MsilToStore() => $"starg.s {Index}";
+        public string MsilToGet() => $"ldarg.s {Index}";
     }
 }
 
@@ -64,9 +64,10 @@ namespace OluaAST
         public IStringOrList ToOlua() => new StringWrapper(ToString());
 
         public string sMsil() => GenericType != null
-                                         ? $"{Identifier}`1<{GenericType.sMsil()}>"
-                                         : Identifier;
+                                    ? $"{Identifier}`1<{GenericType.sMsil()}>"
+                                    : Identifier;
 
+        public string csMsil() => "class " + sMsil();
 
         public override bool Equals(object obj)
         {
@@ -118,17 +119,24 @@ namespace OluaAST
             return res;
         }
 
-        public string MsilTypes(Dictionary<string, MsilVar> locals) => string.Join(", ", List.Select(e => e.MsilType(locals)));
+        public string MsilTypes(Dictionary<string, MsilVar> locals) => string.Join(", ", List.Select(e => "class " + e.MsilType(locals)));
     }
 
     public class ConstructorInvocation : OluaObject
     {
+        public OluaObjectList Arguments { get; set; }
         public TypeName Type { get; set; }
 
-        public override string ToString() => $"new {Type}";
+        public override string ToString() => $"{Type}({Arguments})";
         public IStringOrList ToOlua() => new StringWrapper(ToString());
 
-        public IStringOrList MsilToGet(Dictionary<string, MsilVar> locals) => new StringWrapper($"newobj static void {Type.sMsil()}::.ctor()");
+        public IStringOrList MsilToGet(Dictionary<string, MsilVar> locals)
+        {
+            ListWrapper res = new();
+            res.AddExpanding(Arguments.MsilToGet(locals));
+            res.AddExpanding(new StringWrapper($"newobj instance void {Type.sMsil()}::.ctor({Arguments.MsilTypes(locals)})"));
+            return res;
+        }
 
         public string MsilType(Dictionary<string, MsilVar> locals) => Type.sMsil();
     }
@@ -157,10 +165,9 @@ namespace OluaAST
         public IStringOrList MsilToGet(Dictionary<string, MsilVar> locals)
         {
             ListWrapper res = new();
-            // res.AddExpanding(new StringWrapper(""));
             res.AddExpanding(Method.Parent.MsilToGet(locals));
             res.AddExpanding(Arguments.MsilToGet(locals));
-            res.AddExpanding(new StringWrapper($"callvirt {MsilType(locals)} {Method.Parent.MsilType(locals)}::{Method.Identifier}({Arguments.MsilTypes(locals)})"));
+            res.AddExpanding(new StringWrapper($"callvirt instance {(ReturnType == null ? "void" : ReturnType.sMsil())} {Method.Parent.MsilType(locals)}::{Method.Identifier}({Arguments.MsilTypes(locals)})"));
             return res;
         }
 
@@ -181,7 +188,7 @@ namespace OluaAST
             ListWrapper res = new();
             res.AddExpanding(Parent.MsilToGet(locals));
             res.AddExpanding(value.MsilToGet(locals));
-            res.AddExpanding(new StringWrapper($"stfld {AttributeType.sMsil()} {Parent.MsilType(locals)}::{Identifier}"));
+            res.AddExpanding(new StringWrapper($"stfld {AttributeType.csMsil()} {Parent.MsilType(locals)}::{Identifier}"));
             return res;
         }
 
@@ -189,7 +196,7 @@ namespace OluaAST
         {
             ListWrapper res = new();
             res.AddExpanding(Parent.MsilToGet(locals));
-            res.AddExpanding(new StringWrapper($"ldfld {AttributeType.sMsil()} {Parent.MsilType(locals)}::{Identifier}"));
+            res.AddExpanding(new StringWrapper($"ldfld {AttributeType.csMsil()} {Parent.MsilType(locals)}::{Identifier}"));
             return res;
         }
 
@@ -387,7 +394,7 @@ namespace OluaAST
         public override string ToString() => $"var {Name} : {Type} := {InitialValue}";
         public IStringOrList ToOlua() => new StringWrapper(ToString());
 
-        public IStringOrList DeclareClassMemberMsil() => new StringWrapper($".field public class {Type.sMsil()} {Name}");
+        public IStringOrList DeclareClassMemberMsil() => new StringWrapper($".field public {Type.csMsil()} {Name}");
 
         public IStringOrList MsilToExecute(Dictionary<string, MsilVar> locals, List<TypeName> accum)
         {
@@ -410,7 +417,7 @@ namespace OluaAST
             ListWrapper res = new();
             res.AddExpanding(new StringWrapper("ldarg.0"));
             res.AddExpanding(InitialValue.MsilToGet(new Dictionary<string, MsilVar>()));
-            res.AddExpanding(new StringWrapper($"stfld {Type.sMsil()} {belongingClass}::{Name}"));
+            res.AddExpanding(new StringWrapper($"stfld {Type.csMsil()} {belongingClass}::{Name}"));
             return res;
         }
     }
@@ -422,7 +429,7 @@ namespace OluaAST
         public override string ToString() => string.Join(", ", List.Select(e => e.ToString()));
         public IStringOrList ToOlua() => new StringWrapper(ToString());
 
-        public string TypesMsil() => string.Join(", ", List.Select(e => e.Type.sMsil()));
+        public string TypesMsil() => string.Join(", ", List.Select(e => "class " + e.Type.sMsil()));
     }
 
     public class MethodDeclaration : ClassMember
@@ -435,15 +442,14 @@ namespace OluaAST
         public IStringOrList DeclareClassMemberMsil()
         {
             ListWrapper res = new();
-            res.Values.Add(new StringWrapper(".method public " + (ReturnType == null ? "void" : $"class {ReturnType.sMsil()}") + $" {Name}({Parameters.TypesMsil()}) cil managed {{"));
-
+            res.Values.Add(new StringWrapper(".method public virtual instance " + (ReturnType == null ? "void" : ReturnType.csMsil()) + $" {Name}({Parameters.TypesMsil()}) cil managed {{"));
 
             List<TypeName> accum = new();
             Dictionary<string, MsilVar> locals = new();
             for (int i = 0; i < Parameters.List.Count; i++)
             {
                 Parameter p = Parameters.List[i];
-                locals[p.Name] = new ArgVar(p.Type, i);
+                locals[p.Name] = new ArgVar(p.Type, i + 1); // i+1 since 0 is for this
             }
 
             IStringOrList stmts_msil = Statements.MsilToExecute(locals, accum);
@@ -453,7 +459,7 @@ namespace OluaAST
                 scope.AddExpanding(new StringWrapper(".maxstack 8")); // TODO: dynamically decide
                 if (accum.Count > 0)
                 {
-                    scope.AddExpanding(new StringWrapper(".locals (" + string.Join(", ", accum.Select(e => e.sMsil())) + ")"));
+                    scope.AddExpanding(new StringWrapper(".locals (" + string.Join(", ", accum.Select(e => e.csMsil())) + ")"));
                 }
                 scope.AddExpanding(stmts_msil);
                 if (ReturnType == null) // autoreturn if void return type
@@ -556,12 +562,13 @@ namespace OluaAST
             string endif_label = "END_IF_" + id;
 
             ListWrapper res = new();
-            res.AddExpanding(Cond.MsilToGet(locals));
+            res.AddExpanding(Cond.MsilToGet(locals)); // Boolean on the stack top as the result
+            res.AddExpanding(new StringWrapper("callvirt instance bool Boolean::$data")); // Unwrap bool
             res.AddExpanding(new StringWrapper("brfalse.s " + (Else == null ? endif_label : else_label)));
             res.AddExpanding(Then.MsilToExecute(locals, accum));
             if (Else != null)
             {
-                res.AddExpanding(new StringWrapper("br.s" + endif_label));
+                res.AddExpanding(new StringWrapper("br.s " + endif_label));
                 res.AddExpanding(new StringWrapper(else_label + ":"));
                 res.AddExpanding(Else.MsilToExecute(locals, accum));
             }
@@ -598,6 +605,7 @@ namespace OluaAST
             ListWrapper res = new();
             res.AddExpanding(new StringWrapper(start_label + ":"));
             res.AddExpanding(Cond.MsilToGet(locals));
+            res.AddExpanding(new StringWrapper("callvirt instance bool Boolean::$data"));
             res.AddExpanding(new StringWrapper("brfalse.s " + end_label));
             res.AddExpanding(Body.MsilToExecute(locals, accum));
             res.AddExpanding(new StringWrapper(end_label + ":"));

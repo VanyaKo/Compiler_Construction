@@ -16,7 +16,7 @@ class EncapsulationTest extends EntryPoint is
     end
 
     method main(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) : Integer is
-        var obj : EncapsulatedClass := new EncapsulatedClass
+        var obj : EncapsulatedClass := EncapsulatedClass()
 
         // Using public methods to access and modify privateVar
         obj.setPrivateVar(42)

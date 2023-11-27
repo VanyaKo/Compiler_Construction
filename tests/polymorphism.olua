@@ -23,9 +23,9 @@ class PolymorphismTest extends EntryPoint is
     end
     
     method main(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) : Integer is
-        var objA : A := new A
-        var objBA : A := new B
-        var objBB : B := new B
+        var objA : A := A()
+        var objBA : A := B()
+        var objBB : B := B()
 
         this.assert(objA.returnSomething().equal(42.0)) // expects 42
         this.assert(objBA.returnSomething().equal(100.0)) // expect 100

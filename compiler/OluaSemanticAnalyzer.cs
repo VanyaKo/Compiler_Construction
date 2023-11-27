@@ -23,6 +23,7 @@ namespace OluaSemanticAnalyzer
     public class ClassInterface
     {
         public string? BaseClass { get; set; }
+        public List<TypeName> ConstructorParameters { get; set; }
         public Dictionary<string, TypeName> Fields { get; set; }
         public Dictionary<string, MethodInterface> Methods { get; set; }
 
@@ -98,6 +99,7 @@ namespace OluaSemanticAnalyzer
             return new ClassInterface
             {
                 BaseClass = baseClass,
+                ConstructorParameters = new List<TypeName>(),
                 Fields = baseClassFields.Concat(Fields.Where(kvp => !baseClassFields.ContainsKey(kvp.Key))).ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
                 Methods = baseClassMethods.Concat(Methods.Where(kvp => !baseClassMethods.ContainsKey(kvp.Key))).ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
             };
@@ -110,14 +112,16 @@ namespace OluaSemanticAnalyzer
         public ClassInterface Inf { get; set; }
 
         public ClassInterface extend(
+            List<TypeName> newConstructorParameters,
             Dictionary<string, TypeName> newFields,
             Dictionary<string, MethodInterface> newMethods)
         {
             return new ClassInterface
             {
                 BaseClass = Name,
-                Fields = this.Inf.Fields.Concat(newFields.Where(kvp => !this.Inf.Fields.ContainsKey(kvp.Key))).ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
-                Methods = this.Inf.Methods.Concat(newMethods.Where(kvp => !this.Inf.Methods.ContainsKey(kvp.Key))).ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
+                ConstructorParameters = newConstructorParameters,
+                Fields = Inf.Fields.Concat(newFields.Where(kvp => !Inf.Fields.ContainsKey(kvp.Key))).ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
+                Methods = Inf.Methods.Concat(newMethods.Where(kvp => !Inf.Methods.ContainsKey(kvp.Key))).ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
             };
         }
     }
@@ -167,6 +171,8 @@ namespace OluaSemanticAnalyzer
         {
             linkClasses[typeClass.Identifier] = theVeryBaseClass.Inf;
             linkClasses[typeEntryPoint.Identifier] = theVeryBaseClass.extend(
+                // Constructor parameters
+                new List<TypeName>(),
                 // Fields
                 new Dictionary<string, TypeName>(),
                 // Methods
@@ -327,7 +333,15 @@ namespace OluaSemanticAnalyzer
                     return attributeObject.AttributeType;
 
                 case ConstructorInvocation constructorInvocation:
-                    return constructorInvocation.Type;
+                    TypeName cnstrT = constructorInvocation.Type;
+                    ClassInterface cinf = GetInterface(cnstrT);
+                    CheckParamSubmission(
+                        @this,
+                        variables,
+                        constructorInvocation.Arguments.List,
+                        cinf.ConstructorParameters
+                    );
+                    return cnstrT;
 
                 case MethodInvocation methodInvocation:
                     MethodInterface mi = ResolveMethod(@this, variables, methodInvocation.Method);
@@ -486,6 +500,8 @@ namespace OluaSemanticAnalyzer
                         {
                             if (entryPoint)
                                 throw new InvalidOperationException("There must be exactly one class that extends EntryPoint");
+                            if (name != "Main")
+                                throw new InvalidOperationException("A class that extends EntryPoint must be named Main");
                             entryPoint = true;
                         }
                     }

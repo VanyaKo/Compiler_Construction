@@ -9,6 +9,8 @@ namespace OluaStdLibInterfaces
         public ClassInterface Gen(TypeName typeName)
         {
             return Analyzer.theVeryBaseClass.extend(
+                // Constructor parameters
+                new List<TypeName> { OLT.Integer },
                 // Fields
                 new Dictionary<string, TypeName>
                 {

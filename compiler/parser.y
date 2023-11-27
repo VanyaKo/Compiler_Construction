@@ -60,7 +60,6 @@
 %token LOOP
 %token COMMA
 %token THEN
-%token NEW
 %token UNDEFINED
 
 %type <TypeName> typename
@@ -95,7 +94,7 @@ typename
     ;
 
 constructorInvocation
-    : NEW typename { $$ = new ConstructorInvocation { Type = $2 }; }
+    : typename LPAREN argumentList RPAREN { $$ = new ConstructorInvocation { Type = $1, Arguments = $3 }; }
     ;
 
 methodInvocation

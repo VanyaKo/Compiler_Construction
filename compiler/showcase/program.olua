@@ -1,4 +1,4 @@
-class Factorial extends EntryPoint is
+class Main extends EntryPoint is
     var exit_code : Integer := 0
 
     method assert(cond : Boolean) : void is

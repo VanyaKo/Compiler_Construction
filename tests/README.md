@@ -29,6 +29,8 @@ class Class is
 end
 ```
 
+TODO: to String method for Integer/Real/Boolean
+
 ```
 // IO classes
 class CharInput is
@@ -49,20 +51,13 @@ class StdIn extends CharInput is
 end
 
 class StdOut extends CharOutput is
-    method writeInteger(Integer);
-    method writeReal(Real);
-    method writeBoolean(Boolean);
-
-    method writeIntegerLine(Integer);
-    method writeRealLine(Real);
-    method writeBooleanLine(Boolean);
 end
 ```
 
 ```
 // Class for managing exit code
 class EntryPoint is
-    methid main(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) : Integer;
+    method main(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) : Integer;
 end
 ```
 

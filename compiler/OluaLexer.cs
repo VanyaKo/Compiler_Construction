@@ -36,8 +36,6 @@ namespace OluaLexer
         LOOP,
         COMMA,
         THEN,
-        NEW,
-
         UNDEFINED,
     }
 
@@ -77,7 +75,6 @@ namespace OluaLexer
                 (new Regex(@"^end\b"), Tokens.END),
                 (new Regex(@"^loop\b"), Tokens.LOOP),
                 (new Regex(@"^then\b"), Tokens.THEN),
-                (new Regex(@"^new\b"), Tokens.NEW),
                 (new Regex(@"^(true|false)\b"), Tokens.BOOL_LITERAL),
                 (new Regex(@"^:="), Tokens.ASSIGN),
                 (new Regex(@"^:"), Tokens.COLON),

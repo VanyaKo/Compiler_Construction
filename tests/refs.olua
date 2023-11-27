@@ -23,14 +23,14 @@ class Refs extends EntryPoint is
         a.mark()
         this.assert(a.ismarked) // here a.ismarked = true
 
-        a := new SomeClass
+        a := SomeClass()
         // here a.ismarked = false
         var a_mark : Boolean := a.ismarked
         this.assert(a_mark.not())
     end
 
     method main(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) : Integer is
-        var a : SomeClass := new SomeClass
+        var a : SomeClass := SomeClass()
 
         // here a.ismarked = false
         var a_mark : Boolean := a.ismarked

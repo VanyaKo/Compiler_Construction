@@ -23,8 +23,8 @@ class InheritanceTest extends EntryPoint is
     end
 
     method main(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) : Integer is
-        var objA : A := new A
-        var objB : B := new B
+        var objA : A := A()
+        var objB : B := B()
         var objBA : A := objB
 
         this.assert(objA.displayValue().equal(42.0)) // expects 42
