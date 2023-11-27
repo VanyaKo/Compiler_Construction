@@ -1,7 +1,6 @@
 .class public auto ansi beforefieldinit StdOut
        extends CharOutput
 {
-    // avaliable() implementation
     .method public virtual instance class Integer 
             avaliable() cil managed
     {
@@ -11,24 +10,32 @@
         ret
     }
 
-    // writeChar(e: Integer) implementation
+    // aka System.Write(chr(e))
     .method public virtual instance void 
             writeChar(class Integer) cil managed
     {
-        // Implement System.Write(chr(e))
+        .maxstack 2
+        ldarg.1
+        callvirt instance int32 Integer::$data()
+        call char [mscorlib]System.Convert::ToChar(int32)
+        call void [mscorlib]System.Console::Write(char)
+        ret
     }
 
-    // write(s: Array[Integer]) implementation
+    // TODO
+    /*
+
+    // like consequent writeChar on each element of the array
     .method public virtual instance void 
             write(class Array`1<class Integer>) cil managed
     {
-        // Implement like consequent writeChar on each element of the array
     }
 
-    // writeLine(s: Array[Integer]) implementation
+    // like consequent writeChar on each element of the array, but add '\n' at the end
     .method public virtual instance void 
             writeLine(class Array`1<class Integer>) cil managed
     {
-        // Implement like consequent writeChar on each element of the array, but add '\n' at the end
     }
+
+    */
 }

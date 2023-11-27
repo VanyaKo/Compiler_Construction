@@ -1,8 +1,18 @@
 .class public auto ansi beforefieldinit Array`1<T>
        extends Class
 {
-    .field private class Integer length
     .field private !T[] items
+
+    .method public specialname rtspecialname 
+            instance void .ctor(!T[]) cil managed 
+    {
+        .maxstack 8
+        ldarg.0
+        call instance void Class::.ctor()
+        ldarg.1
+        stfld !0[] class Array`1<!T>::items
+        ret
+    }
 
     .method public specialname rtspecialname 
             instance void .ctor(class Integer) cil managed 
@@ -15,9 +25,6 @@
         callvirt instance int32 Integer::$data()
         newarr !T
         stfld !0[] class Array`1<!T>::items
-        ldarg.0
-        ldarg.1
-        stfld class Integer Array::length
         ret
     }
 
@@ -26,7 +33,9 @@
     {
         .maxstack 1
         ldarg.0
-        ldfld class Integer Array::length
+        ldfld class Integer Array::items
+        ldlen
+        newobj instance void Integer::.ctor(int32)
         ret
     }
 
