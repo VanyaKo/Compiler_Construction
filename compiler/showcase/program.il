@@ -1,123 +1,3 @@
-.assembly extern mscorlib { }
-
-// =================================================================
-// Standart Library
-// =================================================================
-
-.class public auto ansi beforefieldinit Class
-       extends [mscorlib]System.Object
-{
-    .method public specialname rtspecialname 
-            instance void .ctor() cil managed 
-    {
-        .maxstack 8
-        ldarg.0
-        call instance void [mscorlib]System.Object::.ctor()
-        ret
-    }
-
-    .method public instance bool sameRef(class Class o) cil managed
-    {
-        .maxstack 2
-        ldarg.0   // Load the current object reference
-        ldarg.1   // Load the reference to the object passed as a parameter
-        ceq       // Compare the two references
-        ret       // Return the result of the comparison
-    }
-}
-
-.class public auto ansi beforefieldinit Boolean
-       extends Class
-{
-    .field private bool data
-
-    .method public hidebysig specialname rtspecialname 
-            instance void .ctor() cil managed 
-    {
-        .maxstack 8
-        ldarg.0
-        call instance void Class::.ctor()
-        ldarg.0
-        ldc.i4.0 // false by default
-        stfld bool Boolean::data
-        ret
-    }
-
-    .method public hidebysig specialname rtspecialname 
-            instance void .ctor(bool val) cil managed 
-    {
-        .maxstack 8
-        ldarg.0
-        call instance void Class::.ctor()
-        ldarg.0
-        ldarg.1
-        stfld bool Boolean::data
-        ret
-    }
-
-    .method public final instance bool $data() cil managed
-    {
-        ldarg.0
-        ldfld bool Boolean::data
-        ret
-    }
-
-    // TODO: Implement other functions...
-}
-
-.class public auto ansi beforefieldinit Integer
-       extends Class
-{
-    .field private int32 data
-
-    .method public hidebysig specialname rtspecialname 
-            instance void .ctor() cil managed 
-    {
-        .maxstack 8
-        ldarg.0
-        call instance void Class::.ctor()
-        ldarg.0
-        ldc.i4.0 // 0 by default
-        stfld int32 Integer::data
-        ret
-    }
-
-    .method public hidebysig specialname rtspecialname 
-            instance void .ctor(int32 val) cil managed 
-    {
-        .maxstack 8
-        ldarg.0
-        call instance void Class::.ctor()
-        ldarg.0
-        ldarg.1
-        stfld int32 Integer::data
-        ret
-    }
-
-    .method public final instance int32 $data() cil managed
-    {
-        ldarg.0
-        ldfld int32 Integer::data
-        ret
-    }
-
-    .method public instance class Integer 
-            plus(class Integer other) cil managed
-    {
-        .maxstack 2
-        newobj instance void Integer::.ctor(int32)
-        dup
-        ldarg.0
-        ldfld int32 Integer::data
-        ldarg.1
-        ldfld int32 Integer::data
-        add
-        ret
-    }
-
-    // TODO: Implement minus, mult, div, rem etc similarly...
-}
-
 .class public auto ansi beforefieldinit Array`1<T>
        extends Class
 {
@@ -176,6 +56,45 @@
     }
 }
 
+.class public auto ansi beforefieldinit Boolean
+       extends Class
+{
+    .field private bool data
+
+    .method public hidebysig specialname rtspecialname 
+            instance void .ctor() cil managed 
+    {
+        .maxstack 8
+        ldarg.0
+        call instance void Class::.ctor()
+        ldarg.0
+        ldc.i4.0 // false by default
+        stfld bool Boolean::data
+        ret
+    }
+
+    .method public hidebysig specialname rtspecialname 
+            instance void .ctor(bool val) cil managed 
+    {
+        .maxstack 8
+        ldarg.0
+        call instance void Class::.ctor()
+        ldarg.0
+        ldarg.1
+        stfld bool Boolean::data
+        ret
+    }
+
+    .method public final instance bool $data() cil managed
+    {
+        ldarg.0
+        ldfld bool Boolean::data
+        ret
+    }
+
+    // TODO: Implement other functions...
+}
+
 .class public abstract auto ansi beforefieldinit CharInput
        extends Class
 {
@@ -201,7 +120,6 @@
     }
 }
 
-
 .class public abstract auto ansi beforefieldinit CharOutput
        extends Class
 {
@@ -225,6 +143,114 @@
             instance void writeLine(class Array`1<class Integer> s) cil managed
     {
     }
+}
+
+.class public auto ansi beforefieldinit Class
+       extends [mscorlib]System.Object
+{
+    .method public specialname rtspecialname 
+            instance void .ctor() cil managed 
+    {
+        .maxstack 8
+        ldarg.0
+        call instance void [mscorlib]System.Object::.ctor()
+        ret
+    }
+
+    .method public instance bool sameRef(class Class o) cil managed
+    {
+        .maxstack 2
+        ldarg.0   // Load the current object reference
+        ldarg.1   // Load the reference to the object passed as a parameter
+        ceq       // Compare the two references
+        ret       // Return the result of the comparison
+    }
+}
+
+.class public abstract auto ansi beforefieldinit EntryPoint
+       extends Class
+{
+    // Abstract main method
+    .method public newslot abstract virtual 
+            static class Integer main(class StdIn stdin, class StdOut stdout, class StdOut stderr, class Array`1<class Array`1<class Integer>> args) cil managed
+    {
+    }
+}
+
+.method public static int32 main() cil managed
+{
+    .entrypoint
+    .maxstack 8
+
+    // Create an instance of the Factorial class
+    newobj instance void Main::.ctor()
+    dup
+
+    // Create the arguments for the Factorial.main method
+    // Example: StdIn, StdOut, StdOut, Array of Array of Integers
+    // TODO
+    ldnull // For StdIn
+    ldnull // For StdOut
+    ldnull // For StdErr
+    ldnull // for args
+
+    // Call the Factorial.main method with prepared arguments
+    call instance class Integer Main::main(class StdIn, class StdOut, class StdOut, class Array`1<class Array`1<class Integer>>)
+
+    ret
+}
+
+.class public auto ansi beforefieldinit Integer
+       extends Class
+{
+    .field private int32 data
+
+    .method public hidebysig specialname rtspecialname 
+            instance void .ctor() cil managed 
+    {
+        .maxstack 8
+        ldarg.0
+        call instance void Class::.ctor()
+        ldarg.0
+        ldc.i4.0 // 0 by default
+        stfld int32 Integer::data
+        ret
+    }
+
+    .method public hidebysig specialname rtspecialname 
+            instance void .ctor(int32 val) cil managed 
+    {
+        .maxstack 8
+        ldarg.0
+        call instance void Class::.ctor()
+        ldarg.0
+        ldarg.1
+        stfld int32 Integer::data
+        ret
+    }
+
+    .method public final instance int32 $data() cil managed
+    {
+        ldarg.0
+        ldfld int32 Integer::data
+        ret
+    }
+
+    .method public instance class Integer 
+            plus(class Integer other) cil managed
+    {
+        .maxstack 2
+        newobj instance void Integer::.ctor(int32)
+        dup
+        ldarg.0
+        ldfld int32 Integer::data
+        ldarg.1
+        ldfld int32 Integer::data
+        add
+        ret
+    }
+
+    // TODO: Implement minus, mult, div, rem etc similarly...
 }
 
 .class public auto ansi beforefieldinit StdIn
@@ -297,48 +323,6 @@
     }
 }
 
-
-.class public abstract auto ansi beforefieldinit EntryPoint
-       extends Class
-{
-    // Abstract main method
-    .method public newslot abstract virtual 
-            static class Integer main(class StdIn stdin, class StdOut stdout, class StdOut stderr, class Array`1<class Array`1<class Integer>> args) cil managed
-    {
-    }
-}
-
-// =================================================================
-// Entry Point
-// =================================================================
-
-.method public static int32 main() cil managed
-{
-    .entrypoint
-    .maxstack 8
-
-    // Create an instance of the Factorial class
-    newobj instance void Main::.ctor()
-    dup
-
-    // Create the arguments for the Factorial.main method
-    // Example: StdIn, StdOut, StdOut, Array of Array of Integers
-    // TODO
-    ldnull // For StdIn
-    ldnull // For StdOut
-    ldnull // For StdErr
-    ldnull // for args
-
-    // Call the Factorial.main method with prepared arguments
-    call instance class Integer Main::main(class StdIn, class StdOut, class StdOut, class Array`1<class Array`1<class Integer>>)
-
-    ret
-}
-
-// =================================================================
-// User code
-// =================================================================
-
 .class public auto ansi beforefieldinit Main extends EntryPoint {
     .method public hidebysig specialname rtspecialname instance void .ctor() cil managed {
         .maxstack 8
@@ -358,12 +342,12 @@
         ldarg.s 1
         callvirt instance Boolean Boolean::not()
         callvirt instance bool Boolean::$data
-        brfalse.s END_IF_NQJAX3D74UJQMDGYMXNV0NURGE1KBV61
+        brfalse.s END_IF_OW9WRT4IHLHE17M6QPRDOKW16H7MGVSJ
         ldarg.0
         ldc.i4 1
         newobj static void Integer::.ctor(int32)
         stfld class Integer Main::exit_code
-        END_IF_NQJAX3D74UJQMDGYMXNV0NURGE1KBV61:
+        END_IF_OW9WRT4IHLHE17M6QPRDOKW16H7MGVSJ:
         ret
     }
     
@@ -373,13 +357,13 @@
         ldc.i4 1
         newobj static void Integer::.ctor(int32)
         stloc.s 0
-        WHILE_SIZGEQRNDESGLVEA8HU8IIJP78ABEB4W:
+        WHILE_XJKVQKUX6HV169TDDNTEK1V7S8YJDJ0J:
         ldarg.s 1
         ldc.i4 1
         newobj static void Integer::.ctor(int32)
         callvirt instance Boolean Integer::greater(class Integer)
         callvirt instance bool Boolean::$data
-        brfalse.s END_WHILE_SIZGEQRNDESGLVEA8HU8IIJP78ABEB4W
+        brfalse.s END_WHILE_XJKVQKUX6HV169TDDNTEK1V7S8YJDJ0J
         ldloc.s 0
         ldarg.s 1
         callvirt instance Integer Integer::mult(class Integer)
@@ -389,7 +373,7 @@
         newobj static void Integer::.ctor(int32)
         callvirt instance Integer Integer::minus(class Integer)
         starg.s 1
-        END_WHILE_SIZGEQRNDESGLVEA8HU8IIJP78ABEB4W:
+        END_WHILE_XJKVQKUX6HV169TDDNTEK1V7S8YJDJ0J:
         ldloc.s 0
         ret
     }

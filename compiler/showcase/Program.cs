@@ -63,10 +63,16 @@ public class Application
         }
 
         // generate il
-        idnt.identator = "    ";
         using (StreamWriter writer = new StreamWriter("program.il"))
         {
-            writer.Write(File.ReadAllText("../stdasm.il")); // link stdasm
+            // link stdasm
+            foreach (string file in Directory.GetFiles("../stdasm"))
+            {
+                writer.WriteLine(File.ReadAllText(file) + "\n");
+            }
+
+            // link user code
+            idnt.identator = "    ";
             foreach (ClassDeclaration cls in oclasses)
             {
                 writer.WriteLine(idnt.Traverse(cls.ToMsil()));
