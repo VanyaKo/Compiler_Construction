@@ -3,7 +3,7 @@
 {
     // Abstract main method
     .method public newslot abstract virtual 
-            class Integer main(class StdIn, class StdOut, class Array`1<class Array`1<class Integer>>) cil managed
+            class Integer olua_main(class StdIn, class StdOut, class Array`1<class Array`1<class Integer>>) cil managed
     {
     }
 }
@@ -22,7 +22,7 @@
     ldnull // For StdOut
     ldnull // for args
 
-    call instance class Integer Main::main(class StdIn, class StdOut, class Array`1<class Array`1<class Integer>>)
+    call instance class Integer Main::olua_main(class StdIn, class StdOut, class Array`1<class Array`1<class Integer>>)
 
     ret
 }

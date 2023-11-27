@@ -2,7 +2,7 @@ class Main extends EntryPoint is
     var exit_code : Integer := 0
 
     method assert(cond : Boolean) : void is
-        if cond.negate() then
+        if cond.not() then
             this.exit_code := 1
         end
     end

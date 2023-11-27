@@ -43,7 +43,7 @@
     }
 
     // toInteger
-    .method public newslot virtual instance class Integer toInteger() cil managed
+    .method public newslot virtual instance class Integer olua_toInteger() cil managed
     {
         .maxstack 8
         newobj instance void Integer::.ctor(int32)
@@ -54,21 +54,9 @@
         ret
     }
 
-    // unaryMinus
-    .method public newslot virtual instance class Real unaryMinus() cil managed
-    {
-        .maxstack 8
-        newobj instance void Real::.ctor(float64)
-        dup
-        ldarg.0
-        ldfld float64 Real::data
-        neg
-        ret
-    }
-
     // plus
     .method public newslot virtual instance class Real 
-            plus(class Real other) cil managed
+            olua_plus(class Real other) cil managed
     {
         .maxstack 8
         newobj instance void Real::.ctor(float64)
@@ -83,7 +71,7 @@
 
     // minus
     .method public newslot virtual instance class Real 
-            minus(class Real other) cil managed
+            olua_minus(class Real other) cil managed
     {
         .maxstack 8
         newobj instance void Real::.ctor(float64)
@@ -98,7 +86,7 @@
 
     // mult
     .method public newslot virtual instance class Real 
-            mult(class Real other) cil managed
+            olua_mult(class Real other) cil managed
     {
         .maxstack 8
         newobj instance void Real::.ctor(float64)
@@ -113,7 +101,7 @@
 
     // div
     .method public newslot virtual instance class Real 
-            div(class Real other) cil managed
+            olua_div(class Real other) cil managed
     {
         .maxstack 8
         newobj instance void Real::.ctor(float64)
@@ -128,7 +116,7 @@
 
     // rem
     .method public newslot virtual instance class Real 
-            rem(class Real other) cil managed
+            olua_rem(class Real other) cil managed
     {
         .maxstack 8
         newobj instance void Real::.ctor(float64)
@@ -142,25 +130,6 @@
     }
 
     // Implement relational methods (less, lessEqual, etc.) similarly
-
-    // Static fields
-    .field public static float64 max
-    .field public static float64 min
-    .field public static float64 epsilon
-
-    // Static constructor to initialize static fields
-    .method private hidebysig specialname rtspecialname static 
-            void .cctor() cil managed
-    {
-        // Initialize static fields like max, min, epsilon
-        ldc.r8 [appropriate_value]
-        stsfld float64 Real::max
-        ldc.r8 [appropriate_value]
-        stsfld float64 Real::min
-        ldc.r8 [appropriate_value]
-        stsfld float64 Real::epsilon
-        ret
-    }
 
     // Implement additional methods and fields
 }

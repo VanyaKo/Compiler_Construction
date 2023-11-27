@@ -10,7 +10,7 @@
         ret
     }
 
-    .method public newslot virtual instance class Boolean sameRef(class Class) cil managed
+    .method public newslot virtual instance class Boolean olua_sameRef(class Class) cil managed
     {
         .maxstack 2
         ldarg.0   // Load the current object reference

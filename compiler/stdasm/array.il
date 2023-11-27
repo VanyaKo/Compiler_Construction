@@ -29,7 +29,7 @@
     }
 
     .method public instance class Integer 
-            len() cil managed
+            olua_len() cil managed
     {
         .maxstack 1
         ldarg.0
@@ -40,7 +40,7 @@
     }
 
     .method public instance !T 
-            get(class Integer) cil managed
+            olua_get(class Integer) cil managed
     {
         .maxstack 2
         ldarg.0
@@ -52,7 +52,7 @@
     }
 
     .method public instance void 
-            set(class Integer, !T) cil managed
+            olua_set(class Integer, !T) cil managed
     {
         .maxstack 3
         ldarg.0

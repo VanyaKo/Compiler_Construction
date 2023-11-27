@@ -3,22 +3,22 @@
 {
     // Abstract Methods
     .method public newslot abstract virtual 
-            instance class Integer avaliable() cil managed
+            instance class Integer olua_avaliable() cil managed
     {
     }
 
     .method public newslot abstract virtual 
-            instance void writeChar(class Integer) cil managed
+            instance void olua_writeChar(class Integer) cil managed
     {
     }
 
     .method public newslot abstract virtual 
-            instance void write(class Array`1<class Integer>) cil managed
+            instance void olua_write(class Array`1<class Integer>) cil managed
     {
     }
 
     .method public newslot abstract virtual 
-            instance void writeLine(class Array`1<class Integer>) cil managed
+            instance void olua_writeLine(class Array`1<class Integer>) cil managed
     {
     }
 }

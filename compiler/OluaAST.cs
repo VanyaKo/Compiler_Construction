@@ -167,7 +167,7 @@ namespace OluaAST
             ListWrapper res = new();
             res.AddExpanding(Method.Parent.MsilToGet(locals));
             res.AddExpanding(Arguments.MsilToGet(locals));
-            res.AddExpanding(new StringWrapper($"callvirt instance {(ReturnType == null ? "void" : ReturnType.csMsil())} {Method.Parent.MsilType(locals)}::{Method.Identifier}({Arguments.MsilTypes(locals)})"));
+            res.AddExpanding(new StringWrapper($"callvirt instance {(ReturnType == null ? "void" : ReturnType.csMsil())} {Method.Parent.MsilType(locals)}::olua_{Method.Identifier}({Arguments.MsilTypes(locals)})"));
             return res;
         }
 
@@ -286,17 +286,17 @@ namespace OluaAST
             if (Value is float)
             {
                 res.AddExpanding(new StringWrapper($"ldc.r4 {Value}"));
-                res.AddExpanding(new StringWrapper($"newobj static void {MsilType(locals)}::.ctor(float32)"));
+                res.AddExpanding(new StringWrapper($"newobj instance void {MsilType(locals)}::.ctor(float32)"));
             }
             else if (Value is int)
             {
                 res.AddExpanding(new StringWrapper($"ldc.i4 {Value}"));
-                res.AddExpanding(new StringWrapper($"newobj static void {MsilType(locals)}::.ctor(int32)"));
+                res.AddExpanding(new StringWrapper($"newobj instance void {MsilType(locals)}::.ctor(int32)"));
             }
             else if (Value is bool)
             {
                 res.AddExpanding(new StringWrapper((Value.ToString() == "true") ? "ldc.i4.1" : "ldc.i4.0"));
-                res.AddExpanding(new StringWrapper($"newobj static void {MsilType(locals)}::.ctor(bool)"));
+                res.AddExpanding(new StringWrapper($"newobj instance void {MsilType(locals)}::.ctor(bool)"));
             }
             else
             {
@@ -442,7 +442,7 @@ namespace OluaAST
         public IStringOrList DeclareClassMemberMsil()
         {
             ListWrapper res = new();
-            res.Values.Add(new StringWrapper(".method public virtual instance " + (ReturnType == null ? "void" : ReturnType.csMsil()) + $" {Name}({Parameters.TypesMsil()}) cil managed {{"));
+            res.Values.Add(new StringWrapper(".method public virtual instance " + (ReturnType == null ? "void" : ReturnType.csMsil()) + $" olua_{Name}({Parameters.TypesMsil()}) cil managed {{"));
 
             List<TypeName> accum = new();
             Dictionary<string, MsilVar> locals = new();

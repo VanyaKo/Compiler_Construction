@@ -2,7 +2,7 @@
        extends CharInput
 {
     .method public virtual instance class Integer 
-            avaliable() cil managed
+            olua_avaliable() cil managed
     {
         .maxstack 3
         ldarg.0
@@ -13,7 +13,7 @@
 
     // Read a character from stdin and returning Integer(ord(char))
     .method public virtual instance class Integer 
-            readChar() cil managed
+            olua_readChar() cil managed
     {
         .maxstack 3
         call class [mscorlib]System.ConsoleKeyInfo [mscorlib]System.Console::ReadKey()
@@ -29,7 +29,7 @@
 
     // Read a line from stdin and returning Integer(ord(chars))
     .method public virtual instance class Array`1<class Integer> 
-            readLine() cil managed
+            olua_readLine() cil managed
     {
         .maxstack 4
         .locals (int32, string, class Integer[])
@@ -78,7 +78,7 @@
 
     // Read n characters from stdin and returning their integer values
     .method public virtual instance class Array`1<class Integer> 
-            read(class Integer n) cil managed
+            olua_read(class Integer n) cil managed
     {
         .maxstack 4
         .locals (int32, int32, class Integer[])

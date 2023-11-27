@@ -2,7 +2,7 @@
        extends CharOutput
 {
     .method public virtual instance class Integer 
-            avaliable() cil managed
+            olua_avaliable() cil managed
     {
         ldarg.0
         ldc.i4 2147483646
@@ -12,7 +12,7 @@
 
     // aka System.Write(chr(e))
     .method public virtual instance void 
-            writeChar(class Integer) cil managed
+            olua_writeChar(class Integer) cil managed
     {
         .maxstack 2
         ldarg.1
@@ -27,13 +27,13 @@
 
     // like consequent writeChar on each element of the array
     .method public virtual instance void 
-            write(class Array`1<class Integer>) cil managed
+            olua_write(class Array`1<class Integer>) cil managed
     {
     }
 
     // like consequent writeChar on each element of the array, but add '\n' at the end
     .method public virtual instance void 
-            writeLine(class Array`1<class Integer>) cil managed
+            olua_writeLine(class Array`1<class Integer>) cil managed
     {
     }
 

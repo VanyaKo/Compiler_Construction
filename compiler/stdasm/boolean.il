@@ -35,7 +35,7 @@
         ret
     }
 
-    .method public newslot virtual instance class Integer toInteger() cil managed
+    .method public newslot virtual instance class Integer olua_toInteger() cil managed
     {
         .maxstack 3
         ldarg.0
@@ -44,8 +44,7 @@
         ret
     }
 
-    // aka or, but or is prohibited
-    .method public newslot virtual instance class Boolean disjunct(class Boolean) cil managed
+    .method public newslot virtual instance class Boolean olua_or(class Boolean) cil managed
     {
         .maxstack 3
         ldarg.0
@@ -57,8 +56,7 @@
         ret
     }
 
-    // aka and, but and is prohibited
-    .method public newslot virtual instance class Boolean conjunct(class Boolean) cil managed
+    .method public newslot virtual instance class Boolean olua_and(class Boolean) cil managed
     {
         .maxstack 3
         ldarg.0
@@ -70,8 +68,7 @@
         ret
     }
 
-    // aka not, but not is prohibited
-    .method public newslot virtual instance class Boolean negate() cil managed
+    .method public newslot virtual instance class Boolean olua_not() cil managed
     {
         .maxstack 3
         ldarg.0

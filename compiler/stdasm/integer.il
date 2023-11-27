@@ -38,7 +38,7 @@
     // Arithmetics 
 
     .method public newslot virtual instance class Integer 
-            plus(class Integer) cil managed
+            olua_plus(class Integer) cil managed
     {
         .maxstack 3
         ldarg.0
@@ -51,7 +51,7 @@
     }
 
     .method public newslot virtual instance class Integer 
-            minus(class Integer) cil managed
+            olua_minus(class Integer) cil managed
     {
         .maxstack 3
         ldarg.0
@@ -64,7 +64,7 @@
     }
 
     .method public newslot virtual instance class Integer 
-            mult(class Integer) cil managed
+            olua_mult(class Integer) cil managed
     {
         .maxstack 3
         ldarg.0
@@ -77,7 +77,7 @@
     }
 
     .method public newslot virtual instance class Integer 
-            divide(class Integer) cil managed
+            olua_divide(class Integer) cil managed
     {
         .maxstack 3
         ldarg.0
@@ -90,7 +90,7 @@
     }
 
     .method public newslot virtual instance class Integer 
-            reminder(class Integer) cil managed
+            olua_reminder(class Integer) cil managed
     {
         .maxstack 8
         ldarg.0
@@ -104,7 +104,7 @@
 
     // Relations
 
-    .method public newslot virtual instance class Boolean less(class Integer) cil managed
+    .method public newslot virtual instance class Boolean olua_less(class Integer) cil managed
     {
         .maxstack 8
         ldarg.0
@@ -116,7 +116,7 @@
         ret
     }
 
-    .method public newslot virtual instance class Boolean greater(class Integer) cil managed
+    .method public newslot virtual instance class Boolean olua_greater(class Integer) cil managed
     {
         .maxstack 8
         ldarg.0
@@ -128,7 +128,7 @@
         ret
     }
 
-    .method public newslot virtual instance class Boolean equal(class Integer) cil managed
+    .method public newslot virtual instance class Boolean olua_equal(class Integer) cil managed
     {
         .maxstack 8
         ldarg.0
@@ -142,7 +142,7 @@
 
     // Conversions
 
-    .method public newslot virtual instance class Boolean toBoolean() cil managed
+    .method public newslot virtual instance class Boolean olua_toBoolean() cil managed
     {
         .maxstack 8
         ldarg.0
