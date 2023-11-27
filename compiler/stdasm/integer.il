@@ -116,18 +116,6 @@
         ret
     }
 
-    .method public newslot virtual instance class Boolean lessEqual(class Integer) cil managed
-    {
-        .maxstack 8
-        ldarg.0
-        ldfld int32 Integer::data
-        ldarg.1
-        ldfld int32 Integer::data
-        cle
-        ewobj instance void Boolean::.ctor(bool)
-        ret
-    }
-
     .method public newslot virtual instance class Boolean greater(class Integer) cil managed
     {
         .maxstack 8
@@ -136,19 +124,7 @@
         ldarg.1
         ldfld int32 Integer::data
         cgt
-        ewobj instance void Boolean::.ctor(bool)
-        ret
-    }
-
-    .method public newslot virtual instance class Boolean greaterEqual(class Integer) cil managed
-    {
-        .maxstack 8
-        ldarg.0
-        ldfld int32 Integer::data
-        ldarg.1
-        ldfld int32 Integer::data
-        cge
-        ewobj instance void Boolean::.ctor(bool)
+        newobj instance void Boolean::.ctor(bool)
         ret
     }
 
@@ -160,7 +136,7 @@
         ldarg.1
         ldfld int32 Integer::data
         ceq
-        ewobj instance void Boolean::.ctor(bool)
+        newobj instance void Boolean::.ctor(bool)
         ret
     }
 
