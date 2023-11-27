@@ -67,7 +67,9 @@ namespace OluaAST
                                     ? $"{Identifier}`1<{GenericType.sMsil()}>"
                                     : Identifier;
 
-        public string csMsil() => "class " + sMsil();
+        public string csMsil() => "class " + (GenericType != null
+                                    ? $"{Identifier}`1<{GenericType.csMsil()}>"
+                                    : Identifier);
 
         public override bool Equals(object obj)
         {
@@ -141,6 +143,7 @@ namespace OluaAST
         public string MsilType(Dictionary<string, MsilVar> locals) => Type.sMsil();
     }
 
+    // TODO: invocation with generics
     public class MethodInvocation : OluaObject, Statement
     {
         public TypeName? ReturnType { get; set; } // null if void result  // augmented by analyzer
@@ -429,7 +432,7 @@ namespace OluaAST
         public override string ToString() => string.Join(", ", List.Select(e => e.ToString()));
         public IStringOrList ToOlua() => new StringWrapper(ToString());
 
-        public string TypesMsil() => string.Join(", ", List.Select(e => "class " + e.Type.sMsil()));
+        public string TypesMsil() => string.Join(", ", List.Select(e => e.Type.csMsil()));
     }
 
     public class MethodDeclaration : ClassMember
