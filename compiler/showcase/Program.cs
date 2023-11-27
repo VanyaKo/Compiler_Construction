@@ -66,11 +66,14 @@ public class Application
         idnt.identator = "    ";
         using (StreamWriter writer = new StreamWriter("program.il"))
         {
+            writer.Write(File.ReadAllText("../stdasm.il")); // link stdasm
             foreach (ClassDeclaration cls in oclasses)
             {
                 writer.WriteLine(idnt.Traverse(cls.ToMsil()));
             }
         }
+
+        // TODO: ilasm program.il /output=program.exe
     }
 }
 

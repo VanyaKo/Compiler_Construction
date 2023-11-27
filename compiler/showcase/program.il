@@ -358,12 +358,12 @@
         ldarg.s 1
         callvirt instance Boolean Boolean::not()
         callvirt instance bool Boolean::$data
-        brfalse.s END_IF_VK3PXQPGG4HGN1Q4XXH55NRWXCPINGD0
+        brfalse.s END_IF_NQJAX3D74UJQMDGYMXNV0NURGE1KBV61
         ldarg.0
         ldc.i4 1
         newobj static void Integer::.ctor(int32)
         stfld class Integer Main::exit_code
-        END_IF_VK3PXQPGG4HGN1Q4XXH55NRWXCPINGD0:
+        END_IF_NQJAX3D74UJQMDGYMXNV0NURGE1KBV61:
         ret
     }
     
@@ -373,13 +373,13 @@
         ldc.i4 1
         newobj static void Integer::.ctor(int32)
         stloc.s 0
-        WHILE_H96WUQRELMV43MYD45QNK48J03VJSCI7:
+        WHILE_SIZGEQRNDESGLVEA8HU8IIJP78ABEB4W:
         ldarg.s 1
         ldc.i4 1
         newobj static void Integer::.ctor(int32)
         callvirt instance Boolean Integer::greater(class Integer)
         callvirt instance bool Boolean::$data
-        brfalse.s END_WHILE_H96WUQRELMV43MYD45QNK48J03VJSCI7
+        brfalse.s END_WHILE_SIZGEQRNDESGLVEA8HU8IIJP78ABEB4W
         ldloc.s 0
         ldarg.s 1
         callvirt instance Integer Integer::mult(class Integer)
@@ -389,7 +389,7 @@
         newobj static void Integer::.ctor(int32)
         callvirt instance Integer Integer::minus(class Integer)
         starg.s 1
-        END_WHILE_H96WUQRELMV43MYD45QNK48J03VJSCI7:
+        END_WHILE_SIZGEQRNDESGLVEA8HU8IIJP78ABEB4W:
         ldloc.s 0
         ret
     }
