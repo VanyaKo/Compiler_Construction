@@ -1,13 +1,9 @@
-// Commented for now, see the example of inetger and adopt
-
-/*
 
 .class public auto ansi beforefieldinit Real
        extends Class
 {
     .field private float64 data
 
-    // Default Constructor
     .method public hidebysig specialname rtspecialname 
             instance void .ctor() cil managed 
     {
@@ -20,7 +16,6 @@
         ret
     }
 
-    // Constructor with parameter
     .method public hidebysig specialname rtspecialname 
             instance void .ctor(float64) cil managed 
     {
@@ -33,7 +28,6 @@
         ret
     }
 
-    // Getter for data
     .method public final instance float64 $data() cil managed
     {
         .maxstack 3
@@ -42,7 +36,9 @@
         ret
     }
 
-    // toInteger
+    // TODO: Commented for now, see the example of inetger and adopt
+    /*
+
     .method public newslot virtual instance class Integer olua_toInteger() cil managed
     {
         .maxstack 8
@@ -54,7 +50,6 @@
         ret
     }
 
-    // plus
     .method public newslot virtual instance class Real 
             olua_plus(class Real other) cil managed
     {
@@ -69,7 +64,6 @@
         ret
     }
 
-    // minus
     .method public newslot virtual instance class Real 
             olua_minus(class Real other) cil managed
     {
@@ -84,7 +78,6 @@
         ret
     }
 
-    // mult
     .method public newslot virtual instance class Real 
             olua_mult(class Real other) cil managed
     {
@@ -99,7 +92,6 @@
         ret
     }
 
-    // div
     .method public newslot virtual instance class Real 
             olua_div(class Real other) cil managed
     {
@@ -114,7 +106,6 @@
         ret
     }
 
-    // rem
     .method public newslot virtual instance class Real 
             olua_rem(class Real other) cil managed
     {
@@ -129,9 +120,5 @@
         ret
     }
 
-    // Implement relational methods (less, lessEqual, etc.) similarly
-
-    // Implement additional methods and fields
+    */
 }
-
-*/

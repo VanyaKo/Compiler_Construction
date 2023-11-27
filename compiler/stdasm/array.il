@@ -33,7 +33,7 @@
     {
         .maxstack 1
         ldarg.0
-        ldfld class Integer Array::items
+        ldfld !0[] class Array`1<!T>::items
         ldlen
         newobj instance void Integer::.ctor(int32)
         ret
