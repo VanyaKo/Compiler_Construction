@@ -62,7 +62,57 @@
         ret
     }
 
-    // TODO: Implement other functions...
+    .method public final instance int32 toInteger() cil managed
+    {
+        .maxstack 1
+        ldarg.0
+        ldfld bool Boolean::data
+        ldc.i4.0
+        ceq
+        ldc.i4.0
+        ceq
+        ret
+    }
+
+    .method public final instance bool or(bool val) cil managed
+    {
+        .maxstack 2
+        ldarg.0
+        ldfld bool Boolean::data
+        ldarg.1
+        or
+        ret
+    }
+    
+    .method public final instance bool and(bool val) cil managed
+    {
+        .maxstack 2
+        ldarg.0
+        ldfld bool Boolean::data
+        ldarg.1
+        and
+        ret
+    }
+    
+    .method public final instance bool xor(bool val) cil managed
+    {
+        .maxstack 2
+        ldarg.0
+        ldfld bool Boolean::data
+        ldarg.1
+        xor
+        ret
+    }
+    
+    .method public final instance bool not() cil managed
+    {
+        .maxstack 1
+        ldarg.0
+        ldfld bool Boolean::data
+        ldc.i4.0
+        ceq
+        ret
+    }
 }
 
 .class public auto ansi beforefieldinit Integer
@@ -358,12 +408,12 @@
         ldarg.s 1
         callvirt instance Boolean Boolean::not()
         callvirt instance bool Boolean::$data
-        brfalse.s END_IF_NQJAX3D74UJQMDGYMXNV0NURGE1KBV61
+        brfalse.s END_IF_9CB2XZAMZWC417L1NX58P3S18FAN0KZP
         ldarg.0
         ldc.i4 1
         newobj static void Integer::.ctor(int32)
         stfld class Integer Main::exit_code
-        END_IF_NQJAX3D74UJQMDGYMXNV0NURGE1KBV61:
+        END_IF_9CB2XZAMZWC417L1NX58P3S18FAN0KZP:
         ret
     }
     
@@ -373,13 +423,13 @@
         ldc.i4 1
         newobj static void Integer::.ctor(int32)
         stloc.s 0
-        WHILE_SIZGEQRNDESGLVEA8HU8IIJP78ABEB4W:
+        WHILE_8696ANI1D5O10GQXRISBURN2AAJNWYHN:
         ldarg.s 1
         ldc.i4 1
         newobj static void Integer::.ctor(int32)
         callvirt instance Boolean Integer::greater(class Integer)
         callvirt instance bool Boolean::$data
-        brfalse.s END_WHILE_SIZGEQRNDESGLVEA8HU8IIJP78ABEB4W
+        brfalse.s END_WHILE_8696ANI1D5O10GQXRISBURN2AAJNWYHN
         ldloc.s 0
         ldarg.s 1
         callvirt instance Integer Integer::mult(class Integer)
@@ -389,28 +439,32 @@
         newobj static void Integer::.ctor(int32)
         callvirt instance Integer Integer::minus(class Integer)
         starg.s 1
-        END_WHILE_SIZGEQRNDESGLVEA8HU8IIJP78ABEB4W:
+        END_WHILE_8696ANI1D5O10GQXRISBURN2AAJNWYHN:
         ldloc.s 0
         ret
     }
     
     .method public virtual instance class Integer main(class StdIn, class StdOut, class StdOut, class Array`1<Array`1<Integer>>) cil managed {
         .maxstack 8
-        .locals (class Integer)
-        ldarg.0
+        .locals (class Integer, class Real, class Integer)
         ldc.i4 10
         newobj static void Integer::.ctor(int32)
-        callvirt instance Integer Main::computeFactorial(class Integer)
         stloc.s 0
-        ldarg.0
-        ldloc.s 0
-        ldc.i4 3628800
+        ldc.r4 20
+        newobj static void Real::.ctor(float32)
+        stloc.s 1
+        ldc.i4 1
         newobj static void Integer::.ctor(int32)
-        callvirt instance Boolean Integer::equal(class Integer)
-        callvirt instance void Main::assert(class Boolean)
+        stloc.s 2
+        ldc.i4 5
+        newobj static void Integer::.ctor(int32)
+        stloc.s 2
         ldarg.0
-        ldfld class Integer Main::exit_code
-        ret
+        ldloc.s 1
+        ldc.r4 20
+        newobj static void Real::.ctor(float32)
+        callvirt instance Boolean Real::equal(class Real)
+        callvirt instance void Main::assert(class Boolean)
     }
 }
 

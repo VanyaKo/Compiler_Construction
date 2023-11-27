@@ -62,7 +62,57 @@
         ret
     }
 
-    // TODO: Implement other functions...
+    .method public final instance int32 toInteger() cil managed
+    {
+        .maxstack 1
+        ldarg.0
+        ldfld bool Boolean::data
+        ldc.i4.0
+        ceq
+        ldc.i4.0
+        ceq
+        ret
+    }
+
+    .method public final instance bool or(bool val) cil managed
+    {
+        .maxstack 2
+        ldarg.0
+        ldfld bool Boolean::data
+        ldarg.1
+        or
+        ret
+    }
+    
+    .method public final instance bool and(bool val) cil managed
+    {
+        .maxstack 2
+        ldarg.0
+        ldfld bool Boolean::data
+        ldarg.1
+        and
+        ret
+    }
+    
+    .method public final instance bool xor(bool val) cil managed
+    {
+        .maxstack 2
+        ldarg.0
+        ldfld bool Boolean::data
+        ldarg.1
+        xor
+        ret
+    }
+    
+    .method public final instance bool not() cil managed
+    {
+        .maxstack 1
+        ldarg.0
+        ldfld bool Boolean::data
+        ldc.i4.0
+        ceq
+        ret
+    }
 }
 
 .class public auto ansi beforefieldinit Integer
