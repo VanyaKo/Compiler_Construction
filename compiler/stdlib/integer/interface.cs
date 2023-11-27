@@ -23,15 +23,12 @@ namespace OluaStdLibInterfaces
                     { "toReal", new MethodInterface { Parameters = new List<TypeName>(), ReturnType = OLT.Real } },
                     { "toBoolean", new MethodInterface { Parameters = new List<TypeName>(), ReturnType = OLT.Boolean } },
                     
-                    // Unary operators
-                    { "unaryMinus", new MethodInterface { Parameters = new List<TypeName>(), ReturnType = OLT.Integer } },
-                    
-                    // Integer binary arithmetics 
+                    // Arithmetics 
                     { "plus", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = OLT.Integer } },
                     { "minus", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = OLT.Integer } },
                     { "mult", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = OLT.Integer } },
-                    { "div", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = OLT.Integer } },
-                    { "rem", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = OLT.Integer } },
+                    { "divide", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = OLT.Integer } },
+                    { "reminder", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = OLT.Integer } },
                     
                     // Relations
                     { "less", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = OLT.Boolean } },
