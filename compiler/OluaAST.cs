@@ -563,7 +563,7 @@ namespace OluaAST
 
             ListWrapper res = new();
             res.AddExpanding(Cond.MsilToGet(locals)); // Boolean on the stack top as the result
-            res.AddExpanding(new StringWrapper("callvirt instance bool Boolean::$data")); // Unwrap bool
+            res.AddExpanding(new StringWrapper("callvirt instance bool Boolean::$data()")); // Unwrap bool
             res.AddExpanding(new StringWrapper("brfalse.s " + (Else == null ? endif_label : else_label)));
             res.AddExpanding(Then.MsilToExecute(locals, accum));
             if (Else != null)
@@ -605,7 +605,7 @@ namespace OluaAST
             ListWrapper res = new();
             res.AddExpanding(new StringWrapper(start_label + ":"));
             res.AddExpanding(Cond.MsilToGet(locals));
-            res.AddExpanding(new StringWrapper("callvirt instance bool Boolean::$data"));
+            res.AddExpanding(new StringWrapper("callvirt instance bool Boolean::$data()"));
             res.AddExpanding(new StringWrapper("brfalse.s " + end_label));
             res.AddExpanding(Body.MsilToExecute(locals, accum));
             res.AddExpanding(new StringWrapper(end_label + ":"));

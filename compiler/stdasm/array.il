@@ -12,12 +12,12 @@
         call instance void Class::.ctor()
         ldarg.0
         ldarg.1
-        callvirt instance int32 Integer::$data
-        newarr !!T
-        stfld !!T[] Array`1::items
+        callvirt instance int32 Integer::$data()
+        newarr !T
+        stfld !0[] class Array`1<!T>::items
         ldarg.0
         ldarg.1
-        stfld class Integer Array`1::length
+        stfld class Integer Array::length
         ret
     }
 
@@ -26,32 +26,32 @@
     {
         .maxstack 1
         ldarg.0
-        ldfld class Integer Array`1::length
+        ldfld class Integer Array::length
         ret
     }
 
-    .method public instance !!T 
+    .method public instance !T 
             get(class Integer) cil managed
     {
         .maxstack 2
         ldarg.0
-        ldfld !!T[] Array`1::items
+        ldfld !0[] class Array`1<!T>::items
         ldarg.1
-        callvirt instance int32 Integer::$data
-        ldelem !!T
+        callvirt instance int32 Integer::$data()
+        ldelem !T
         ret
     }
 
     .method public instance void 
-            set(class Integer, !!T) cil managed
+            set(class Integer, !T) cil managed
     {
         .maxstack 3
         ldarg.0
-        ldfld !!T[] Array`1::items
+        ldfld !0[] class Array`1<!T>::items
         ldarg.1
-        callvirt instance int32 Integer::$data
+        callvirt instance int32 Integer::$data()
         ldarg.2
-        stelem !!T
+        stelem !T
         ret
     }
 }
