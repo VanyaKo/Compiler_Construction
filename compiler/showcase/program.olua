@@ -1,5 +1,5 @@
 class Main extends EntryPoint is
-    var exit_code : Integer := 0
+	var exit_code : Integer := 0
 
     method assert(cond : Boolean) : void is
         if cond.not() then
@@ -7,20 +7,46 @@ class Main extends EntryPoint is
         end
     end
 
-    method computeFactorial(stdout: CharOutput, n: Integer): Integer is
-        var result : Integer := 1
-        while n.greater(1) loop
-            result := result.mult(n)
-            n := n.minus(1)
-        end
-        return result
-    end
-
     method main(stdin: CharInput, stdout: CharOutput, args: Array[Array[Integer]]) : Integer is
-        var tenFactorial : Integer := this.computeFactorial(stdout, 10)
+		var a : Integer := 5
+		var b : Integer := 3
+		var c : Real := 2.5
+		var d : Real := 1.5
+
+		var resultInt : Integer := a.minus(1)
+		var resultReal : Real := c.minus(1.2)
+		var boolResult : Boolean := true.not()
+		this.assert(resultInt.equal(4))
+		this.assert(resultReal.equal(1.3))
+		this.assert(boolResult.toInteger().equal(0))
+
+        this.assert(a.minus(20).equal(-15))
+        this.assert(c.minus(3.0).equal(-0.5))
+
+		resultInt := a.plus(b)
+		resultReal := c.plus(d)
+		this.assert(resultInt.equal(8))
+		this.assert(resultReal.equal(4.0))
+
+		resultInt := a.minus(b)
+		resultReal := c.minus(d)
+		this.assert(resultInt.equal(2))
+		this.assert(resultReal.equal(1.0))
+
+		resultInt := a.mult(b)
+		resultReal := c.mult(d)
+		this.assert(resultInt.equal(15))
+        stdout.writeLine(resultReal.toString())
+		this.assert(resultReal.toInteger().equal(3))
+
+		resultInt := a.divide(b) // Expected: 1 (since it's integer division)
+		resultReal := c.divide(d) // Expected: 1.666...
+        stdout.writeLine(resultReal.toString())
+		this.assert(resultInt.equal(1))
+
+		boolResult := true.or(false)
+		this.assert(boolResult.toInteger().equal(1))
         
-        // Expecting 10! to be 3628800
-        this.assert(tenFactorial.equal(3628800))
-        return this.exit_code
+		return this.exit_code
     end
 end
