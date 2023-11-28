@@ -1,7 +1,7 @@
 // fib - emphasizes method declaration, method call, return statement and recursion
-class Fib extends EntryPoint is
+class Main extends EntryPoint is
     method fib(n : Integer) : Integer is
-        if n.lessEqual(2) then
+        if n.greater(2).not() then
             return 1
         else
             var a : Integer := this.fib(n.minus(1))
@@ -10,7 +10,7 @@ class Fib extends EntryPoint is
         end
     end
 
-    method main(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) : Integer is
+    method main(stdin: StdIn, stdout: StdOut, args: Array[Array[Integer]]) : Integer is
         if this.fib(10).equal(55).not() then
             return 1
         end

@@ -1,6 +1,18 @@
-// return - emphasizes the way to return codes, inheritance of fields and the basic constructor sytax
+// fib - emphasizes method declaration, method call, return statement and recursion
 class Main extends EntryPoint is
+    method fib(n : Integer) : Integer is
+        if n.greater(2).not() then
+            return 1
+        else
+            var a : Integer := this.fib(n.minus(1))
+            var b : Integer := this.fib(n.minus(2))
+            return a.plus(b)
+        end
+    end
+
     method main(stdin: StdIn, stdout: StdOut, args: Array[Array[Integer]]) : Integer is
-        return 10
+        if this.fib(10).equal(55).not() then
+            return 1
+        end
     end
 end

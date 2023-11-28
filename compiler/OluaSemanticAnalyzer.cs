@@ -547,6 +547,8 @@ namespace OluaSemanticAnalyzer
                 }
             }
 
+            return classes;
+
             // 3. optimize bodies
 
             foreach (var cls in classes)
