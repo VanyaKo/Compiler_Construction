@@ -161,4 +161,20 @@
     IL_0007:  newobj     instance void c_Integer::.ctor(int32)
     IL_000c:  ret
   } // end of method c_Real::m_toInteger
+
+  .method public newslot virtual 
+          instance class c_Array`1<class c_Integer> 
+          m_toString() cil managed
+  {
+    // Code size       27 (0x1b)
+    .maxstack  8
+    IL_0000:  ldarg.0
+    IL_0001:  ldflda     float32 c_Real::p_f_data
+    IL_0006:  ldstr      "0.0"
+    IL_000b:  call       class [mscorlib]System.Globalization.CultureInfo [mscorlib]System.Globalization.CultureInfo::get_InvariantCulture()
+    IL_0010:  call       instance string [mscorlib]System.Single::ToString(string,
+                                                                                 class [mscorlib]System.IFormatProvider)
+    IL_0015:  call       class c_Array`1<class c_Integer> strToArray(string)
+    IL_001a:  ret
+  }
 }

@@ -22,6 +22,7 @@ namespace OluaStdLibInterfaces
                 {
                     // Conversion
                     { "toInteger", new MethodInterface { Parameters = new List<TypeName>(), ReturnType = OLT.Integer } },
+                    { "toString", new MethodInterface { Parameters = new List<TypeName>(), ReturnType = OLT.Array(OLT.Integer) } },
 
                     // Boolean operators
                     { "or", new MethodInterface { Parameters = new List<TypeName> { OLT.Boolean }, ReturnType = OLT.Boolean } },

@@ -50,7 +50,7 @@
     IL_001d:  ldarg.0
     IL_001e:  ldfld      !0[] class c_Array`1<!T>::p_f_items
     IL_0023:  ldloc.1
-    IL_0024:  call       !!0 [System.Runtime]System.Activator::CreateInstance<!T>()
+    IL_0024:  call       !!0 [mscorlib]System.Activator::CreateInstance<!T>()
     IL_0029:  stelem     !T
     IL_002e:  ldloc.1
     IL_002f:  ldc.i4.1

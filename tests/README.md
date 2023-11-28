@@ -29,35 +29,27 @@ class Class is
 end
 ```
 
-TODO: to String method for Integer/Real/Boolean
-
 ```
 // IO classes
 class CharInput is
-    method avaliable() : Integer; // returns the number of items avaliable to read from the buffer
+    // (not impl) method avaliable() : Integer; // returns the number of items avaliable to read from the buffer
     method readChar() : Integer; // reads an item, blocks until is available
     method readLine() : Array[Integer]; // returns only Integer values that are valid unicode character codes, blocks until is available
     method read(n : Integer) : Array[Integer]; // read n next characters
 end
 
 class CharOutput is
-    method avaliable() : Integer; // returns the number of items avaliable to write (usually the remaining size of the reciever's buffer), use for congestion control
+    // (not impl) method avaliable() : Integer; // returns the number of items avaliable to write (usually the remaining size of the reciever's buffer), use for congestion control
     method writeChar(e: Integer); // writes an item, blocks until is avaliable
     method write(s: Array[Integer]); // forwards only Inetgers that are valid unicode character codes, otherwise the consumed element is ignored, blocks until is avaliable
     method writeLine(s: Array[Integer]);
-end
-
-class StdIn extends CharInput is
-end
-
-class StdOut extends CharOutput is
 end
 ```
 
 ```
 // Class for managing exit code
 class EntryPoint is
-    method main(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) : Integer;
+    method main(stdin: CharInput, stdout: CharOutput, args: Array[Array[Integer]]) : Integer;
 end
 ```
 
@@ -67,6 +59,7 @@ class Array[T] is
     // ... (other methods)
 
     // This creates a shallow copy of the array
+    // TODO
     method copy() : Array[T] is
     	var newArray : Array[T] := Array(this.Length());
     	var i : Integer := 0;

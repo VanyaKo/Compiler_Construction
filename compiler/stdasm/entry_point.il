@@ -37,14 +37,10 @@
 .method private hidebysig static class c_Array`1<class c_Array`1<class c_Integer>> 
           loadArgs() cil managed
 {
-    .maxstack  3
+    .maxstack  4
     .locals init (string[] V_0,
              class c_Array`1<class c_Integer>[] V_1,
-             int32 V_2,
-             string V_3,
-             class c_Integer[] V_4,
-             int32 V_5,
-             char V_6)
+             int32 V_2)
     IL_0000:  call       string[] [mscorlib]System.Environment::GetCommandLineArgs()
     IL_0005:  stloc.0
     IL_0006:  ldloc.0
@@ -56,57 +52,28 @@
     IL_0010:  stloc.1
     IL_0011:  ldc.i4.1
     IL_0012:  stloc.2
-    IL_0013:  br.s       IL_0066
+    IL_0013:  br.s       IL_0026
 
-    IL_0015:  ldloc.0
+    IL_0015:  ldloc.1
     IL_0016:  ldloc.2
-    IL_0017:  ldelem.ref
-    IL_0018:  stloc.3
-    IL_0019:  ldloc.3
-    IL_001a:  callvirt   instance int32 [mscorlib]System.String::get_Length()
-    IL_001f:  newarr     c_Integer
-    IL_0024:  stloc.s    V_4
-    IL_0026:  ldc.i4.0
-    IL_0027:  stloc.s    V_5
-    IL_0029:  br.s       IL_004c
+    IL_0017:  ldc.i4.1
+    IL_0018:  sub
+    IL_0019:  ldloc.0
+    IL_001a:  ldloc.2
+    IL_001b:  ldelem.ref
+    IL_001c:  call       class c_Array`1<class c_Integer> strToArray(string)
+    IL_0021:  stelem.ref
+    IL_0022:  ldloc.2
+    IL_0023:  ldc.i4.1
+    IL_0024:  add
+    IL_0025:  stloc.2
+    IL_0026:  ldloc.2
+    IL_0027:  ldloc.0
+    IL_0028:  ldlen
+    IL_0029:  conv.i4
+    IL_002a:  blt.s      IL_0015
 
-    IL_002b:  ldloc.3
-    IL_002c:  ldloc.s    V_5
-    IL_002e:  callvirt   instance char [mscorlib]System.String::get_Chars(int32)
-    IL_0033:  stloc.s    V_6
-    IL_0035:  ldloc.s    V_4
-    IL_0037:  ldloc.s    V_5
-    IL_0039:  ldloc.s    V_6
-    IL_003b:  call       int32 [mscorlib]System.Convert::ToInt32(char)
-    IL_0040:  newobj     instance void c_Integer::.ctor(int32)
-    IL_0045:  stelem.ref
-    IL_0046:  ldloc.s    V_5
-    IL_0048:  ldc.i4.1
-    IL_0049:  add
-    IL_004a:  stloc.s    V_5
-    IL_004c:  ldloc.s    V_5
-    IL_004e:  ldloc.3
-    IL_004f:  callvirt   instance int32 [mscorlib]System.String::get_Length()
-    IL_0054:  blt.s      IL_002b
-
-    IL_0056:  ldloc.1
-    IL_0057:  ldloc.2
-    IL_0058:  ldc.i4.1
-    IL_0059:  sub
-    IL_005a:  ldloc.s    V_4
-    IL_005c:  newobj     instance void class c_Array`1<class c_Integer>::.ctor(!0[])
-    IL_0061:  stelem.ref
-    IL_0062:  ldloc.2
-    IL_0063:  ldc.i4.1
-    IL_0064:  add
-    IL_0065:  stloc.2
-    IL_0066:  ldloc.2
-    IL_0067:  ldloc.0
-    IL_0068:  ldlen
-    IL_0069:  conv.i4
-    IL_006a:  blt.s      IL_0015
-
-    IL_006c:  ldloc.1
-    IL_006d:  newobj     instance void class c_Array`1<class c_Array`1<class c_Integer>>::.ctor(!0[])
-    IL_0072:  ret
+    IL_002c:  ldloc.1
+    IL_002d:  newobj     instance void class c_Array`1<class c_Array`1<class c_Integer>>::.ctor(!0[])
+    IL_0032:  ret
 }

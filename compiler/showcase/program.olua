@@ -7,14 +7,20 @@ class Main extends EntryPoint is
         end
     end
 
+    method computeFactorial(stdout: CharOutput, n: Integer): Integer is
+        var result : Integer := 1
+        while n.greater(1) loop
+            result := result.mult(n)
+            n := n.minus(1)
+        end
+        return result
+    end
+
     method main(stdin: CharInput, stdout: CharOutput, args: Array[Array[Integer]]) : Integer is
-        var a : Integer := 5
-        var b : Real := 344.7
-	
-        var resultReal : Real := a.toReal() // Expected: 5.0
-        var resultInt : Integer := b.toInteger() // Expected: 344 (assuming truncation)
-        this.assert(resultReal.equal(5.0))
-        this.assert(resultInt.equal(344))
+        var tenFactorial : Integer := this.computeFactorial(stdout, 10)
+        
+        // Expecting 10! to be 3628800
+        this.assert(tenFactorial.equal(3628800))
         return this.exit_code
     end
 end

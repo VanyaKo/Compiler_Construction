@@ -21,6 +21,7 @@ namespace OluaStdLibInterfaces
                 {
                     // Conversions
                     { "toInteger", new MethodInterface { Parameters = new List<TypeName>(), ReturnType = OLT.Integer } },
+                    { "toString", new MethodInterface { Parameters = new List<TypeName>(), ReturnType = OLT.Array(OLT.Integer) } },
                     
                     // Arithmetics
                     { "plus", new MethodInterface { Parameters = new List<TypeName> { OLT.Real }, ReturnType = OLT.Real } },

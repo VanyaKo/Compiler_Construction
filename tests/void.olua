@@ -1,4 +1,4 @@
-class Void extends EntryPoint is
+class Main extends EntryPoint is
     var exit_code : Integer := 0
     var a : Integer := 0
 
@@ -12,7 +12,7 @@ class Void extends EntryPoint is
         this.a := this.a.plus(2)
     end
 
-    method main(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) : Integer is
+    method main(stdin: CharInput, stdout: CharOutput, args: Array[Array[Integer]]) : Integer is
         this.assert(this.a.equal(0))
         this.doSmth()
         this.assert(this.a.equal(2))

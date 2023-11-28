@@ -78,4 +78,22 @@
         newobj instance void c_Boolean::.ctor(bool)
         ret
     }
+
+    .method public newslot virtual 
+          instance class c_Array`1<class c_Integer> 
+          m_toString() cil managed
+    {
+        // Code size       26 (0x1a)
+        .maxstack  8
+        IL_0000:  ldarg.0
+        IL_0001:  ldfld      bool c_Boolean::p_f_data
+        IL_0006:  brtrue.s   IL_000f
+
+        IL_0008:  ldstr      "false"
+        IL_000d:  br.s       IL_0014
+
+        IL_000f:  ldstr      "true"
+        IL_0014:  call       class c_Array`1<class c_Integer> strToArray(string)
+        IL_0019:  ret
+    }
 }

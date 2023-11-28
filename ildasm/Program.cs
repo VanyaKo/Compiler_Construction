@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Globalization;
 
 
 public class c_Class : Object
@@ -99,6 +100,11 @@ public class c_Boolean : c_Class
     {
         return new c_Boolean(!p_f_data);
     }
+
+    public virtual c_Array<c_Integer> m_toString()
+    {
+        return Program.strToArray(p_f_data ? "true" : "false");
+    }
 }
 
 public class c_Real : c_Class
@@ -169,6 +175,11 @@ public class c_Real : c_Class
     public virtual c_Integer m_toInteger()
     {
         return new c_Integer((int)p_f_data);
+    }
+
+    public virtual c_Array<c_Integer> m_toString()
+    {
+        return Program.strToArray(p_f_data.ToString("0.0", CultureInfo.InvariantCulture));
     }
 }
 
@@ -245,6 +256,11 @@ public class c_Integer : c_Class
     public virtual c_Real m_toReal()
     {
         return new c_Real((float)p_f_data);
+    }
+
+    public virtual c_Array<c_Integer> m_toString()
+    {
+        return Program.strToArray(p_f_data.ToString());
     }
 }
 
@@ -391,6 +407,18 @@ public static class Program
         return result.p_m_data();
     }
 
+    public static c_Array<c_Integer> strToArray(string str)
+    {
+        c_Integer[] chrs = new c_Integer[str.Length];
+
+        for (int j = 0; j < str.Length; j++)
+        {
+            chrs[j] = new c_Integer(Convert.ToInt32(str[j]));
+        }
+
+        return new c_Array<c_Integer>(chrs);
+    }
+
     private static c_Array<c_Array<c_Integer>> loadArgs()
     {
         string[] commandLineArgs = Environment.GetCommandLineArgs();
@@ -399,16 +427,7 @@ public static class Program
 
         for (int i = 1; i < commandLineArgs.Length; i++)
         {
-            string arg = commandLineArgs[i];
-            c_Integer[] argChars = new c_Integer[arg.Length];
-
-            for (int j = 0; j < arg.Length; j++)
-            {
-                char ch = arg[j];
-                argChars[j] = new c_Integer(Convert.ToInt32(ch));
-            }
-
-            argArrays[i - 1] = new c_Array<c_Integer>(argChars);
+            argArrays[i - 1] = strToArray(commandLineArgs[i]);
         }
 
         return new c_Array<c_Array<c_Integer>>(argArrays);

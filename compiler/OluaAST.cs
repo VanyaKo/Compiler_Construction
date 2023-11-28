@@ -628,6 +628,7 @@ namespace OluaAST
             res.AddExpanding(new StringWrapper("callvirt instance bool c_Boolean::p_m_data()"));
             res.AddExpanding(new StringWrapper("brfalse.s " + end_label));
             res.AddExpanding(Body.MsilToExecute(locals, accum));
+            res.AddExpanding(new StringWrapper("br.s " + start_label));
             res.AddExpanding(new StringWrapper(end_label + ":"));
             return res;
         }
