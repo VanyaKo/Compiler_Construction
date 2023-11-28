@@ -22,13 +22,13 @@
     .entrypoint
     .maxstack 8
 
-    newobj instance void Main::.ctor()
+    newobj instance void c_Main::.ctor()
 
     newobj instance void c_StdIn::.ctor()
     newobj instance void c_StdOut::.ctor()
     ldnull // TODO: args
 
-    call instance class c_Integer Main::m_main(class c_StdIn, class c_StdOut, class c_Array`1<class c_Array`1<class c_Integer>>)
+    call instance class c_Integer c_Main::m_main(class c_StdIn, class c_StdOut, class c_Array`1<class c_Array`1<class c_Integer>>)
 
     callvirt instance int32 c_Integer::$data()
 

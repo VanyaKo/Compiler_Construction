@@ -64,7 +64,7 @@ namespace OluaAST
         public IStringOrList ToOlua() => new StringWrapper(ToString());
 
         public string sMsil() => GenericType != null
-                                    ? $"c_{Identifier}`1<{GenericType.sMsil()}>"
+                                    ? csMsil()
                                     : "c_" + Identifier;
 
         public string csMsil() => "class " + (GenericType != null
@@ -267,15 +267,15 @@ namespace OluaAST
         {
             if (Value is float)
             {
-                return "Real";
+                return "c_Real";
             }
             else if (Value is int)
             {
-                return "Integer";
+                return "c_Integer";
             }
             else if (Value is bool)
             {
-                return "Boolean";
+                return "c_Boolean";
             }
             else
             {
@@ -331,7 +331,7 @@ namespace OluaAST
                     body.AddExpanding(new StringWrapper(".maxstack 30")); // TODO: dynamically decide
 
                     body.Values.Add(new StringWrapper("ldarg.0"));
-                    body.Values.Add(new StringWrapper($"call instance void {(BaseClass == null ? "Class" : BaseClass.sMsil())}::.ctor()"));
+                    body.Values.Add(new StringWrapper($"call instance void {(BaseClass == null ? "c_Class" : BaseClass.sMsil())}::.ctor()"));
 
                     foreach (ClassMember e in Members)
                     {
@@ -569,7 +569,7 @@ namespace OluaAST
 
             ListWrapper res = new();
             res.AddExpanding(Cond.MsilToGet(locals)); // Boolean on the stack top as the result
-            res.AddExpanding(new StringWrapper("callvirt instance bool Boolean::$data()")); // Unwrap bool
+            res.AddExpanding(new StringWrapper("callvirt instance bool c_Boolean::$data()")); // Unwrap bool
             res.AddExpanding(new StringWrapper("brfalse.s " + (Else == null ? endif_label : else_label)));
             res.AddExpanding(Then.MsilToExecute(locals, accum));
             if (Else != null)
@@ -611,7 +611,7 @@ namespace OluaAST
             ListWrapper res = new();
             res.AddExpanding(new StringWrapper(start_label + ":"));
             res.AddExpanding(Cond.MsilToGet(locals));
-            res.AddExpanding(new StringWrapper("callvirt instance bool Boolean::$data()"));
+            res.AddExpanding(new StringWrapper("callvirt instance bool c_Boolean::$data()"));
             res.AddExpanding(new StringWrapper("brfalse.s " + end_label));
             res.AddExpanding(Body.MsilToExecute(locals, accum));
             res.AddExpanding(new StringWrapper(end_label + ":"));
