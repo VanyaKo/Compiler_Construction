@@ -605,9 +605,9 @@ namespace OluaSemanticAnalyzer
                         OptimizeScope(@while.Body.List, usedVariables, members);
                         break;
                     case Return @return:
-                        if (@return.Object is ObjectIdentifier identifier)
+                        if (@return.Object != null)
                         {
-                            MarkVariableAsUsed(identifier, usedVariables, localVariables);
+                            MarkVariableAsUsed(@return.Object, usedVariables, localVariables);
                         }
                         break;
                     case Scope nestedScope:
@@ -747,6 +747,7 @@ namespace OluaSemanticAnalyzer
                     MarkVariableAsUsed(arg, usedVariables, localVariables);
                 }
             }
+            
             // Handle other OluaObject types as necessary
         }
     }
