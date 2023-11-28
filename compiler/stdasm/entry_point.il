@@ -30,5 +30,7 @@
 
     call instance class Integer Main::olua_main(class StdIn, class StdOut, class Array`1<class Array`1<class Integer>>)
 
+    callvirt instance int32 Integer::$data()
+
     ret
 }
