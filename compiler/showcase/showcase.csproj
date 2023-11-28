@@ -60,14 +60,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="../stdlib/stdIn/interface.cs" Link="StdInInterface.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="../stdlib/stdOut/interface.cs" Link="StdOutInterface.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="StarodubOleg.GPPG.Runtime" Version="0.1.0-alpha1-2" />
   </ItemGroup>
 

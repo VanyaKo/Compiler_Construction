@@ -144,8 +144,8 @@ namespace OluaSemanticAnalyzer
         public static readonly TypeName typeBoolean = new TypeName { Identifier = "Boolean", GenericType = null };
         public static readonly TypeName typeInteger = new TypeName { Identifier = "Integer", GenericType = null };
         public static readonly TypeName typeReal = new TypeName { Identifier = "Real", GenericType = null };
-        public static readonly TypeName typeStdIn = new TypeName { Identifier = "StdIn", GenericType = null };
-        public static readonly TypeName typeStdOut = new TypeName { Identifier = "StdOut", GenericType = null };
+        public static readonly TypeName typeCharInput = new TypeName { Identifier = "CharInput", GenericType = null };
+        public static readonly TypeName typeCharOutput = new TypeName { Identifier = "CharOutput", GenericType = null };
 
         private static readonly MethodInterface methodSameRef = new MethodInterface
         {
@@ -182,8 +182,8 @@ namespace OluaSemanticAnalyzer
                         new MethodInterface{
                             Parameters = new List<TypeName>
                             {
-                                typeStdIn,
-                                typeStdOut,
+                                typeCharInput,
+                                typeCharOutput,
                                 typeArray(typeArray(typeInteger))
                             },
                             ReturnType = typeInteger,

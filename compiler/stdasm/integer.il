@@ -27,7 +27,7 @@
         ret
     }
 
-    .method public final instance int32 $data() cil managed
+    .method public final instance int32 p_m_data() cil managed
     {
         .maxstack 3
         ldarg.0
@@ -189,13 +189,15 @@
         ret
     }
     
-    .method public newslot virtual instance class c_Real m_toReal() cil managed
+    .method public newslot virtual 
+          instance class c_Real  m_toReal() cil managed
     {
-        .maxstack 8
-        ldarg.0
-        ldfld int32 c_Integer::f_data
-        conv.r8
-        newobj instance void c_Real::.ctor(float64)
-        ret
-    }
+        // Code size       13 (0xd)
+        .maxstack  8
+        IL_0000:  ldarg.0
+        IL_0001:  ldfld      int32 c_Integer::f_data
+        IL_0006:  conv.r4
+        IL_0007:  newobj     instance void c_Real::.ctor(float32)
+        IL_000c:  ret
+    } // end of method c_Integer::m_toReal
 }

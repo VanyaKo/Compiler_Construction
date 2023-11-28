@@ -1,4 +1,4 @@
-.class public auto ansi beforefieldinit c_StdIn
+.class public auto ansi beforefieldinit p_c_StdIn
        extends c_CharInput
 {
     .method public hidebysig specialname rtspecialname instance void .ctor() cil managed {
@@ -8,115 +8,104 @@
         ret
     }
 
-    // m_avaliable matches the superclass implementation
-
     // Read a character from stdin and returning c_Integer(ord(char))
     .method public virtual instance class c_Integer 
             m_readChar() cil managed
     {
-        .maxstack 3
-        call class [mscorlib]System.ConsoleKeyInfo [mscorlib]System.Console::ReadKey()
-        callvirt instance char [mscorlib]System.ConsoleKeyInfo::get_KeyChar()
-        call int32 [mscorlib]System.Convert::ToInt32(char)
-        newobj instance void c_Integer::.ctor(int32)
-        ret
+    .maxstack  1
+    .locals init (valuetype [System.Console]System.ConsoleKeyInfo V_0)
+    IL_0000:  call       valuetype [System.Console]System.ConsoleKeyInfo [System.Console]System.Console::ReadKey()
+    IL_0005:  stloc.0
+    IL_0006:  ldloca.s   V_0
+    IL_0008:  call       instance char [System.Console]System.ConsoleKeyInfo::get_KeyChar()
+    IL_000d:  call       int32 [mscorlib]System.Convert::ToInt32(char)
+    IL_0012:  newobj     instance void c_Integer::.ctor(int32)
+    IL_0017:  ret
     }
-
-    // TODO
-
-    /*
 
     // Read a line from stdin and returning c_Integer(ord(chars))
     .method public virtual instance class c_Array`1<class c_Integer> 
             m_readLine() cil managed
     {
-        .maxstack 4
-        .locals (int32, string, class c_Integer[])
+    .maxstack  3
+    .locals init (string V_0,
+             int32 V_1,
+             class c_Integer[] V_2,
+             int32 V_3,
+             int32 V_4)
+    IL_0000:  call       string [System.Console]System.Console::ReadLine()
+    IL_0005:  stloc.0
+    IL_0006:  ldc.i4.0
+    IL_0007:  stloc.1
+    IL_0008:  ldloc.0
+    IL_0009:  brfalse.s  IL_0012
 
-        // Use Console.ReadLine to read a line
-        call string [mscorlib]System.Console::ReadLine()
+    IL_000b:  ldloc.0
+    IL_000c:  callvirt   instance int32 [mscorlib]System.String::get_Length()
+    IL_0011:  stloc.1
+    IL_0012:  ldloc.1
+    IL_0013:  newarr     c_Integer
+    IL_0018:  stloc.2
+    IL_0019:  ldc.i4.0
+    IL_001a:  stloc.3
+    IL_001b:  br.s       IL_0039
 
-        // Get the length of the string
-        callvirt instance int32 [mscorlib]System.String::get_Length()
-        stloc.0
+    IL_001d:  ldloc.0
+    IL_001e:  ldloc.3
+    IL_001f:  callvirt   instance char [mscorlib]System.String::get_Chars(int32)
+    IL_0024:  call       int32 [mscorlib]System.Convert::ToInt32(char)
+    IL_0029:  stloc.s    V_4
+    IL_002b:  ldloc.2
+    IL_002c:  ldloc.3
+    IL_002d:  ldloc.s    V_4
+    IL_002f:  newobj     instance void c_Integer::.ctor(int32)
+    IL_0034:  stelem.ref
+    IL_0035:  ldloc.3
+    IL_0036:  ldc.i4.1
+    IL_0037:  add
+    IL_0038:  stloc.3
+    IL_0039:  ldloc.3
+    IL_003a:  ldloc.1
+    IL_003b:  blt.s      IL_001d
 
-        // Create an array to store the ASCII values
-        ldloc.0
-        newarr class c_Integer
-
-        // Loop through each character in the string
-        ldarg.0
-        ldloc.0
-        ldc.i4.0
-        callvirt instance string [mscorlib]System.Console::ReadLine(int32, int32)
-        stloc.1
-
-        // Iterate through the characters
-        ldc.i4.0
-        stloc.2
-        br.s IL_003f
-
-        IL_002b:
-            ldloc.1
-            ldloc.2
-            callvirt instance char [mscorlib]System.String::get_Chars(int32)
-            call int32 [mscorlib]System.Convert::ToInt32(char)
-            newobj instance void c_Integer::.ctor(int32)
-            stelem.ref
-
-        IL_003f:
-            ldloc.2
-            ldloc.0
-            blt.s IL_002b
-
-        // Return the array of c_Integer objects
-        ldloc.2
-        newobj instance void class c_Array`1<class c_Integer>::.ctor(!0[])
-        ret
+    IL_003d:  ldloc.2
+    IL_003e:  newobj     instance void class c_Array`1<class c_Integer>::.ctor(!0[])
+    IL_0043:  ret
     }
 
-    // Read n characters from stdin and returning their integer values
+    // Read n characters from stdin and return their ascii codes
     .method public virtual instance class c_Array`1<class c_Integer> 
             m_read(class c_Integer n) cil managed
     {
-        .maxstack 4
-        .locals (int32, int32, class c_Integer[])
+    .maxstack  3
+    .locals init (int32 V_0,
+             class c_Integer[] V_1,
+             int32 V_2)
+    IL_0000:  ldarg.1
+    IL_0001:  callvirt   instance int32 c_Integer::p_m_data()
+    IL_0006:  stloc.0
+    IL_0007:  ldloc.0
+    IL_0008:  newarr     c_Integer
+    IL_000d:  stloc.1
+    IL_000e:  ldc.i4.0
+    IL_000f:  stloc.2
+    IL_0010:  br.s       IL_001f
 
-        // Get the value of n
-        ldarg.1
-        callvirt instance int32 c_Integer::$data()
-        stloc.0
+    IL_0012:  ldloc.1
+    IL_0013:  ldloc.2
+    IL_0014:  ldarg.0
+    IL_0015:  callvirt   instance class c_Integer c_CharInput::m_readChar()
+    IL_001a:  stelem.ref
+    IL_001b:  ldloc.2
+    IL_001c:  ldc.i4.1
+    IL_001d:  add
+    IL_001e:  stloc.2
+    IL_001f:  ldloc.2
+    IL_0020:  ldloc.0
+    IL_0021:  blt.s      IL_0012
 
-        // Create an array to store the ASCII values
-        ldloc.0
-        newarr class c_Integer
-        stloc.2
-
-        // Loop to read n characters
-        ldloc.0
-        stloc.1
-        brfalse.s IL_002f
-
-        IL_001b:
-            ldarg.0
-            callvirt instance class c_Integer c_StdIn::readChar()
-            ldloc.1
-            ldc.i4.1
-            sub
-            stelem.ref
-            ldloc.1
-            ldc.i4.1
-            sub
-            stloc.1
-            brtrue.s IL_001b
-
-        IL_002f:
-
-        // Return the array of c_Integer objects
-        ldloc.2
-        newobj instance void class c_Array`1<class c_Integer>::.ctor(!0[])
-        ret
+    IL_0023:  ldloc.1
+    IL_0024:  newobj     instance void class c_Array`1<class c_Integer>::.ctor(!0[])
+    IL_0029:  ret
     }
-
-    */
 }
