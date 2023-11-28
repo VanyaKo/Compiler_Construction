@@ -27,7 +27,7 @@
         ret
     }
 
-    .method public final instance int32 $data() cil managed
+    .method public final instance int32 p_m_data() cil managed
     {
         .maxstack 3
         ldarg.0

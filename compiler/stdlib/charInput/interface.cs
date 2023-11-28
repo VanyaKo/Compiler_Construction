@@ -20,7 +20,7 @@ namespace OluaStdLibInterfaces
                 // Methods
                 new Dictionary<string, MethodInterface>
                 {
-                    { "avaliable", new MethodInterface { Parameters = new List<TypeName>(), ReturnType = OLT.Integer } },
+                    // { "avaliable", new MethodInterface { Parameters = new List<TypeName>(), ReturnType = OLT.Integer } }, // not implemented
                     { "readChar", new MethodInterface { Parameters = new List<TypeName>(), ReturnType = OLT.Integer } },
                     { "readLine", new MethodInterface { Parameters = new List<TypeName>(), ReturnType = OLT.Array(OLT.Integer) }  },
                     { "read", new MethodInterface { Parameters = new List<TypeName> { OLT.Integer }, ReturnType = OLT.Array(OLT.Integer) } }

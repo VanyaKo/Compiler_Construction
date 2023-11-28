@@ -3,7 +3,7 @@ class Main extends EntryPoint is
 
     // print the first argument string
 
-    method main(stdin: StdIn, stdout: StdOut, args: Array[Array[Integer]]) : Integer is
+    method main(stdin: CharInput, stdout: CharOutput, args: Array[Array[Integer]]) : Integer is
         if args.len().greater(0) then
             stdout.writeLine(args.get(0)) // there is no void return, as well as call without assignment, so this is how it should be worked around
         else

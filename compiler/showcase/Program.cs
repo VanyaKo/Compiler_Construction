@@ -33,8 +33,6 @@ public class Application
                 new RealInterface(),
                 new CharInputInterface(),
                 new CharOutputInterface(),
-                new StdInInterface(),
-                new StdOutInterface(),
             };
 
             foreach (var cls in stdlibClasses)
