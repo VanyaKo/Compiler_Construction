@@ -64,12 +64,12 @@ namespace OluaAST
         public IStringOrList ToOlua() => new StringWrapper(ToString());
 
         public string sMsil() => GenericType != null
-                                    ? $"{Identifier}`1<{GenericType.sMsil()}>"
-                                    : Identifier;
+                                    ? $"c_{Identifier}`1<{GenericType.sMsil()}>"
+                                    : "c_" + Identifier;
 
         public string csMsil() => "class " + (GenericType != null
-                                    ? $"{Identifier}`1<{GenericType.csMsil()}>"
-                                    : Identifier);
+                                    ? $"c_{Identifier}`1<{GenericType.csMsil()}>"
+                                    : "c_" + Identifier);
 
         public override bool Equals(object obj)
         {
@@ -170,7 +170,7 @@ namespace OluaAST
             ListWrapper res = new();
             res.AddExpanding(Method.Parent.MsilToGet(locals));
             res.AddExpanding(Arguments.MsilToGet(locals));
-            res.AddExpanding(new StringWrapper($"callvirt instance {(ReturnType == null ? "void" : ReturnType.csMsil())} {Method.Parent.MsilType(locals)}::olua_{Method.Identifier}({Arguments.MsilTypes(locals)})"));
+            res.AddExpanding(new StringWrapper($"callvirt instance {(ReturnType == null ? "void" : ReturnType.csMsil())} {Method.Parent.MsilType(locals)}::m_{Method.Identifier}({Arguments.MsilTypes(locals)})"));
             return res;
         }
 
@@ -191,7 +191,7 @@ namespace OluaAST
             ListWrapper res = new();
             res.AddExpanding(Parent.MsilToGet(locals));
             res.AddExpanding(value.MsilToGet(locals));
-            res.AddExpanding(new StringWrapper($"stfld {AttributeType.csMsil()} {Parent.MsilType(locals)}::{Identifier}"));
+            res.AddExpanding(new StringWrapper($"stfld {AttributeType.csMsil()} {Parent.MsilType(locals)}::f_{Identifier}"));
             return res;
         }
 
@@ -199,7 +199,7 @@ namespace OluaAST
         {
             ListWrapper res = new();
             res.AddExpanding(Parent.MsilToGet(locals));
-            res.AddExpanding(new StringWrapper($"ldfld {AttributeType.csMsil()} {Parent.MsilType(locals)}::{Identifier}"));
+            res.AddExpanding(new StringWrapper($"ldfld {AttributeType.csMsil()} {Parent.MsilType(locals)}::f_{Identifier}"));
             return res;
         }
 
@@ -319,7 +319,7 @@ namespace OluaAST
         public IStringOrList ToMsil()
         {
             ListWrapper res = new();
-            res.Values.Add(new StringWrapper($".class public auto ansi beforefieldinit {Name} extends " + (BaseClass == null ? "Class" : BaseClass.sMsil()) + " {"));
+            res.Values.Add(new StringWrapper($".class public auto ansi beforefieldinit c_{Name} extends " + (BaseClass == null ? "c_Class" : BaseClass.sMsil()) + " {"));
             ListWrapper scope = new();
 
             // constructor
@@ -397,7 +397,7 @@ namespace OluaAST
         public override string ToString() => $"var {Name} : {Type} := {InitialValue}";
         public IStringOrList ToOlua() => new StringWrapper(ToString());
 
-        public IStringOrList DeclareClassMemberMsil() => new StringWrapper($".field public {Type.csMsil()} {Name}");
+        public IStringOrList DeclareClassMemberMsil() => new StringWrapper($".field public {Type.csMsil()} f_{Name}");
 
         public IStringOrList MsilToExecute(Dictionary<string, MsilVar> locals, List<TypeName> accum)
         {
@@ -420,7 +420,7 @@ namespace OluaAST
             ListWrapper res = new();
             res.AddExpanding(new StringWrapper("ldarg.0"));
             res.AddExpanding(InitialValue.MsilToGet(new Dictionary<string, MsilVar>()));
-            res.AddExpanding(new StringWrapper($"stfld {Type.csMsil()} {belongingClass}::{Name}"));
+            res.AddExpanding(new StringWrapper($"stfld {Type.csMsil()} c_{belongingClass}::f_{Name}"));
             return res;
         }
     }
@@ -445,7 +445,7 @@ namespace OluaAST
         public IStringOrList DeclareClassMemberMsil()
         {
             ListWrapper res = new();
-            res.Values.Add(new StringWrapper(".method public virtual instance " + (ReturnType == null ? "void" : ReturnType.csMsil()) + $" olua_{Name}({Parameters.TypesMsil()}) cil managed {{"));
+            res.Values.Add(new StringWrapper(".method public virtual instance " + (ReturnType == null ? "void" : ReturnType.csMsil()) + $" m_{Name}({Parameters.TypesMsil()}) cil managed {{"));
 
             List<TypeName> accum = new();
             Dictionary<string, MsilVar> locals = new();

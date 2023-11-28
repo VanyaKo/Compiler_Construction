@@ -1,38 +1,38 @@
-.class public auto ansi beforefieldinit CharOutput
-       extends Class
+.class public auto ansi beforefieldinit c_CharOutput
+       extends c_Class
 {
     .method public hidebysig specialname rtspecialname instance void .ctor() cil managed {
         .maxstack 1
         ldarg.0
-        call instance void Class::.ctor()
+        call instance void c_Class::.ctor()
         ret
     }
     
     .method public newslot virtual 
-            instance class Integer olua_avaliable() cil managed
+            instance class c_Integer m_avaliable() cil managed
     {
         .maxstack 1
         ldc.i4 2147483646
-        newobj instance void Integer::.ctor(int32)
+        newobj instance void c_Integer::.ctor(int32)
         ret
     }
 
     .method public newslot virtual 
-            instance void olua_writeChar(class Integer) cil managed
+            instance void m_writeChar(class c_Integer) cil managed
     {
         .maxstack 1
         ret
     }
 
     .method public newslot virtual 
-            instance void olua_write(class Array`1<class Integer>) cil managed
+            instance void m_write(class c_Array`1<class c_Integer>) cil managed
     {
         .maxstack 1
         ret
     }
 
     .method public newslot virtual 
-            instance void olua_writeLine(class Array`1<class Integer>) cil managed
+            instance void m_writeLine(class c_Array`1<class c_Integer>) cil managed
     {
         .maxstack 1
         ret

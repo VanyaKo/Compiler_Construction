@@ -1,24 +1,24 @@
-.class public auto ansi beforefieldinit StdIn
-       extends CharInput
+.class public auto ansi beforefieldinit c_StdIn
+       extends c_CharInput
 {
     .method public hidebysig specialname rtspecialname instance void .ctor() cil managed {
         .maxstack 1
         ldarg.0
-        call instance void CharInput::.ctor()
+        call instance void c_CharInput::.ctor()
         ret
     }
 
-    // olua_avaliable matches the superclass implementation
+    // m_avaliable matches the superclass implementation
 
-    // Read a character from stdin and returning Integer(ord(char))
-    .method public virtual instance class Integer 
-            olua_readChar() cil managed
+    // Read a character from stdin and returning c_Integer(ord(char))
+    .method public virtual instance class c_Integer 
+            m_readChar() cil managed
     {
         .maxstack 3
         call class [mscorlib]System.ConsoleKeyInfo [mscorlib]System.Console::ReadKey()
         callvirt instance char [mscorlib]System.ConsoleKeyInfo::get_KeyChar()
         call int32 [mscorlib]System.Convert::ToInt32(char)
-        newobj instance void Integer::.ctor(int32)
+        newobj instance void c_Integer::.ctor(int32)
         ret
     }
 
@@ -26,12 +26,12 @@
 
     /*
 
-    // Read a line from stdin and returning Integer(ord(chars))
-    .method public virtual instance class Array`1<class Integer> 
-            olua_readLine() cil managed
+    // Read a line from stdin and returning c_Integer(ord(chars))
+    .method public virtual instance class c_Array`1<class c_Integer> 
+            m_readLine() cil managed
     {
         .maxstack 4
-        .locals (int32, string, class Integer[])
+        .locals (int32, string, class c_Integer[])
 
         // Use Console.ReadLine to read a line
         call string [mscorlib]System.Console::ReadLine()
@@ -42,7 +42,7 @@
 
         // Create an array to store the ASCII values
         ldloc.0
-        newarr class Integer
+        newarr class c_Integer
 
         // Loop through each character in the string
         ldarg.0
@@ -61,7 +61,7 @@
             ldloc.2
             callvirt instance char [mscorlib]System.String::get_Chars(int32)
             call int32 [mscorlib]System.Convert::ToInt32(char)
-            newobj instance void Integer::.ctor(int32)
+            newobj instance void c_Integer::.ctor(int32)
             stelem.ref
 
         IL_003f:
@@ -69,27 +69,27 @@
             ldloc.0
             blt.s IL_002b
 
-        // Return the array of Integer objects
+        // Return the array of c_Integer objects
         ldloc.2
-        newobj instance void class Array`1<class Integer>::.ctor(!0[])
+        newobj instance void class c_Array`1<class c_Integer>::.ctor(!0[])
         ret
     }
 
     // Read n characters from stdin and returning their integer values
-    .method public virtual instance class Array`1<class Integer> 
-            olua_read(class Integer n) cil managed
+    .method public virtual instance class c_Array`1<class c_Integer> 
+            m_read(class c_Integer n) cil managed
     {
         .maxstack 4
-        .locals (int32, int32, class Integer[])
+        .locals (int32, int32, class c_Integer[])
 
         // Get the value of n
         ldarg.1
-        callvirt instance int32 Integer::$data()
+        callvirt instance int32 c_Integer::$data()
         stloc.0
 
         // Create an array to store the ASCII values
         ldloc.0
-        newarr class Integer
+        newarr class c_Integer
         stloc.2
 
         // Loop to read n characters
@@ -99,7 +99,7 @@
 
         IL_001b:
             ldarg.0
-            callvirt instance class Integer StdIn::readChar()
+            callvirt instance class c_Integer c_StdIn::readChar()
             ldloc.1
             ldc.i4.1
             sub
@@ -112,9 +112,9 @@
 
         IL_002f:
 
-        // Return the array of Integer objects
+        // Return the array of c_Integer objects
         ldloc.2
-        newobj instance void class Array`1<class Integer>::.ctor(!0[])
+        newobj instance void class c_Array`1<class c_Integer>::.ctor(!0[])
         ret
     }
 

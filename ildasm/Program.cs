@@ -8,28 +8,27 @@ void main()
 //     int a;
 // }
 
-class Array<T>
+class value
 {
-    private int length;
-    private T[] items;
+    private int[] items;
 
-    Array(int n)
+    value(int n)
     {
-        items = new T[n];
+        items = new int[n];
     }
 
-    int len()
-    {
-        return length;
-    }
-
-    T get(int i)
+    int get(int i)
     {
         return items[i];
     }
 
-    void set(int i, T v)
+    void set(int i, int v)
     {
         items[i] = v;
+    }
+
+    void lol(value v)
+    {
+        v.get(32);
     }
 }
