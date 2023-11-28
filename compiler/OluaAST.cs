@@ -129,12 +129,11 @@ namespace OluaAST
             }
             return res;
         }
-
-        public string MsilTypes(Dictionary<string, MsilVar> locals) => string.Join(", ", List.Select(e => e.ResultingType(locals).csMsil()));
     }
 
     public class ConstructorInvocation : OluaObject
     {
+        public List<TypeName> ConsumingTypes { get; set; } // augmented by analyzer
         public OluaObjectList Arguments { get; set; }
         public TypeName Type { get; set; }
 
@@ -145,7 +144,7 @@ namespace OluaAST
         {
             ListWrapper res = new();
             res.AddExpanding(Arguments.MsilToGet(locals));
-            res.AddExpanding(new StringWrapper($"newobj instance void {Type.sMsil()}::.ctor({Arguments.MsilTypes(locals)})"));
+            res.AddExpanding(new StringWrapper($"newobj instance void {Type.sMsil()}::.ctor({string.Join(", ", ConsumingTypes.Select(e => e.csMsil()))})"));
             return res;
         }
 
@@ -155,6 +154,8 @@ namespace OluaAST
     public class MethodInvocation : OluaObject, Statement
     {
         public TypeName? ReturnType { get; set; } // null if void result  // augmented by analyzer
+        public List<TypeName> ConsumingTypes { get; set; } // augmented by analyzer
+
         public AttributeObject Method { get; set; }
         public OluaObjectList Arguments { get; set; }
 
@@ -178,7 +179,7 @@ namespace OluaAST
             ListWrapper res = new();
             res.AddExpanding(Method.Parent.MsilToGet(locals));
             res.AddExpanding(Arguments.MsilToGet(locals));
-            res.AddExpanding(new StringWrapper($"callvirt instance {(ReturnType == null ? "void" : ReturnType.Unwrap().csMsil())} {Method.Parent.ResultingType(locals).sMsil()}::m_{Method.Identifier}({Arguments.MsilTypes(locals)})"));
+            res.AddExpanding(new StringWrapper($"callvirt instance {(ReturnType == null ? "void" : ReturnType.csMsil())} {Method.Parent.ResultingType(locals).sMsil()}::m_{Method.Identifier}({string.Join(", ", ConsumingTypes.Select(e => e.csMsil()))})"));
             return res;
         }
 

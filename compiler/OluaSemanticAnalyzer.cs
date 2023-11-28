@@ -340,6 +340,8 @@ namespace OluaSemanticAnalyzer
                         constructorInvocation.Arguments.List,
                         cinf.ConstructorParameters
                     );
+                    constructorInvocation.ConsumingTypes = cinf.ConstructorParameters;
+                    Console.WriteLine(cnstrT.ToString() + " constructor > " + cinf.ConstructorParameters.Select(e => e.csMsil()));
                     return cnstrT;
 
                 case MethodInvocation methodInvocation:
@@ -351,6 +353,7 @@ namespace OluaSemanticAnalyzer
                         mi.Parameters
                     );
                     methodInvocation.ReturnType = mi.ReturnType;
+                    methodInvocation.ConsumingTypes = mi.Parameters;
                     return mi.ReturnType;
 
                 default:
@@ -412,6 +415,7 @@ namespace OluaSemanticAnalyzer
                             mi.Parameters
                         );
                         methodInvocation.ReturnType = mi.ReturnType;
+                        methodInvocation.ConsumingTypes = mi.Parameters;
                         break;
 
                     case VariableDeclaration variableDeclaration:
