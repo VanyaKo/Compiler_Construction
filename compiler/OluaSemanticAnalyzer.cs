@@ -431,7 +431,7 @@ namespace OluaSemanticAnalyzer
         }
 
         // classes from ast
-        // linkClasses to link extenally provided classes, usually the runtime library classes
+        // linkClasses to link externally provided classes, usually the runtime library classes
         // NOTE: all inheritance must be done inside the provided bunch of classes
         public List<ClassDeclaration> LinkValidateAndOptimize(List<ClassDeclaration> classes)
         {
@@ -551,7 +551,7 @@ namespace OluaSemanticAnalyzer
                 }
             }
 
-            return classes;
+            // return classes;
 
             // 3. optimize bodies
 

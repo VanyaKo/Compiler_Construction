@@ -1,4 +1,3 @@
-
 .class public auto ansi beforefieldinit c_Real
        extends c_Class
 {
@@ -35,10 +34,9 @@
         ldfld float64 c_Real::f_data
         ret
     }
-
-    // TODO: Commented for now, see the example of inetger and adopt
-    /*
-
+    
+    // Conversion
+    
     .method public newslot virtual instance class c_Integer m_toInteger() cil managed
     {
         .maxstack 8
@@ -50,6 +48,8 @@
         ret
     }
 
+    // Arithmetics
+    
     .method public newslot virtual instance class c_Real 
             m_plus(class c_Real other) cil managed
     {
@@ -120,5 +120,77 @@
         ret
     }
 
-    */
+    // Relations
+
+    .method public newslot virtual instance class c_Boolean m_less(class c_Real other) cil managed
+    {
+        .maxstack 8
+        ldarg.0
+        ldfld float64 c_Real::f_data
+        ldarg.1
+        ldfld float64 c_Real::f_data
+        clt
+        newobj instance void c_Boolean::.ctor(bool)
+        ret
+    }
+    
+    .method public newslot virtual instance class c_Boolean m_greater(class c_Real other) cil managed
+    {
+        .maxstack 8
+        ldarg.0
+        ldfld float64 c_Real::f_data
+        ldarg.1
+        ldfld float64 c_Real::f_data
+        cgt
+        newobj instance void c_Boolean::.ctor(bool)
+        ret
+    }
+    
+    .method public newslot virtual instance class c_Boolean m_equal(class c_Real other) cil managed
+    {
+        .maxstack 8
+        ldarg.0
+        ldfld float64 c_Real::f_data
+        ldarg.1
+        ldfld float64 c_Real::f_data
+        ceq
+        newobj instance void c_Boolean::.ctor(bool)
+        ret
+    }
+    
+    .method public newslot virtual instance class c_Boolean m_lessEqual(class c_Real other) cil managed
+    {
+        .maxstack 8
+        ldarg.0
+        ldfld float64 c_Real::f_data
+        ldarg.1
+        ldfld float64 c_Real::f_data
+        clt
+        ldarg.0
+        ldfld float64 c_Real::f_data
+        ldarg.1
+        ldfld float64 c_Real::f_data
+        ceq
+        or
+        newobj instance void c_Boolean::.ctor(bool)
+        ret
+    }
+    
+    .method public newslot virtual instance class c_Boolean m_greaterEqual(class c_Real other) cil managed
+    {
+        .maxstack 8
+        ldarg.0
+        ldfld float64 c_Real::f_data
+        ldarg.1
+        ldfld float64 c_Real::f_data
+        cgt
+        ldarg.0
+        ldfld float64 c_Real::f_data
+        ldarg.1
+        ldfld float64 c_Real::f_data
+        ceq
+        or
+        newobj instance void c_Boolean::.ctor(bool)
+        ret
+    }
 }

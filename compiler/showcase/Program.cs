@@ -45,9 +45,14 @@ public class Application
         analyzer.LinkGeneric("Array", new ArrayGeneric());
 
         List<ClassDeclaration> oclasses;
+        Indentator idnt = new();
         try
         {
             oclasses = analyzer.LinkValidateAndOptimize(parser.Program);
+            foreach (ClassDeclaration cls in oclasses)
+            {
+                Console.WriteLine(idnt.Traverse(cls.ToOlua()));
+            }
             Console.WriteLine(">> Program is valid");
         }
         catch (InvalidOperationException ex)
@@ -66,7 +71,7 @@ public class Application
             }
 
             // link user code
-            Indentator idnt = new()
+            idnt = new()
             {
                 identator = "    "
             };
