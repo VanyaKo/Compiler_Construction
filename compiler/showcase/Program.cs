@@ -9,7 +9,7 @@ using Indent;
 public class Application
 {
     const string target = "program.olua";
-    public static void Main()
+    public static int Main()
     {
         Scanner scanner = new(File.ReadAllText(target));
 
@@ -19,7 +19,7 @@ public class Application
         if (!success)
         {
             Console.WriteLine($"Syntax error at {Path.GetFullPath(target)}({scanner.yylloc.StartLine},{scanner.yylloc.StartColumn})");
-            return;
+            return 1;
         }
 
         Analyzer analyzer = new();
@@ -45,21 +45,15 @@ public class Application
         analyzer.LinkGeneric("Array", new ArrayGeneric());
 
         List<ClassDeclaration> oclasses;
-        Indentator idnt = new();
         try
         {
             oclasses = analyzer.LinkValidateAndOptimize(parser.Program);
-            Console.WriteLine("Program is valid");
-
-            foreach (ClassDeclaration cls in oclasses)
-            {
-                Console.WriteLine(idnt.Traverse(cls.ToOlua()));
-            }
+            Console.WriteLine(">> Program is valid");
         }
         catch (InvalidOperationException ex)
         {
             Console.WriteLine(ex.Message);
-            return;
+            return 1;
         }
 
         // generate il
@@ -72,14 +66,17 @@ public class Application
             }
 
             // link user code
-            idnt.identator = "    ";
+            Indentator idnt = new()
+            {
+                identator = "    "
+            };
             foreach (ClassDeclaration cls in oclasses)
             {
                 writer.WriteLine(idnt.Traverse(cls.ToMsil()));
             }
         }
-
-        // TODO: ilasm program.il /output=program.exe
+        Console.WriteLine(">> Compiled sucesefully");
+        return 0;
     }
 }
 
