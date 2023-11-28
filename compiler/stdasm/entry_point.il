@@ -1,6 +1,13 @@
 .class public auto ansi beforefieldinit EntryPoint
        extends Class
 {
+    .method public hidebysig specialname rtspecialname instance void .ctor() cil managed {
+        .maxstack 2
+        ldarg.0
+        call instance void Class::.ctor()
+        ret
+    }
+
     .method public newslot virtual 
             class Integer olua_main(class StdIn, class StdOut, class Array`1<class Array`1<class Integer>>) cil managed
     {
@@ -16,7 +23,6 @@
     .maxstack 8
 
     newobj instance void Main::.ctor()
-    dup
 
     // Example: StdIn, StdOut, Array of Array of Integers
     // TODO
