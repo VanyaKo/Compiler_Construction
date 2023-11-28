@@ -1,28 +1,6 @@
+// return - emphasizes the way to return codes, inheritance of fields and the basic constructor sytax
 class Main extends EntryPoint is
-    var exit_code : Integer := 0
-
-    method assert(cond : Boolean) : void is
-        if cond.not() then
-            this.exit_code := 1
-        end
-    end
-
-    method computeFactorial(n: Integer): Integer is
-        var result : Integer := 1
-        while n.greater(1) loop
-            result := result.mult(n)
-            n := n.minus(1)
-        end
-        return result
-    end
-
     method main(stdin: StdIn, stdout: StdOut, args: Array[Array[Integer]]) : Integer is
-        var a: Integer := 10
-        is
-            var a : Real := 20.0
-            var b : Integer := 1
-            b := 5
-            this.assert(a.equal(20.0))
-        end
+        return 10
     end
 end
