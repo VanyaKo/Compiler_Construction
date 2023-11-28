@@ -28,45 +28,6 @@
     IL_0008:  stfld      float32 c_Real::f_data
     IL_000d:  ret
   } // end of method c_Real::.ctor
-
-<<<<<<< HEAD
-    .method public final instance float64 $data() cil managed
-    {
-        .maxstack 3
-        ldarg.0
-        ldfld float64 c_Real::f_data
-        ret
-    }
-    
-    // Conversion
-    
-    .method public newslot virtual instance class c_Integer m_toInteger() cil managed
-    {
-        .maxstack 8
-        newobj instance void c_Integer::.ctor(int32)
-        dup
-        ldarg.0
-        ldfld float64 c_Real::f_data
-        conv.i4
-        ret
-    }
-
-    // Arithmetics
-    
-    .method public newslot virtual instance class c_Real 
-            m_plus(class c_Real other) cil managed
-    {
-        .maxstack 8
-        newobj instance void c_Real::.ctor(float64)
-        dup
-        ldarg.0
-        ldfld float64 c_Real::f_data
-        ldarg.1
-        ldfld float64 c_Real::f_data
-        add
-        ret
-    }
-=======
   .method public hidebysig instance float32 
           p_m_data() cil managed
   {
@@ -118,7 +79,6 @@
     IL_000d:  newobj     instance void c_Real::.ctor(float32)
     IL_0012:  ret
   } // end of method c_Real::m_mult
->>>>>>> dev-vitaly
 
   .method public newslot virtual 
           instance class c_Real  m_divide(class c_Real) cil managed
@@ -201,81 +161,4 @@
     IL_0007:  newobj     instance void c_Integer::.ctor(int32)
     IL_000c:  ret
   } // end of method c_Real::m_toInteger
-
-<<<<<<< HEAD
-    // Relations
-
-    .method public newslot virtual instance class c_Boolean m_less(class c_Real other) cil managed
-    {
-        .maxstack 8
-        ldarg.0
-        ldfld float64 c_Real::f_data
-        ldarg.1
-        ldfld float64 c_Real::f_data
-        clt
-        newobj instance void c_Boolean::.ctor(bool)
-        ret
-    }
-    
-    .method public newslot virtual instance class c_Boolean m_greater(class c_Real other) cil managed
-    {
-        .maxstack 8
-        ldarg.0
-        ldfld float64 c_Real::f_data
-        ldarg.1
-        ldfld float64 c_Real::f_data
-        cgt
-        newobj instance void c_Boolean::.ctor(bool)
-        ret
-    }
-    
-    .method public newslot virtual instance class c_Boolean m_equal(class c_Real other) cil managed
-    {
-        .maxstack 8
-        ldarg.0
-        ldfld float64 c_Real::f_data
-        ldarg.1
-        ldfld float64 c_Real::f_data
-        ceq
-        newobj instance void c_Boolean::.ctor(bool)
-        ret
-    }
-    
-    .method public newslot virtual instance class c_Boolean m_lessEqual(class c_Real other) cil managed
-    {
-        .maxstack 8
-        ldarg.0
-        ldfld float64 c_Real::f_data
-        ldarg.1
-        ldfld float64 c_Real::f_data
-        clt
-        ldarg.0
-        ldfld float64 c_Real::f_data
-        ldarg.1
-        ldfld float64 c_Real::f_data
-        ceq
-        or
-        newobj instance void c_Boolean::.ctor(bool)
-        ret
-    }
-    
-    .method public newslot virtual instance class c_Boolean m_greaterEqual(class c_Real other) cil managed
-    {
-        .maxstack 8
-        ldarg.0
-        ldfld float64 c_Real::f_data
-        ldarg.1
-        ldfld float64 c_Real::f_data
-        cgt
-        ldarg.0
-        ldfld float64 c_Real::f_data
-        ldarg.1
-        ldfld float64 c_Real::f_data
-        ceq
-        or
-        newobj instance void c_Boolean::.ctor(bool)
-        ret
-    }
-=======
->>>>>>> dev-vitaly
 }
