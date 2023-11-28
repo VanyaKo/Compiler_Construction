@@ -130,7 +130,7 @@ namespace OluaAST
             return res;
         }
 
-        public string MsilTypes(Dictionary<string, MsilVar> locals) => string.Join(", ", List.Select(e => "class " + e.MsilType(locals)));
+        public string MsilTypes(Dictionary<string, MsilVar> locals) => string.Join(", ", List.Select(e => e.ResultingType(locals).csMsil()));
     }
 
     public class ConstructorInvocation : OluaObject
@@ -149,7 +149,7 @@ namespace OluaAST
             return res;
         }
 
-        public string MsilType(Dictionary<string, MsilVar> locals) => Type.sMsil();
+        public TypeName ResultingType(Dictionary<string, MsilVar> locals) => Type;
     }
 
     public class MethodInvocation : OluaObject, Statement
@@ -178,11 +178,11 @@ namespace OluaAST
             ListWrapper res = new();
             res.AddExpanding(Method.Parent.MsilToGet(locals));
             res.AddExpanding(Arguments.MsilToGet(locals));
-            res.AddExpanding(new StringWrapper($"callvirt instance {(ReturnType == null ? "void" : ReturnType.Unwrap().csMsil())} {Method.Parent.MsilType(locals)}::m_{Method.Identifier}({Arguments.MsilTypes(locals)})"));
+            res.AddExpanding(new StringWrapper($"callvirt instance {(ReturnType == null ? "void" : ReturnType.Unwrap().csMsil())} {Method.Parent.ResultingType(locals).sMsil()}::m_{Method.Identifier}({Arguments.MsilTypes(locals)})"));
             return res;
         }
 
-        public string MsilType(Dictionary<string, MsilVar> locals) => ReturnType == null ? "void" : ReturnType.Unwrap().sMsil();
+        public TypeName ResultingType(Dictionary<string, MsilVar> locals) => ReturnType.Unwrap();
     }
 
     public class AttributeObject : OluaAssignableObject
@@ -199,7 +199,7 @@ namespace OluaAST
             ListWrapper res = new();
             res.AddExpanding(Parent.MsilToGet(locals));
             res.AddExpanding(value.MsilToGet(locals));
-            res.AddExpanding(new StringWrapper($"stfld {AttributeType.Unwrap().csMsil()} {Parent.MsilType(locals)}::f_{Identifier}"));
+            res.AddExpanding(new StringWrapper($"stfld {AttributeType.Unwrap().csMsil()} {Parent.ResultingType(locals).sMsil()}::f_{Identifier}"));
             return res;
         }
 
@@ -207,16 +207,16 @@ namespace OluaAST
         {
             ListWrapper res = new();
             res.AddExpanding(Parent.MsilToGet(locals));
-            res.AddExpanding(new StringWrapper($"ldfld {AttributeType.Unwrap().csMsil()} {Parent.MsilType(locals)}::f_{Identifier}"));
+            res.AddExpanding(new StringWrapper($"ldfld {AttributeType.Unwrap().csMsil()} {Parent.ResultingType(locals).sMsil()}::f_{Identifier}"));
             return res;
         }
 
-        public string MsilType(Dictionary<string, MsilVar> locals) => AttributeType.Unwrap().sMsil();
+        public TypeName ResultingType(Dictionary<string, MsilVar> locals) => AttributeType.Unwrap();
     }
 
     public interface OluaObject : Node
     {
-        public string MsilType(Dictionary<string, MsilVar> locals);
+        public TypeName ResultingType(Dictionary<string, MsilVar> locals);
 
         // returns msil lines that pushes the value on top of the stack
         public IStringOrList MsilToGet(Dictionary<string, MsilVar> locals);
@@ -236,7 +236,7 @@ namespace OluaAST
 
         public IStringOrList MsilToGet(Dictionary<string, MsilVar> locals) => new StringWrapper("ldarg.0");
 
-        public string MsilType(Dictionary<string, MsilVar> locals) => Type.sMsil();
+        public TypeName ResultingType(Dictionary<string, MsilVar> locals) => Type;
     }
 
     public class ObjectIdentifier : OluaAssignableObject
@@ -261,7 +261,7 @@ namespace OluaAST
             return res;
         }
 
-        public string MsilType(Dictionary<string, MsilVar> locals) => locals[Identifier].Type.sMsil();
+        public TypeName ResultingType(Dictionary<string, MsilVar> locals) => locals[Identifier].Type;
     }
 
     public class Literal<T> : OluaObject
@@ -271,19 +271,19 @@ namespace OluaAST
         public override string ToString() => $"{Value}";
         public IStringOrList ToOlua() => new StringWrapper(ToString());
 
-        public string MsilType(Dictionary<string, MsilVar> locals)
+        public TypeName ResultingType(Dictionary<string, MsilVar> locals)
         {
             if (Value is float)
             {
-                return "c_Real";
+                return new TypeName { Identifier = "Real", GenericType = null };
             }
             else if (Value is int)
             {
-                return "c_Integer";
+                return new TypeName { Identifier = "Integer", GenericType = null };
             }
             else if (Value is bool)
             {
-                return "c_Boolean";
+                return new TypeName { Identifier = "Boolean", GenericType = null };
             }
             else
             {
@@ -297,17 +297,17 @@ namespace OluaAST
             if (Value is float)
             {
                 res.AddExpanding(new StringWrapper($"ldc.r4 {Value}"));
-                res.AddExpanding(new StringWrapper($"newobj instance void {MsilType(locals)}::.ctor(float32)"));
+                res.AddExpanding(new StringWrapper($"newobj instance void {ResultingType(locals).sMsil()}::.ctor(float32)"));
             }
             else if (Value is int)
             {
                 res.AddExpanding(new StringWrapper($"ldc.i4 {Value}"));
-                res.AddExpanding(new StringWrapper($"newobj instance void {MsilType(locals)}::.ctor(int32)"));
+                res.AddExpanding(new StringWrapper($"newobj instance void {ResultingType(locals).sMsil()}::.ctor(int32)"));
             }
             else if (Value is bool)
             {
                 res.AddExpanding(new StringWrapper((Value.ToString() == "true") ? "ldc.i4.1" : "ldc.i4.0"));
-                res.AddExpanding(new StringWrapper($"newobj instance void {MsilType(locals)}::.ctor(bool)"));
+                res.AddExpanding(new StringWrapper($"newobj instance void {ResultingType(locals).sMsil()}::.ctor(bool)"));
             }
             else
             {
