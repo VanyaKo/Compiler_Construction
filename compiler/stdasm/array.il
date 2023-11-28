@@ -65,6 +65,16 @@
         ret
     }
 
+    .method public hidebysig instance !T  p_m_get(int32) cil managed
+    {
+        .maxstack  8
+        IL_0000:  ldarg.0
+        IL_0001:  ldfld      !0[] class c_Array`1<!T>::f_items
+        IL_0006:  ldarg.1
+        IL_0007:  ldelem     !T
+        IL_000c:  ret
+    }
+
     .method public instance void 
             m_set(class c_Integer, !T) cil managed
     {
