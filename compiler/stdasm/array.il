@@ -1,7 +1,7 @@
 .class public auto ansi beforefieldinit c_Array`1<.ctor T>
        extends c_Class
 {
-    .field private !T[] f_items
+    .field private !T[] p_f_items
 
     .method public specialname rtspecialname 
             instance void .ctor() cil managed 
@@ -12,7 +12,7 @@
         ldarg.0
         ldc.i4.0 // len 0 by default
         newarr !T
-        stfld !0[] class c_Array`1<!T>::f_items
+        stfld !0[] class c_Array`1<!T>::p_f_items
         ret
     }
 
@@ -24,7 +24,7 @@
         call instance void c_Class::.ctor()
         ldarg.0
         ldarg.1
-        stfld !0[] class c_Array`1<!T>::f_items
+        stfld !0[] class c_Array`1<!T>::p_f_items
         ret
     }
 
@@ -42,13 +42,13 @@
     IL_000d:  ldarg.0
     IL_000e:  ldloc.0
     IL_000f:  newarr     !T
-    IL_0014:  stfld      !0[] class c_Array`1<!T>::f_items
+    IL_0014:  stfld      !0[] class c_Array`1<!T>::p_f_items
     IL_0019:  ldc.i4.0
     IL_001a:  stloc.1
     IL_001b:  br.s       IL_0032
 
     IL_001d:  ldarg.0
-    IL_001e:  ldfld      !0[] class c_Array`1<!T>::f_items
+    IL_001e:  ldfld      !0[] class c_Array`1<!T>::p_f_items
     IL_0023:  ldloc.1
     IL_0024:  call       !!0 [System.Runtime]System.Activator::CreateInstance<!T>()
     IL_0029:  stelem     !T
@@ -68,7 +68,7 @@
     {
         .maxstack 1
         ldarg.0
-        ldfld !0[] class c_Array`1<!T>::f_items
+        ldfld !0[] class c_Array`1<!T>::p_f_items
         ldlen
         newobj instance void c_Integer::.ctor(int32)
         ret
@@ -79,7 +79,7 @@
     {
         .maxstack 2
         ldarg.0
-        ldfld !0[] class c_Array`1<!T>::f_items
+        ldfld !0[] class c_Array`1<!T>::p_f_items
         ldarg.1
         callvirt instance int32 c_Integer::p_m_data()
         ldelem !T
@@ -90,7 +90,7 @@
     {
         .maxstack  8
         IL_0000:  ldarg.0
-        IL_0001:  ldfld      !0[] class c_Array`1<!T>::f_items
+        IL_0001:  ldfld      !0[] class c_Array`1<!T>::p_f_items
         IL_0006:  ldarg.1
         IL_0007:  ldelem     !T
         IL_000c:  ret
@@ -101,7 +101,7 @@
     {
         .maxstack 3
         ldarg.0
-        ldfld !0[] class c_Array`1<!T>::f_items
+        ldfld !0[] class c_Array`1<!T>::p_f_items
         ldarg.1
         callvirt instance int32 c_Integer::p_m_data()
         ldarg.2

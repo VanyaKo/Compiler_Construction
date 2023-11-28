@@ -9,7 +9,7 @@ end
 class B extends A is
     // Method in class B
     method displayValue2() : Real is
-        return this.value.plus(10.0)
+        return this.displayValue().plus(10.0)
     end
 end
 
@@ -26,8 +26,6 @@ class Main extends EntryPoint is
         var objA : A := A()
         var objB : B := B()
         var objBA : A := objB
-
-        
 
         this.assert(objA.displayValue().equal(42.0)) // expects 42
         this.assert(objB.displayValue().equal(42.0)) // expects 42

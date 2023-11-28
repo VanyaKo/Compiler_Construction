@@ -406,7 +406,7 @@ namespace OluaAST
         public override string ToString() => $"var {Name} : {Type} := {InitialValue}";
         public IStringOrList ToOlua() => new StringWrapper(ToString());
 
-        public IStringOrList DeclareClassMemberMsil() => new StringWrapper($".field public {Type.csMsil()} f_{Name}");
+        public IStringOrList DeclareClassMemberMsil() => new StringWrapper($".field private {Type.csMsil()} f_{Name}");
 
         public IStringOrList MsilToExecute(Dictionary<string, MsilVar> locals, List<TypeName> accum)
         {

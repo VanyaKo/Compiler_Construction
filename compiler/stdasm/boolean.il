@@ -1,7 +1,7 @@
 .class public auto ansi beforefieldinit c_Boolean
        extends c_Class
 {
-    .field private bool f_data
+    .field private bool p_f_data
 
     .method public hidebysig specialname rtspecialname 
             instance void .ctor() cil managed 
@@ -11,7 +11,7 @@
         call instance void c_Class::.ctor()
         ldarg.0
         ldc.i4.0 // false by default
-        stfld bool c_Boolean::f_data
+        stfld bool c_Boolean::p_f_data
         ret
     }
 
@@ -23,7 +23,7 @@
         call instance void c_Class::.ctor()
         ldarg.0
         ldarg.1
-        stfld bool c_Boolean::f_data
+        stfld bool c_Boolean::p_f_data
         ret
     }
 
@@ -31,7 +31,7 @@
     {
         .maxstack 3
         ldarg.0
-        ldfld bool c_Boolean::f_data
+        ldfld bool c_Boolean::p_f_data
         ret
     }
 
@@ -39,7 +39,7 @@
     {
         .maxstack 3
         ldarg.0
-        ldfld bool c_Boolean::f_data
+        ldfld bool c_Boolean::p_f_data
         newobj instance void c_Integer::.ctor(int32)
         ret
     }
@@ -48,9 +48,9 @@
     {
         .maxstack 3
         ldarg.0
-        ldfld bool c_Boolean::f_data
+        ldfld bool c_Boolean::p_f_data
         ldarg.1
-        ldfld bool c_Boolean::f_data
+        ldfld bool c_Boolean::p_f_data
         or
         newobj instance void c_Boolean::.ctor(bool)
         ret
@@ -60,9 +60,9 @@
     {
         .maxstack 3
         ldarg.0
-        ldfld bool c_Boolean::f_data
+        ldfld bool c_Boolean::p_f_data
         ldarg.1
-        ldfld bool c_Boolean::f_data
+        ldfld bool c_Boolean::p_f_data
         and
         newobj instance void c_Boolean::.ctor(bool)
         ret
@@ -72,7 +72,7 @@
     {
         .maxstack 3
         ldarg.0
-        ldfld bool c_Boolean::f_data
+        ldfld bool c_Boolean::p_f_data
         ldc.i4.0
         ceq
         newobj instance void c_Boolean::.ctor(bool)

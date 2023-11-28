@@ -1,7 +1,7 @@
 .class public auto ansi beforefieldinit c_Integer
        extends c_Class
 {
-    .field private int32 f_data
+    .field private int32 p_f_data
 
     .method public hidebysig specialname rtspecialname 
             instance void .ctor() cil managed 
@@ -11,7 +11,7 @@
         call instance void c_Class::.ctor()
         ldarg.0
         ldc.i4.0 // 0 by default
-        stfld int32 c_Integer::f_data
+        stfld int32 c_Integer::p_f_data
         ret
     }
 
@@ -23,7 +23,7 @@
         call instance void c_Class::.ctor()
         ldarg.0
         ldarg.1
-        stfld int32 c_Integer::f_data
+        stfld int32 c_Integer::p_f_data
         ret
     }
 
@@ -31,7 +31,7 @@
     {
         .maxstack 3
         ldarg.0
-        ldfld int32 c_Integer::f_data
+        ldfld int32 c_Integer::p_f_data
         ret
     }
 
@@ -42,9 +42,9 @@
     {
         .maxstack 3
         ldarg.0
-        ldfld int32 c_Integer::f_data
+        ldfld int32 c_Integer::p_f_data
         ldarg.1
-        ldfld int32 c_Integer::f_data
+        ldfld int32 c_Integer::p_f_data
         add
         newobj instance void c_Integer::.ctor(int32)
         ret
@@ -55,9 +55,9 @@
     {
         .maxstack 3
         ldarg.0
-        ldfld int32 c_Integer::f_data
+        ldfld int32 c_Integer::p_f_data
         ldarg.1
-        ldfld int32 c_Integer::f_data
+        ldfld int32 c_Integer::p_f_data
         sub
         newobj instance void c_Integer::.ctor(int32)
         ret
@@ -68,9 +68,9 @@
     {
         .maxstack 3
         ldarg.0
-        ldfld int32 c_Integer::f_data
+        ldfld int32 c_Integer::p_f_data
         ldarg.1
-        ldfld int32 c_Integer::f_data
+        ldfld int32 c_Integer::p_f_data
         mul
         newobj instance void c_Integer::.ctor(int32)
         ret
@@ -81,9 +81,9 @@
     {
         .maxstack 3
         ldarg.0
-        ldfld int32 c_Integer::f_data
+        ldfld int32 c_Integer::p_f_data
         ldarg.1
-        ldfld int32 c_Integer::f_data
+        ldfld int32 c_Integer::p_f_data
         div
         newobj instance void c_Integer::.ctor(int32)
         ret
@@ -94,9 +94,9 @@
     {
         .maxstack 8
         ldarg.0
-        ldfld int32 c_Integer::f_data
+        ldfld int32 c_Integer::p_f_data
         ldarg.1
-        ldfld int32 c_Integer::f_data
+        ldfld int32 c_Integer::p_f_data
         rem
         newobj instance void c_Integer::.ctor(int32)
         ret
@@ -108,9 +108,9 @@
     {
         .maxstack 8
         ldarg.0
-        ldfld int32 c_Integer::f_data
+        ldfld int32 c_Integer::p_f_data
         ldarg.1
-        ldfld int32 c_Integer::f_data
+        ldfld int32 c_Integer::p_f_data
         clt
         newobj instance void c_Boolean::.ctor(bool)
         ret
@@ -120,9 +120,9 @@
     {
         .maxstack 8
         ldarg.0
-        ldfld int32 c_Integer::f_data
+        ldfld int32 c_Integer::p_f_data
         ldarg.1
-        ldfld int32 c_Integer::f_data
+        ldfld int32 c_Integer::p_f_data
         cgt
         newobj instance void c_Boolean::.ctor(bool)
         ret
@@ -132,9 +132,9 @@
     {
         .maxstack 8
         ldarg.0
-        ldfld int32 c_Integer::f_data
+        ldfld int32 c_Integer::p_f_data
         ldarg.1
-        ldfld int32 c_Integer::f_data
+        ldfld int32 c_Integer::p_f_data
         ceq
         newobj instance void c_Boolean::.ctor(bool)
         ret
@@ -144,14 +144,14 @@
     {
         .maxstack 8
         ldarg.0
-        ldfld int32 c_Integer::f_data
+        ldfld int32 c_Integer::p_f_data
         ldarg.1
-        ldfld int32 c_Integer::f_data
+        ldfld int32 c_Integer::p_f_data
         clt
         ldarg.0
-        ldfld int32 c_Integer::f_data
+        ldfld int32 c_Integer::p_f_data
         ldarg.1
-        ldfld int32 c_Integer::f_data
+        ldfld int32 c_Integer::p_f_data
         ceq
         or
         newobj instance void c_Boolean::.ctor(bool)
@@ -162,14 +162,14 @@
     {
         .maxstack 8
         ldarg.0
-        ldfld int32 c_Integer::f_data
+        ldfld int32 c_Integer::p_f_data
         ldarg.1
-        ldfld int32 c_Integer::f_data
+        ldfld int32 c_Integer::p_f_data
         cgt
         ldarg.0
-        ldfld int32 c_Integer::f_data
+        ldfld int32 c_Integer::p_f_data
         ldarg.1
-        ldfld int32 c_Integer::f_data
+        ldfld int32 c_Integer::p_f_data
         ceq
         or
         newobj instance void c_Boolean::.ctor(bool)
@@ -182,7 +182,7 @@
     {
         .maxstack 8
         ldarg.0
-        ldfld int32 c_Integer::f_data
+        ldfld int32 c_Integer::p_f_data
         ldc.i4.0
         ceq
         newobj instance void c_Boolean::.ctor(bool)
@@ -195,7 +195,7 @@
         // Code size       13 (0xd)
         .maxstack  8
         IL_0000:  ldarg.0
-        IL_0001:  ldfld      int32 c_Integer::f_data
+        IL_0001:  ldfld      int32 c_Integer::p_f_data
         IL_0006:  conv.r4
         IL_0007:  newobj     instance void c_Real::.ctor(float32)
         IL_000c:  ret

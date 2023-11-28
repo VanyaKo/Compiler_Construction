@@ -17,234 +17,234 @@ public class c_Class : Object
 
 public class c_Array<T> : c_Class where T : new() // by convention every olua class has a default empty parameter constructor
 {
-    private T[] f_items;
+    private T[] p_f_items;
 
     public c_Array()
     {
-        f_items = new T[0];
+        p_f_items = new T[0];
     }
 
     // Before calling this constructor ensure the passed array is filled with non-null elements
     public c_Array(T[] items)
     {
-        f_items = items;
+        p_f_items = items;
     }
 
     public c_Array(c_Integer length)
     {
         int l = length.p_m_data();
-        f_items = new T[l];
+        p_f_items = new T[l];
         for (int i = 0; i < l; i++)
         {
-            f_items[i] = new T();
+            p_f_items[i] = new T();
         }
     }
 
     public c_Integer m_len()
     {
-        return new c_Integer(f_items.Length);
+        return new c_Integer(p_f_items.Length);
     }
 
     public T m_get(c_Integer index)
     {
-        return f_items[index.p_m_data()];
+        return p_f_items[index.p_m_data()];
     }
 
     public T p_m_get(int index)
     {
-        return f_items[index];
+        return p_f_items[index];
     }
 
     public void m_set(c_Integer index, T value)
     {
-        f_items[index.p_m_data()] = value;
+        p_f_items[index.p_m_data()] = value;
     }
 }
 
 public class c_Boolean : c_Class
 {
-    private bool f_data;
+    private bool p_f_data;
 
     public c_Boolean()
     {
-        f_data = false;
+        p_f_data = false;
     }
 
     public c_Boolean(bool data)
     {
-        f_data = data;
+        p_f_data = data;
     }
 
     public bool p_m_data()
     {
-        return f_data;
+        return p_f_data;
     }
 
     public virtual c_Integer m_toInteger()
     {
-        return new c_Integer(f_data ? 1 : 0);
+        return new c_Integer(p_f_data ? 1 : 0);
     }
 
     public virtual c_Boolean m_or(c_Boolean other)
     {
-        return new c_Boolean(f_data || other.f_data);
+        return new c_Boolean(p_f_data || other.p_f_data);
     }
 
     public virtual c_Boolean m_and(c_Boolean other)
     {
-        return new c_Boolean(f_data && other.f_data);
+        return new c_Boolean(p_f_data && other.p_f_data);
     }
 
     public virtual c_Boolean m_not()
     {
-        return new c_Boolean(!f_data);
+        return new c_Boolean(!p_f_data);
     }
 }
 
 public class c_Real : c_Class
 {
-    private float f_data;
+    private float p_f_data;
 
     public c_Real()
     {
-        f_data = 0;
+        p_f_data = 0;
     }
 
     public c_Real(float data)
     {
-        f_data = data;
+        p_f_data = data;
     }
 
     public float p_m_data()
     {
-        return f_data;
+        return p_f_data;
     }
 
     // Arithmetics
 
     public virtual c_Real m_plus(c_Real other)
     {
-        return new c_Real(f_data + other.f_data);
+        return new c_Real(p_f_data + other.p_f_data);
     }
 
     public virtual c_Real m_minus(c_Real other)
     {
-        return new c_Real(f_data - other.f_data);
+        return new c_Real(p_f_data - other.p_f_data);
     }
 
     public virtual c_Real m_mult(c_Real other)
     {
-        return new c_Real(f_data * other.f_data);
+        return new c_Real(p_f_data * other.p_f_data);
     }
 
     public virtual c_Real m_divide(c_Real other)
     {
-        return new c_Real(f_data / other.f_data);
+        return new c_Real(p_f_data / other.p_f_data);
     }
 
     public virtual c_Real m_reminder(c_Real other)
     {
-        return new c_Real(f_data % other.f_data);
+        return new c_Real(p_f_data % other.p_f_data);
     }
 
     // Relations
 
     public virtual c_Boolean m_less(c_Real other)
     {
-        return new c_Boolean(f_data < other.f_data);
+        return new c_Boolean(p_f_data < other.p_f_data);
     }
 
     public virtual c_Boolean m_greater(c_Real other)
     {
-        return new c_Boolean(f_data > other.f_data);
+        return new c_Boolean(p_f_data > other.p_f_data);
     }
 
     public virtual c_Boolean m_equal(c_Real other)
     {
-        return new c_Boolean(f_data == other.f_data);
+        return new c_Boolean(p_f_data == other.p_f_data);
     }
 
     // Conversions
 
     public virtual c_Integer m_toInteger()
     {
-        return new c_Integer((int)f_data);
+        return new c_Integer((int)p_f_data);
     }
 }
 
 public class c_Integer : c_Class
 {
-    private int f_data;
+    private int p_f_data;
 
     public c_Integer()
     {
-        f_data = 0;
+        p_f_data = 0;
     }
 
     public c_Integer(int data)
     {
-        f_data = data;
+        p_f_data = data;
     }
 
     public int p_m_data()
     {
-        return f_data;
+        return p_f_data;
     }
 
     // Arithmetics
 
     public virtual c_Integer m_plus(c_Integer other)
     {
-        return new c_Integer(f_data + other.f_data);
+        return new c_Integer(p_f_data + other.p_f_data);
     }
 
     public virtual c_Integer m_minus(c_Integer other)
     {
-        return new c_Integer(f_data - other.f_data);
+        return new c_Integer(p_f_data - other.p_f_data);
     }
 
     public virtual c_Integer m_mult(c_Integer other)
     {
-        return new c_Integer(f_data * other.f_data);
+        return new c_Integer(p_f_data * other.p_f_data);
     }
 
     public virtual c_Integer m_divide(c_Integer other)
     {
-        return new c_Integer(f_data / other.f_data);
+        return new c_Integer(p_f_data / other.p_f_data);
     }
 
     public virtual c_Integer m_reminder(c_Integer other)
     {
-        return new c_Integer(f_data % other.f_data);
+        return new c_Integer(p_f_data % other.p_f_data);
     }
 
     // Relations
 
     public virtual c_Boolean m_less(c_Integer other)
     {
-        return new c_Boolean(f_data < other.f_data);
+        return new c_Boolean(p_f_data < other.p_f_data);
     }
 
     public virtual c_Boolean m_greater(c_Integer other)
     {
-        return new c_Boolean(f_data > other.f_data);
+        return new c_Boolean(p_f_data > other.p_f_data);
     }
 
     public virtual c_Boolean m_equal(c_Integer other)
     {
-        return new c_Boolean(f_data == other.f_data);
+        return new c_Boolean(p_f_data == other.p_f_data);
     }
 
     // Conversions
 
     public virtual c_Boolean m_toBoolean()
     {
-        return new c_Boolean(f_data == 0);
+        return new c_Boolean(p_f_data == 0);
     }
 
     public virtual c_Real m_toReal()
     {
-        return new c_Real((float)f_data);
+        return new c_Real((float)p_f_data);
     }
 }
 

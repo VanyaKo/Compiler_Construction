@@ -24,8 +24,9 @@ namespace OluaSemanticAnalyzer
     {
         public string? BaseClass { get; set; }
         public List<TypeName> ConstructorParameters { get; set; }
-        public Dictionary<string, TypeName> Fields { get; set; }
+        // public Dictionary<string, TypeName> Fields { get; set; }
         public Dictionary<string, MethodInterface> Methods { get; set; }
+        public Dictionary<string, TypeName> OwnFields { get; set; }
 
         public static ClassInterface FromDecl(
             List<ClassMember> Members,
@@ -82,25 +83,26 @@ namespace OluaSemanticAnalyzer
             }
 
             // check overloaded fields have the same types
-            foreach (var field in Fields)
-            {
-                var name = field.Key;
-                var newType = field.Value;
-                if (baseClassFields.ContainsKey(name))
-                {
-                    var oldType = baseClassFields[name];
+            // foreach (var field in Fields)
+            // {
+            //     var name = field.Key;
+            //     var newType = field.Value;
+            //     if (baseClassFields.ContainsKey(name))
+            //     {
+            //         var oldType = baseClassFields[name];
 
-                    if (newType != oldType)
-                        throw new InvalidOperationException("Overloaded field " + name + " type mismatch");
-                }
-            }
+            //         if (newType != oldType)
+            //             throw new InvalidOperationException("Overloaded field " + name + " type mismatch");
+            //     }
+            // }
 
 
             return new ClassInterface
             {
                 BaseClass = baseClass,
                 ConstructorParameters = new List<TypeName>(),
-                Fields = baseClassFields.Concat(Fields.Where(kvp => !baseClassFields.ContainsKey(kvp.Key))).ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
+                OwnFields = Fields,
+                // Fields = baseClassFields.Concat(Fields.Where(kvp => !baseClassFields.ContainsKey(kvp.Key))).ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
                 Methods = baseClassMethods.Concat(Methods.Where(kvp => !baseClassMethods.ContainsKey(kvp.Key))).ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
             };
         }
@@ -120,7 +122,8 @@ namespace OluaSemanticAnalyzer
             {
                 BaseClass = Name,
                 ConstructorParameters = newConstructorParameters,
-                Fields = Inf.Fields.Concat(newFields.Where(kvp => !Inf.Fields.ContainsKey(kvp.Key))).ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
+                OwnFields = newFields,
+                // Fields = Inf.Fields.Concat(newFields.Where(kvp => !Inf.Fields.ContainsKey(kvp.Key))).ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
                 Methods = Inf.Methods.Concat(newMethods.Where(kvp => !Inf.Methods.ContainsKey(kvp.Key))).ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
             };
         }
@@ -159,7 +162,8 @@ namespace OluaSemanticAnalyzer
             Inf = new ClassInterface
             {
                 BaseClass = null,
-                Fields = new Dictionary<string, TypeName>(),
+                // Fields = new Dictionary<string, TypeName>(),
+                OwnFields = new Dictionary<string, TypeName>(),
                 Methods = new Dictionary<string, MethodInterface>
                 {
                     { "sameRef", methodSameRef }
@@ -322,13 +326,15 @@ namespace OluaSemanticAnalyzer
                     return typeBoolean;
 
                 case AttributeObject attributeObject:
+                    if (attributeObject.Parent is not ThisIdentifier)
+                        throw new InvalidOperationException($"{attributeObject} : attributes are unaccessable outside");
                     TypeName? t = InferType(@this, variables, attributeObject.Parent);
                     if (t == null)
                         throw new InvalidOperationException($"Unknown or void resulting type of {attributeObject.Parent}");
                     ClassInterface inf = GetInterface(t);
-                    if (!inf.Fields.ContainsKey(attributeObject.Identifier))
+                    if (!inf.OwnFields.ContainsKey(attributeObject.Identifier))
                         throw new InvalidOperationException($"Unknown attribute {attributeObject.Identifier}");
-                    attributeObject.AttributeType = inf.Fields[attributeObject.Identifier];
+                    attributeObject.AttributeType = inf.OwnFields[attributeObject.Identifier];
                     return attributeObject.AttributeType;
 
                 case ConstructorInvocation constructorInvocation:
@@ -341,7 +347,6 @@ namespace OluaSemanticAnalyzer
                         cinf.ConstructorParameters
                     );
                     constructorInvocation.ConsumingTypes = cinf.ConstructorParameters;
-                    Console.WriteLine(cnstrT.ToString() + " constructor > " + cinf.ConstructorParameters.Select(e => e.csMsil()));
                     return cnstrT;
 
                 case MethodInvocation methodInvocation:
@@ -463,7 +468,7 @@ namespace OluaSemanticAnalyzer
                     if (BaseClass != null)
                     {
                         var baseClassInterface = linkClasses[BaseClass];
-                        BaseClassFields = new Dictionary<string, TypeName>(baseClassInterface.Fields);
+                        BaseClassFields = new Dictionary<string, TypeName>(baseClassInterface.OwnFields);
                         BaseClassMethods = new Dictionary<string, MethodInterface>(baseClassInterface.Methods);
                     }
                     try
@@ -509,7 +514,7 @@ namespace OluaSemanticAnalyzer
                         }
                     }
 
-                    foreach (var type in cls.Fields.Values)
+                    foreach (var type in cls.OwnFields.Values)
                         ValidType(type);
 
                     foreach (var mi in cls.Methods.Values)
@@ -747,7 +752,7 @@ namespace OluaSemanticAnalyzer
                     MarkVariableAsUsed(arg, usedVariables, localVariables);
                 }
             }
-            
+
             // Handle other OluaObject types as necessary
         }
     }
