@@ -1,18 +1,39 @@
-// fib - emphasizes method declaration, method call, return statement and recursion
+class A is
+    var value : Integer := 42
+
+    method returnValue() : Integer is
+        return this.value
+    end
+end
+
+class B extends A is
+    method returnValue() : Integer is
+        return 100
+    end
+end
+
 class Main extends EntryPoint is
-    method fib(n : Integer) : Integer is
-        if n.greater(2).not() then
-            return 1
-        else
-            var a : Integer := this.fib(n.minus(1))
-            var b : Integer := this.fib(n.minus(2))
-            return a.plus(b)
+    var exit_code : Integer := 0
+
+    method assert(cond : Boolean) : void is
+        if cond.not() then
+            this.exit_code := 1
         end
     end
 
     method main(stdin: StdIn, stdout: StdOut, args: Array[Array[Integer]]) : Integer is
-        if this.fib(10).equal(55).not() then
-            return 1
-        end
+        var array : Array[A] := Array[A](3)
+        var objBA : A := B()
+        var objBB : B := B()
+
+        array.set(0, A()) // call constructor directly
+        array.set(1, objBA)
+        array.set(2, objBB)
+
+        this.assert(array.get(0).returnValue().equal(42)) // expects 42
+        this.assert(array.get(1).returnValue().equal(100)) // expect 100
+        this.assert(array.get(2).returnValue().equal(100)) // expect 100
+
+        return this.exit_code
     end
 end
