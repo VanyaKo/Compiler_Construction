@@ -328,7 +328,7 @@ namespace OluaAST
 
                 ListWrapper body = new();
                 {
-                    body.AddExpanding(new StringWrapper(".maxstack 8")); // TODO: dynamically decide
+                    body.AddExpanding(new StringWrapper(".maxstack 30")); // TODO: dynamically decide
 
                     body.Values.Add(new StringWrapper("ldarg.0"));
                     body.Values.Add(new StringWrapper($"call instance void {(BaseClass == null ? "Class" : BaseClass.sMsil())}::.ctor()"));
@@ -459,16 +459,19 @@ namespace OluaAST
 
             ListWrapper scope = new();
             {
-                scope.AddExpanding(new StringWrapper(".maxstack 8")); // TODO: dynamically decide
+                scope.AddExpanding(new StringWrapper(".maxstack 30")); // TODO: dynamically decide
                 if (accum.Count > 0)
                 {
                     scope.AddExpanding(new StringWrapper(".locals (" + string.Join(", ", accum.Select(e => e.csMsil())) + ")"));
                 }
                 scope.AddExpanding(stmts_msil);
-                if (ReturnType == null) // autoreturn if void return type
+                // return default value for sure
+                // NOTE: for array it's empty array (even thou it's empty constructor is not acessable via olua)
+                if (ReturnType != null)
                 {
-                    scope.AddExpanding(new StringWrapper("ret"));
+                    scope.AddExpanding(new StringWrapper($"newobj instance void {ReturnType.sMsil()}::.ctor()"));
                 }
+                scope.AddExpanding(new StringWrapper("ret"));
             }
             res.Values.Add(scope);
 

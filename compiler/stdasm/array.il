@@ -4,6 +4,19 @@
     .field private !T[] items
 
     .method public specialname rtspecialname 
+            instance void .ctor() cil managed 
+    {
+        .maxstack 8
+        ldarg.0
+        call instance void Class::.ctor()
+        ldarg.0
+        ldc.i4.0 // len 0 by default
+        newarr !T
+        stfld !0[] class Array`1<!T>::items
+        ret
+    }
+
+    .method public specialname rtspecialname 
             instance void .ctor(!T[]) cil managed 
     {
         .maxstack 8
