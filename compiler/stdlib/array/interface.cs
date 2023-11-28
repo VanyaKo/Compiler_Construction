@@ -4,10 +4,27 @@ using OluaSemanticAnalyzer;
 
 namespace OluaStdLibInterfaces
 {
+    public class GenericArgTypeName : TypeName
+    {
+        public int Index { get; }
+
+        override public string sMsil() => $"wtf!{Index}";
+
+        override public string csMsil() => $"!{Index}";
+
+        public GenericArgTypeName(TypeName exact, int index)
+        {
+            Identifier = exact.Identifier;
+            GenericType = exact.GenericType;
+            Index = index;
+        }
+    }
+
     public class ArrayGeneric : IGenericFactory
     {
         public ClassInterface Gen(TypeName typeName)
         {
+            typeName = new GenericArgTypeName(typeName, 0);
             return Analyzer.theVeryBaseClass.extend(
                 // Constructor parameters
                 new List<TypeName> { OLT.Integer },

@@ -58,16 +58,25 @@ namespace OluaAST
         public string Identifier { get; set; }
         public TypeName? GenericType { get; set; } // Nullable for non-generic types.
 
+        public TypeName Unwrap()
+        {
+            return new TypeName
+            {
+                Identifier = Identifier,
+                GenericType = GenericType,
+            };
+        }
+
         public override string ToString() => GenericType != null
                                          ? $"{Identifier}[{GenericType}]"
                                          : Identifier;
         public IStringOrList ToOlua() => new StringWrapper(ToString());
 
-        public string sMsil() => GenericType != null
+        public virtual string sMsil() => GenericType != null
                                     ? csMsil()
                                     : "c_" + Identifier;
 
-        public string csMsil() => "class " + (GenericType != null
+        public virtual string csMsil() => "class " + (GenericType != null
                                     ? $"c_{Identifier}`1<{GenericType.csMsil()}>"
                                     : "c_" + Identifier);
 
@@ -143,7 +152,6 @@ namespace OluaAST
         public string MsilType(Dictionary<string, MsilVar> locals) => Type.sMsil();
     }
 
-    // TODO: invocation with generics
     public class MethodInvocation : OluaObject, Statement
     {
         public TypeName? ReturnType { get; set; } // null if void result  // augmented by analyzer
@@ -170,11 +178,11 @@ namespace OluaAST
             ListWrapper res = new();
             res.AddExpanding(Method.Parent.MsilToGet(locals));
             res.AddExpanding(Arguments.MsilToGet(locals));
-            res.AddExpanding(new StringWrapper($"callvirt instance {(ReturnType == null ? "void" : ReturnType.csMsil())} {Method.Parent.MsilType(locals)}::m_{Method.Identifier}({Arguments.MsilTypes(locals)})"));
+            res.AddExpanding(new StringWrapper($"callvirt instance {(ReturnType == null ? "void" : ReturnType.Unwrap().csMsil())} {Method.Parent.MsilType(locals)}::m_{Method.Identifier}({Arguments.MsilTypes(locals)})"));
             return res;
         }
 
-        public string MsilType(Dictionary<string, MsilVar> locals) => ReturnType == null ? "void" : ReturnType.sMsil();
+        public string MsilType(Dictionary<string, MsilVar> locals) => ReturnType == null ? "void" : ReturnType.Unwrap().sMsil();
     }
 
     public class AttributeObject : OluaAssignableObject
@@ -191,7 +199,7 @@ namespace OluaAST
             ListWrapper res = new();
             res.AddExpanding(Parent.MsilToGet(locals));
             res.AddExpanding(value.MsilToGet(locals));
-            res.AddExpanding(new StringWrapper($"stfld {AttributeType.csMsil()} {Parent.MsilType(locals)}::f_{Identifier}"));
+            res.AddExpanding(new StringWrapper($"stfld {AttributeType.Unwrap().csMsil()} {Parent.MsilType(locals)}::f_{Identifier}"));
             return res;
         }
 
@@ -199,11 +207,11 @@ namespace OluaAST
         {
             ListWrapper res = new();
             res.AddExpanding(Parent.MsilToGet(locals));
-            res.AddExpanding(new StringWrapper($"ldfld {AttributeType.csMsil()} {Parent.MsilType(locals)}::f_{Identifier}"));
+            res.AddExpanding(new StringWrapper($"ldfld {AttributeType.Unwrap().csMsil()} {Parent.MsilType(locals)}::f_{Identifier}"));
             return res;
         }
 
-        public string MsilType(Dictionary<string, MsilVar> locals) => AttributeType.sMsil();
+        public string MsilType(Dictionary<string, MsilVar> locals) => AttributeType.Unwrap().sMsil();
     }
 
     public interface OluaObject : Node
