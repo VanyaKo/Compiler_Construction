@@ -2,7 +2,7 @@
        extends Class
 {
     .method public hidebysig specialname rtspecialname instance void .ctor() cil managed {
-        .maxstack 2
+        .maxstack 1
         ldarg.0
         call instance void Class::.ctor()
         ret
@@ -24,11 +24,9 @@
 
     newobj instance void Main::.ctor()
 
-    // Example: StdIn, StdOut, Array of Array of Integers
-    // TODO
-    ldnull // For StdIn
-    ldnull // For StdOut
-    ldnull // for args
+    newobj instance void StdIn::.ctor()
+    newobj instance void StdOut::.ctor()
+    ldnull // TODO: args
 
     call instance class Integer Main::olua_main(class StdIn, class StdOut, class Array`1<class Array`1<class Integer>>)
 

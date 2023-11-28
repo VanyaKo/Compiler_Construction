@@ -1,6 +1,13 @@
 .class public auto ansi beforefieldinit StdIn
        extends CharInput
 {
+    .method public hidebysig specialname rtspecialname instance void .ctor() cil managed {
+        .maxstack 1
+        ldarg.0
+        call instance void CharInput::.ctor()
+        ret
+    }
+
     // olua_avaliable matches the superclass implementation
 
     // Read a character from stdin and returning Integer(ord(char))

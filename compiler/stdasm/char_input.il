@@ -1,6 +1,13 @@
 .class public auto ansi beforefieldinit CharInput
        extends Class
 {
+    .method public hidebysig specialname rtspecialname instance void .ctor() cil managed {
+        .maxstack 1
+        ldarg.0
+        call instance void Class::.ctor()
+        ret
+    }
+
     .method public newslot virtual 
             instance class Integer olua_avaliable() cil managed
     {
