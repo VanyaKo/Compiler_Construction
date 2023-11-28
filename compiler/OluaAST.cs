@@ -307,7 +307,7 @@ namespace OluaAST
             }
             else if (Value is bool)
             {
-                res.AddExpanding(new StringWrapper((Value.ToString() == "true") ? "ldc.i4.1" : "ldc.i4.0"));
+                res.AddExpanding(new StringWrapper((Value.ToString() == "True") ? "ldc.i4.1" : $"ldc.i4.0"));
                 res.AddExpanding(new StringWrapper($"newobj instance void {ResultingType(locals).sMsil()}::.ctor(bool)"));
             }
             else

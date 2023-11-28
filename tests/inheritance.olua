@@ -9,11 +9,11 @@ end
 class B extends A is
     // Method in class B
     method displayValue2() : Real is
-        return this.value.plus(10.0)
+        return this.displayValue().plus(10.0)
     end
 end
 
-class InheritanceTest extends EntryPoint is
+class Main extends EntryPoint is
     var exit_code : Integer := 0
 
     method assert(cond : Boolean) : void is
@@ -22,7 +22,7 @@ class InheritanceTest extends EntryPoint is
         end
     end
 
-    method main(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) : Integer is
+    method main(stdin: CharInput, stdout: CharOutput, args: Array[Array[Integer]]) : Integer is
         var objA : A := A()
         var objB : B := B()
         var objBA : A := objB

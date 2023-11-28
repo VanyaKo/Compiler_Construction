@@ -139,42 +139,6 @@
         newobj instance void c_Boolean::.ctor(bool)
         ret
     }
-    
-    .method public newslot virtual instance class c_Boolean m_lessEqual(class c_Integer) cil managed
-    {
-        .maxstack 8
-        ldarg.0
-        ldfld int32 c_Integer::p_f_data
-        ldarg.1
-        ldfld int32 c_Integer::p_f_data
-        clt
-        ldarg.0
-        ldfld int32 c_Integer::p_f_data
-        ldarg.1
-        ldfld int32 c_Integer::p_f_data
-        ceq
-        or
-        newobj instance void c_Boolean::.ctor(bool)
-        ret
-    }
-    
-    .method public newslot virtual instance class c_Boolean m_greaterEqual(class c_Integer) cil managed
-    {
-        .maxstack 8
-        ldarg.0
-        ldfld int32 c_Integer::p_f_data
-        ldarg.1
-        ldfld int32 c_Integer::p_f_data
-        cgt
-        ldarg.0
-        ldfld int32 c_Integer::p_f_data
-        ldarg.1
-        ldfld int32 c_Integer::p_f_data
-        ceq
-        or
-        newobj instance void c_Boolean::.ctor(bool)
-        ret
-    }
 
     // Conversions
 

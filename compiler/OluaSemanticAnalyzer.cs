@@ -556,7 +556,7 @@ namespace OluaSemanticAnalyzer
                 }
             }
 
-            // return classes;
+            return classes;
 
             // 3. optimize bodies
 
