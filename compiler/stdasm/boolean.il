@@ -27,7 +27,7 @@
         ret
     }
 
-    .method public final instance bool $f_data() cil managed
+    .method public final instance bool $data() cil managed
     {
         .maxstack 3
         ldarg.0
