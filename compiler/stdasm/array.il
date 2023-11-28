@@ -1,4 +1,4 @@
-.class public auto ansi beforefieldinit c_Array`1<T>
+.class public auto ansi beforefieldinit c_Array`1<.ctor T>
        extends c_Class
 {
     .field private !T[] f_items
@@ -31,15 +31,36 @@
     .method public specialname rtspecialname 
             instance void .ctor(class c_Integer) cil managed 
     {
-        .maxstack 8
-        ldarg.0
-        call instance void c_Class::.ctor()
-        ldarg.0
-        ldarg.1
-        callvirt instance int32 c_Integer::p_m_data()
-        newarr !T
-        stfld !0[] class c_Array`1<!T>::f_items
-        ret
+    .maxstack  3
+    .locals init (int32 V_0,
+             int32 V_1)
+    IL_0000:  ldarg.0
+    IL_0001:  call       instance void c_Class::.ctor()
+    IL_0006:  ldarg.1
+    IL_0007:  callvirt   instance int32 c_Integer::p_m_data()
+    IL_000c:  stloc.0
+    IL_000d:  ldarg.0
+    IL_000e:  ldloc.0
+    IL_000f:  newarr     !T
+    IL_0014:  stfld      !0[] class c_Array`1<!T>::f_items
+    IL_0019:  ldc.i4.0
+    IL_001a:  stloc.1
+    IL_001b:  br.s       IL_0032
+
+    IL_001d:  ldarg.0
+    IL_001e:  ldfld      !0[] class c_Array`1<!T>::f_items
+    IL_0023:  ldloc.1
+    IL_0024:  call       !!0 [System.Runtime]System.Activator::CreateInstance<!T>()
+    IL_0029:  stelem     !T
+    IL_002e:  ldloc.1
+    IL_002f:  ldc.i4.1
+    IL_0030:  add
+    IL_0031:  stloc.1
+    IL_0032:  ldloc.1
+    IL_0033:  ldloc.0
+    IL_0034:  blt.s      IL_001d
+
+    IL_0036:  ret
     }
 
     .method public instance class c_Integer 

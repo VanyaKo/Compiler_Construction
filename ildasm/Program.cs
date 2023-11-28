@@ -15,7 +15,7 @@ public class c_Class : Object
 }
 
 
-public class c_Array<T> : c_Class
+public class c_Array<T> : c_Class where T : new() // by convention every olua class has a default empty parameter constructor
 {
     private T[] f_items;
 
@@ -24,6 +24,7 @@ public class c_Array<T> : c_Class
         f_items = new T[0];
     }
 
+    // Before calling this constructor ensure the passed array is filled with non-null elements
     public c_Array(T[] items)
     {
         f_items = items;
@@ -31,8 +32,12 @@ public class c_Array<T> : c_Class
 
     public c_Array(c_Integer length)
     {
-
-        f_items = new T[length.p_m_data()];
+        int l = length.p_m_data();
+        f_items = new T[l];
+        for (int i = 0; i < l; i++)
+        {
+            f_items[i] = new T();
+        }
     }
 
     public c_Integer m_len()
