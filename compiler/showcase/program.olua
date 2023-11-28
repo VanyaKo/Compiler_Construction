@@ -1,21 +1,39 @@
+class A is
+    var value : Real := 42.0
+
+    method displayValue() : Real is
+        return this.value
+    end
+end
+
+class B extends A is
+    // Method in class B
+    method displayValue2() : Real is
+        return this.value.plus(10.0)
+    end
+end
+
 class Main extends EntryPoint is
-    method str_HelloWorld() : Array[Integer] is
-        var str : Array[Integer] := Array[Integer](11)
-        str.set(0, 72)
-        str.set(1, 101)
-        str.set(2, 108)
-        str.set(3, 108)
-        str.set(4, 111)
-        str.set(5, 32)
-        str.set(6, 87)
-        str.set(7, 111)
-        str.set(8, 114)
-        str.set(9, 108)
-        str.set(10, 100)
-        return str
+    var exit_code : Integer := 0
+
+    method assert(cond : Boolean) : void is
+        if cond.not() then
+            this.exit_code := 1
+        end
     end
 
     method main(stdin: CharInput, stdout: CharOutput, args: Array[Array[Integer]]) : Integer is
-        stdout.writeLine(this.str_HelloWorld())
+        var objA : A := A()
+        var objB : B := B()
+        var objBA : A := objB
+
+        
+
+        this.assert(objA.displayValue().equal(42.0)) // expects 42
+        this.assert(objB.displayValue().equal(42.0)) // expects 42
+        this.assert(objBA.displayValue().equal(42.0)) // expects 42
+        this.assert(objB.displayValue2().equal(52.0)) // expects 52
+
+        return this.exit_code
     end
 end

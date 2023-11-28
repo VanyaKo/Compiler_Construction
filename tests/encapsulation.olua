@@ -6,7 +6,7 @@ class EncapsulatedClass is
     end
 end
 
-class EncapsulationTest extends EntryPoint is
+class Main extends EntryPoint is
     var exit_code : Integer := 0
 
     method assert(cond : Boolean) : void is
@@ -15,7 +15,7 @@ class EncapsulationTest extends EntryPoint is
         end
     end
 
-    method main(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) : Integer is
+    method main(stdin: CharInput, stdout: CharOutput, args: Array[Array[Integer]]) : Integer is
         var obj : EncapsulatedClass := EncapsulatedClass()
 
         // Using public methods to access and modify privateVar

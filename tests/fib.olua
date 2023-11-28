@@ -10,7 +10,7 @@ class Main extends EntryPoint is
         end
     end
 
-    method main(stdin: StdIn, stdout: StdOut, args: Array[Array[Integer]]) : Integer is
+    method main(stdin: CharInput, stdout: CharOutput, args: Array[Array[Integer]]) : Integer is
         if this.fib(10).equal(55).not() then
             return 1
         end
