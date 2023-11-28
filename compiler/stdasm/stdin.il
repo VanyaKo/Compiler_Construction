@@ -1,15 +1,7 @@
 .class public auto ansi beforefieldinit StdIn
        extends CharInput
 {
-    .method public virtual instance class Integer 
-            olua_avaliable() cil managed
-    {
-        .maxstack 3
-        ldarg.0
-        ldc.i4 2147483646
-        newobj instance void Integer::.ctor(int32)
-        ret
-    }
+    // olua_avaliable matches the superclass implementation
 
     // Read a character from stdin and returning Integer(ord(char))
     .method public virtual instance class Integer 
@@ -72,7 +64,7 @@
 
         // Return the array of Integer objects
         ldloc.2
-        newobj instance void Array`1<class Integer>::.ctor(!0[])
+        newobj instance void class Array`1<class Integer>::.ctor(!0[])
         ret
     }
 
@@ -115,7 +107,7 @@
 
         // Return the array of Integer objects
         ldloc.2
-        newobj instance void Array`1<class Integer>::.ctor(!0[])
+        newobj instance void class Array`1<class Integer>::.ctor(!0[])
         ret
     }
 

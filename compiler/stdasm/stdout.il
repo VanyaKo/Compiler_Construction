@@ -1,14 +1,7 @@
 .class public auto ansi beforefieldinit StdOut
        extends CharOutput
 {
-    .method public virtual instance class Integer 
-            olua_avaliable() cil managed
-    {
-        ldarg.0
-        ldc.i4 2147483646
-        newobj instance void Integer::.ctor(int32)
-        ret
-    }
+    // olua_avaliable matches the superclass implementation
 
     // aka System.Write(chr(e))
     .method public virtual instance void 
