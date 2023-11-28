@@ -1,5 +1,5 @@
 // Refs2 : emphasizes that a variable is just a slot for the pointer, so that actually immutable classes are safe to pass to the methods, ensuring that from the other scope it is impossible to substitude a variable in your scope
-class Refs2 extends EntryPoint is
+class Main extends EntryPoint is
     var exit_code : Integer := 0
 
     method assert(cond : Boolean) : void is
@@ -12,7 +12,7 @@ class Refs2 extends EntryPoint is
         a := a.plus(2)
     end
 
-    method main(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) : Integer is
+    method main(stdin: CharInput, stdout: CharOutput, args: Array[Array[Integer]]) : Integer is
         var a : Integer := 1
         var b : Integer := a.plus(1)
 

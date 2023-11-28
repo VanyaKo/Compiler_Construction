@@ -1,4 +1,4 @@
-class TestTypeConversion extends EntryPoint is
+class Main extends EntryPoint is
     var exit_code : Integer := 0
 
     method assert(cond : Boolean) : void is
@@ -7,14 +7,14 @@ class TestTypeConversion extends EntryPoint is
         end
     end
 
-    method main(stdin: StdIn, stdout: StdOut, stderr: StdOut, args: Array[Array[Integer]]) : Integer is
+    method main(stdin: CharInput, stdout: CharOutput, args: Array[Array[Integer]]) : Integer is
         var a : Integer := 5
-        var b : Real := 3.7
+        var b : Real := 344.7
 	
         var resultReal : Real := a.toReal() // Expected: 5.0
-        var resultInt : Integer := b.toInteger() // Expected: 3 (assuming truncation)
+        var resultInt : Integer := b.toInteger() // Expected: 344 (assuming truncation)
         this.assert(resultReal.equal(5.0))
-        this.assert(resultInt.equal(3))
+        this.assert(resultInt.equal(344))
         return this.exit_code
     end
 end

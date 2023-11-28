@@ -1,3 +1,4 @@
+using System.Globalization;
 using Indent;
 using MsilVarResprenentation;
 using OluaAST;
@@ -295,25 +296,29 @@ namespace OluaAST
         public IStringOrList MsilToGet(Dictionary<string, MsilVar> locals)
         {
             ListWrapper res = new();
-            if (Value is float)
+
+            string ld = "";
+            string arg_t = "";
+
+            switch (Value)
             {
-                res.AddExpanding(new StringWrapper($"ldc.r4 {Value}"));
-                res.AddExpanding(new StringWrapper($"newobj instance void {ResultingType(locals).sMsil()}::.ctor(float32)"));
+                case float Value:
+                    ld = $"ldc.r4 {Value.ToString("0.0", CultureInfo.InvariantCulture)}";
+                    arg_t = "float32";
+                    break;
+                case int Value:
+                    ld = $"ldc.i4 {Value}";
+                    arg_t = "int32";
+                    break;
+                case bool Value:
+                    ld = Value ? "ldc.i4.1" : $"ldc.i4.0";
+                    arg_t = "bool";
+                    break;
             }
-            else if (Value is int)
-            {
-                res.AddExpanding(new StringWrapper($"ldc.i4 {Value}"));
-                res.AddExpanding(new StringWrapper($"newobj instance void {ResultingType(locals).sMsil()}::.ctor(int32)"));
-            }
-            else if (Value is bool)
-            {
-                res.AddExpanding(new StringWrapper((Value.ToString() == "True") ? "ldc.i4.1" : $"ldc.i4.0"));
-                res.AddExpanding(new StringWrapper($"newobj instance void {ResultingType(locals).sMsil()}::.ctor(bool)"));
-            }
-            else
-            {
-                throw new ArgumentException();
-            }
+
+            res.AddExpanding(new StringWrapper(ld));
+            res.AddExpanding(new StringWrapper($"newobj instance void {ResultingType(locals).sMsil()}::.ctor({arg_t})"));
+
             return res;
         }
     }

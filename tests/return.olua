@@ -1,6 +1,6 @@
 // return - emphasizes the way to return codes, inheritance of fields and the basic constructor sytax
 class Main extends EntryPoint is
-    method main(stdin: StdIn, stdout: StdOut, args: Array[Array[Integer]]) : Integer is
+    method main(stdin: CharInput, stdout: CharOutput, args: Array[Array[Integer]]) : Integer is
         return 10
     end
 end
