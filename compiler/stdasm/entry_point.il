@@ -1,10 +1,12 @@
-.class public abstract auto ansi beforefieldinit EntryPoint
+.class public auto ansi beforefieldinit EntryPoint
        extends Class
 {
-    // Abstract main method
-    .method public newslot abstract virtual 
+    .method public newslot virtual 
             class Integer olua_main(class StdIn, class StdOut, class Array`1<class Array`1<class Integer>>) cil managed
     {
+        .maxstack 1
+        newobj instance void Integer::.ctor()
+        ret
     }
 }
 
