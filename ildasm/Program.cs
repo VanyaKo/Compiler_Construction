@@ -26,7 +26,6 @@ public class c_Array<T> : c_Class
 
     public c_Array(T[] items)
     {
-
         f_items = items;
     }
 
@@ -63,13 +62,11 @@ public class c_Boolean : c_Class
 
     public c_Boolean()
     {
-
         f_data = false;
     }
 
     public c_Boolean(bool data)
     {
-
         f_data = data;
     }
 
@@ -99,19 +96,88 @@ public class c_Boolean : c_Class
     }
 }
 
+public class c_Real : c_Class
+{
+    private float f_data;
+
+    public c_Real()
+    {
+        f_data = 0;
+    }
+
+    public c_Real(float data)
+    {
+        f_data = data;
+    }
+
+    public float p_m_data()
+    {
+        return f_data;
+    }
+
+    // Arithmetics
+
+    public virtual c_Real m_plus(c_Real other)
+    {
+        return new c_Real(f_data + other.f_data);
+    }
+
+    public virtual c_Real m_minus(c_Real other)
+    {
+        return new c_Real(f_data - other.f_data);
+    }
+
+    public virtual c_Real m_mult(c_Real other)
+    {
+        return new c_Real(f_data * other.f_data);
+    }
+
+    public virtual c_Real m_divide(c_Real other)
+    {
+        return new c_Real(f_data / other.f_data);
+    }
+
+    public virtual c_Real m_reminder(c_Real other)
+    {
+        return new c_Real(f_data % other.f_data);
+    }
+
+    // Relations
+
+    public virtual c_Boolean m_less(c_Real other)
+    {
+        return new c_Boolean(f_data < other.f_data);
+    }
+
+    public virtual c_Boolean m_greater(c_Real other)
+    {
+        return new c_Boolean(f_data > other.f_data);
+    }
+
+    public virtual c_Boolean m_equal(c_Real other)
+    {
+        return new c_Boolean(f_data == other.f_data);
+    }
+
+    // Conversions
+
+    public virtual c_Integer m_toInteger()
+    {
+        return new c_Integer((int)f_data);
+    }
+}
+
 public class c_Integer : c_Class
 {
     private int f_data;
 
     public c_Integer()
     {
-
         f_data = 0;
     }
 
     public c_Integer(int data)
     {
-
         f_data = data;
     }
 
@@ -171,7 +237,10 @@ public class c_Integer : c_Class
         return new c_Boolean(f_data == 0);
     }
 
-    // TODO: Implement toReal
+    public virtual c_Real m_toReal()
+    {
+        return new c_Real((float)f_data);
+    }
 }
 
 public class c_CharInput : c_Class

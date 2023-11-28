@@ -153,5 +153,15 @@
         ret
     }
     
-    // TODO: Implement toReal
+    .method public newslot virtual 
+          instance class c_Real  m_toReal() cil managed
+    {
+        // Code size       13 (0xd)
+        .maxstack  8
+        IL_0000:  ldarg.0
+        IL_0001:  ldfld      int32 c_Integer::f_data
+        IL_0006:  conv.r4
+        IL_0007:  newobj     instance void c_Real::.ctor(float32)
+        IL_000c:  ret
+    } // end of method c_Integer::m_toReal
 }
