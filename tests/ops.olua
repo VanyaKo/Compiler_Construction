@@ -36,10 +36,12 @@ class Main extends EntryPoint is
 		resultInt := a.mult(b)
 		resultReal := c.mult(d)
 		this.assert(resultInt.equal(15))
+        stdout.writeLine(resultReal.toString())
 		this.assert(resultReal.toInteger().equal(3))
 
 		resultInt := a.divide(b) // Expected: 1 (since it's integer division)
 		resultReal := c.divide(d) // Expected: 1.666...
+        stdout.writeLine(resultReal.toString())
 		this.assert(resultInt.equal(1))
 
 		boolResult := true.or(false)
