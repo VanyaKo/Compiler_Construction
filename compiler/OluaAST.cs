@@ -501,7 +501,14 @@ namespace OluaAST
         public IStringOrList ToOlua()
         {
             ListWrapper res = new();
-            res.Values.Add(new StringWrapper($"method {Name}({Parameters}) : {ReturnType} is"));
+            if (ReturnType == null)
+            {
+                res.Values.Add(new StringWrapper($"method {Name}({Parameters}) : {"void"} is"));
+            }
+            else
+            {
+                res.Values.Add(new StringWrapper($"method {Name}({Parameters}) : {ReturnType} is"));
+            }
             res.Values.Add(Statements.ToOlua());
             res.Values.Add(new StringWrapper("end"));
             return res;
